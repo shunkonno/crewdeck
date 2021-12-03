@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import styles from '../styles/Home.module.css'
 
 export default function Home() {
   return (
@@ -19,7 +18,7 @@ export default function Home() {
           <div className="container-filter col-span-1">Filters</div>
           {/* Filter - END */}
           {/* Filter Results - START */}
-          <div className="container-result col-span-4">
+          <div className="container-result col-span-3">
             {/* Result - START */}
             <div className="w-full border border-gray-100 rounded-sm shadow-sm">
               <div className="px-4 py-2">
@@ -56,6 +55,9 @@ export default function Home() {
             {/* Result - END */}
           </div>
           {/* Filter Results - END */}
+          {/* Sidebar - START */}
+          <div className="container-result col-span-1">Sidebar</div>
+          {/* Sidebar - END */}
         </div>
         {/* Grid - END */}
       </main>
