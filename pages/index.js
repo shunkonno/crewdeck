@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -5,9 +6,14 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 
 export default function Home() {
+  let [currentAccount, setCurrentAccount] = useState('')
+  let [ensName, setEnsName] = useState('')
+
+  console.log({ currentAccount, ensName })
+
   async function getWeb3Modal() {
-    const web3Modal = new Web3Modal({
-      network: 'rinkeby',
+    let web3Modal = new Web3Modal({
+      network: 'mainnet',
       cacheProvider: false,
       providerOptions: {}
     })
@@ -16,13 +22,31 @@ export default function Home() {
   }
 
   async function connectWallet() {
-    const web3Modal = await getWeb3Modal()
-    const web3Provider = await web3Modal.connect()
+    let web3Modal = await getWeb3Modal()
+    let web3Provider = await web3Modal.connect()
     // Wrap web3.js based provider to use with ethers.js.
-    const provider = new ethers.providers.Web3Provider(web3Provider)
+    let provider = new ethers.providers.Web3Provider(web3Provider)
     // Get accounts.
-    const accounts = await provider.listAccounts()
-    console.log(accounts[0])
+    let accounts = await provider.listAccounts()
+    let address = accounts[0]
+    // Set address in state.
+    setCurrentAccount(address)
+    // Lookup ENS.
+    let ensName = await provider.lookupAddress(address)
+    // Set ENS in state, ignore if ensName is null.
+    ensName ? setEnsName(ensName) : null
+  }
+
+  useEffect(() => {
+    connectWallet()
+  }, [])
+
+  function truncateAddress(address) {
+    let firstFiveLetters = address.substring(0, 5)
+    let lastFiveLetters = address.substring(address.length - 5)
+    let truncatedAddress = firstFiveLetters + '...' + lastFiveLetters
+
+    return truncatedAddress
   }
 
   return (
@@ -34,12 +58,40 @@ export default function Home() {
       </Head>
 
       <div className="container mx-auto">
-        <button
-          className="bg-blue-200 px-4 py-2 text-sm font-bold rounded-sm"
-          onClick={connectWallet}
-        >
-          Connect Wallet
-        </button>
+        {/* Header - START */}
+        <header>
+          <div className="mb-8">
+            <div className="flex justify-between">
+              {/* Logo - START */}
+              <div>Logo</div>
+              {/* Logo - END */}
+              {/* Connect Wallet - START */}
+              <div>
+                {/* If wallet is connected, display users' public address or ENS address. */}
+                {currentAccount && (
+                  <div>
+                    <div>
+                      <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                        {ensName ? ensName : truncateAddress(currentAccount)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {/* If wallet isn't connected, display button to connect wallet. */}
+                {!currentAccount && (
+                  <button
+                    className="bg-blue-200 px-4 py-2 text-sm font-bold rounded-sm"
+                    onClick={connectWallet}
+                  >
+                    Connect Wallet
+                  </button>
+                )}
+              </div>
+              {/* Connect Wallet - END */}
+            </div>
+          </div>
+        </header>
+        {/* Header - END */}
         {/* Grid - START */}
         <div className="grid grid-cols-5 gap-4">
           {/* Filter - START */}
