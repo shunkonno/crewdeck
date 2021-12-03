@@ -1,8 +1,30 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ethers } from 'ethers'
+import Web3Modal from 'web3modal'
 
 export default function Home() {
+  async function getWeb3Modal() {
+    const web3Modal = new Web3Modal({
+      network: 'rinkeby',
+      cacheProvider: false,
+      providerOptions: {}
+    })
+
+    return web3Modal
+  }
+
+  async function connectWallet() {
+    const web3Modal = await getWeb3Modal()
+    const web3Provider = await web3Modal.connect()
+    // Wrap web3.js based provider to use with ethers.js.
+    const provider = new ethers.providers.Web3Provider(web3Provider)
+    // Get accounts.
+    const accounts = await provider.listAccounts()
+    console.log(accounts[0])
+  }
+
   return (
     <div>
       <Head>
@@ -11,14 +33,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto">
+      <div className="container mx-auto">
+        <button
+          className="bg-blue-200 px-4 py-2 text-sm font-bold rounded-sm"
+          onClick={connectWallet}
+        >
+          Connect Wallet
+        </button>
         {/* Grid - START */}
         <div className="grid grid-cols-5 gap-4">
           {/* Filter - START */}
           <div className="container-filter col-span-1">Filters</div>
           {/* Filter - END */}
           {/* Filter Results - START */}
-          <div className="container-result col-span-3">
+          <main className="container-result col-span-3">
             {/* Result - START */}
             <div className="w-full border border-gray-100 rounded-sm shadow-sm">
               <div className="px-4 py-2">
@@ -53,14 +81,14 @@ export default function Home() {
               </div>
             </div>
             {/* Result - END */}
-          </div>
+          </main>
           {/* Filter Results - END */}
           {/* Sidebar - START */}
           <div className="container-result col-span-1">Sidebar</div>
           {/* Sidebar - END */}
         </div>
         {/* Grid - END */}
-      </main>
+      </div>
     </div>
   )
 }
