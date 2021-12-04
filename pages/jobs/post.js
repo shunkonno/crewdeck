@@ -1,8 +1,39 @@
+import React, { useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+// Components
+import { Header } from '../../components/Header'
+// Quill Editor - Dynamic import to prevent SSR
+// https://github.com/zenoamaro/react-quill
+let ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+import 'react-quill/dist/quill.snow.css'
 
-export default function PostAJob() {
+export default function PostJob() {
+  // *****
+  // Values to submit to server. - START
+  let [title, setTitle] = useState('')
+  let [editorContent, setEditorContent] = useState('')
+  let [isPublic, setIsPublic] = useState(true)
+  console.log({ title, editorContent, isPublic })
+  // Values to submit to server. - END
+  // *****
+
+  let publicSettings = [
+    {
+      id: 'public',
+      name: 'Public',
+      description: 'Your post will show up on search results.'
+    },
+    {
+      id: 'private',
+      name: 'Private',
+      description:
+        'Access only if the person knows the URL. Your post will not show up on search results.'
+    }
+  ]
+
   return (
     <div>
       <Head>
@@ -12,7 +43,94 @@ export default function PostAJob() {
       </Head>
 
       <main className="container mx-auto">
-        <div>post a job</div>
+        {/* Header - START */}
+        <Header />
+        {/* Header - END */}
+        {/* Input - START */}
+        <div>
+          {/* Title - START */}
+          <div className="mt-1">
+            <input
+              type="text"
+              className="text-2xl font-medium"
+              placeholder="Title"
+              onChange={(e) => {
+                setTitle(e.target.value)
+              }}
+            ></input>
+          </div>
+          {/* Title - END */}
+        </div>
+        <div>
+          {/* Tags - START */}
+          <div className="mt-1">
+            {/* TODO: Improve UI for adding tags. i.e. - https://www.npmjs.com/package/react-tag-input */}
+            <input type="text" className="" placeholder="Add Tags"></input>
+          </div>
+          {/* Tags - END */}
+        </div>
+        <div>
+          {/* Editor - START */}
+          <div className="mt-1">
+            <ReactQuill
+              theme="snow"
+              value={editorContent}
+              onChange={setEditorContent}
+            />
+          </div>
+          {/* Editor - END */}
+        </div>
+        <div>
+          {/* Public Settings - START */}
+          <fieldset>
+            <legend className="sr-only">Public Settings</legend>
+            <div className="space-y-5">
+              {publicSettings.map((publicSetting) => (
+                <div
+                  key={publicSetting.id}
+                  className="relative flex items-start"
+                >
+                  <div className="flex items-center h-5">
+                    <input
+                      id={publicSetting.id}
+                      aria-describedby={`${publicSetting.id}-description`}
+                      name="publicSetting"
+                      type="radio"
+                      defaultChecked={publicSetting.id === 'public'}
+                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                      onClick={() => {
+                        setIsPublic(publicSetting.id === 'public')
+                      }}
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label
+                      htmlFor={publicSetting.id}
+                      className="font-medium text-gray-700"
+                    >
+                      {publicSetting.name}
+                    </label>
+                    <p
+                      id={`${publicSetting.id}-description`}
+                      className="text-gray-500"
+                    >
+                      {publicSetting.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+          {/* Public Settings - END */}
+        </div>
+        <div>
+          {/* Submit Button - START */}
+          <button className="bg-blue-200 px-4 py-2 text-sm font-bold rounded-sm">
+            Post
+          </button>
+          {/* Submit Button - END */}
+        </div>
+        {/* Input - END */}
       </main>
     </div>
   )
