@@ -2,8 +2,8 @@ import { useAccount, useAccountConnect } from '../../contexts/AccountContext'
 import { truncateAddress } from '../../utils/truncateAddress'
 
 export function Header() {
-  let { currentAccount, ensName } = useAccount()
-  let connectWallet = useAccountConnect()
+  const { currentAccount, ensName } = useAccount()
+  const connectWallet = useAccountConnect()
   console.log({ currentAccount, ensName })
 
   return (
