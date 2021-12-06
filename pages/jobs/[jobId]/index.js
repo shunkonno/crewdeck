@@ -1,8 +1,12 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+// Supabase
+import { supabase } from '../../../libs/supabase'
 
-export default function Job() {
+export default function Job({ job }) {
+  console.log({ job })
+
   return (
     <div>
       <Head>
@@ -58,4 +62,26 @@ export default function Job() {
       </main>
     </div>
   )
+}
+
+export const getStaticPaths = async () => {
+  const { data: jobs } = await supabase.from('jobs').select('id')
+
+  const paths = jobs.map(({ id }) => ({
+    params: {
+      jobId: id.toString()
+    }
+  }))
+
+  return { paths, fallback: false }
+}
+
+export const getStaticProps = async ({ params: { jobId } }) => {
+  const { data: job } = await supabase
+    .from('jobs')
+    .select('*')
+    .eq('id', jobId)
+    .single()
+
+  return { props: { job } }
 }
