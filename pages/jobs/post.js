@@ -8,11 +8,12 @@ import { ethers } from 'ethers'
 import { useAccount } from '../../contexts/AccountContext'
 // Components
 import { Header } from '../../components/Header'
+// Supabase
+import { supabase } from '../../libs/supabase'
 // Quill Editor - Dynamic import to prevent SSR
 // https://github.com/zenoamaro/react-quill
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
-import { supabase } from '../../libs/supabase'
 
 export default function PostJob() {
   const { currentAccount, ethersProvider } = useAccount()
