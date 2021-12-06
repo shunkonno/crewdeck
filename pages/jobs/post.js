@@ -40,6 +40,14 @@ export default function PostJob() {
     }
   ]
 
+  const quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['blockquote']
+    ]
+  }
+
   // Saves data to DB.
   async function saveToDB() {
     const { data, error } = await supabase
@@ -129,6 +137,7 @@ export default function PostJob() {
           <div className="mt-1">
             <ReactQuill
               theme="snow"
+              modules={quillModules}
               value={editorContent}
               onChange={setEditorContent}
             />

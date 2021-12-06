@@ -27,7 +27,8 @@ export default function Job({ job }) {
         'br',
         'u',
         'em',
-        'strong'
+        'strong',
+        'blockquote'
       ],
       allowedAttributes: {
         a: ['href', 'rel', 'target']
