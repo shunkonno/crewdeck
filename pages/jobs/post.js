@@ -3,24 +3,29 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { ethers } from 'ethers'
+// Contexts
+import { useAccount } from '../../contexts/AccountContext'
 // Components
 import { Header } from '../../components/Header'
 // Quill Editor - Dynamic import to prevent SSR
 // https://github.com/zenoamaro/react-quill
-let ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
+import { supabase } from '../../libs/supabase'
 
 export default function PostJob() {
+  const { currentAccount, ethersProvider } = useAccount()
   // *****
   // Values to submit to server. - START
-  let [title, setTitle] = useState('')
-  let [editorContent, setEditorContent] = useState('')
-  let [isPublic, setIsPublic] = useState(true)
+  const [title, setTitle] = useState('')
+  const [editorContent, setEditorContent] = useState('')
+  const [isPublic, setIsPublic] = useState(true)
   console.log({ title, editorContent, isPublic })
   // Values to submit to server. - END
   // *****
 
-  let publicSettings = [
+  const publicSettings = [
     {
       id: 'public',
       name: 'Public',
@@ -33,6 +38,55 @@ export default function PostJob() {
         'Access only if the person knows the URL. Your post will not show up on search results.'
     }
   ]
+
+  // Saves data to DB.
+  async function saveToDB() {
+    const { data, error } = await supabase
+      .from('jobs')
+      .insert([
+        { title: title, description: editorContent, is_public: isPublic }
+      ])
+
+    if (error) {
+      console.log(error)
+    }
+  }
+
+  // Verifies if the user holds the private key for the public address. (EIP-191)
+  // @returns {bool} isVerified - Returns whether the address has been verified.
+  async function verifyAddressOwnership() {
+    // Sign a message.
+    const signer = ethersProvider.getSigner()
+    const message =
+      'Please sign this message for verification. This does not incur any gas fees.'
+    const signature = await signer.signMessage(message)
+
+    // Get public address used to sign the message.
+    const address = ethers.utils.verifyMessage(message, signature)
+
+    // If currentAccount equals address, we know that the user has the private key for the currentAccount.
+    const isVerified = currentAccount === address ? true : false
+
+    return isVerified
+  }
+
+  // Handles data submit.
+  async function handleSubmit() {
+    // Verify users' address.
+    const isVerified = await verifyAddressOwnership()
+
+    // Exit process if the users' address can't be verified.
+    if (!isVerified) {
+      return
+    }
+
+    // Save data to DB.
+    await saveToDB()
+
+    console.log('Successfully saved to DB.')
+
+    // TODO: Redirect user to the newly created job post.
+  }
 
   return (
     <div>
@@ -125,7 +179,10 @@ export default function PostJob() {
         </div>
         <div>
           {/* Submit Button - START */}
-          <button className="bg-blue-200 px-4 py-2 text-sm font-bold rounded-sm">
+          <button
+            className="bg-blue-200 px-4 py-2 text-sm font-bold rounded-sm"
+            onClick={handleSubmit}
+          >
             Post
           </button>
           {/* Submit Button - END */}
