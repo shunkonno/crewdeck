@@ -45,7 +45,7 @@ export default function Home() {
           {/* Filter Results - START */}
           <main className="container-result col-span-3">
             {/* Result - START */}
-            <div className="w-full border border-gray-100 rounded-sm shadow-sm">
+            <div className="w-full border border-slate-200 rounded-sm shadow-sm">
               <div className="px-4 py-2">
                 <div className="result-title">
                   <Link href="#">
@@ -63,12 +63,12 @@ export default function Home() {
                   <div className="result-tag">
                     <div className="flex justify-start gap-1">
                       <div>
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800">
                           Badge
                         </span>
                       </div>
                       <div>
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800">
                           Badge
                         </span>
                       </div>
