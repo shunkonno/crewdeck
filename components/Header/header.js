@@ -1,5 +1,5 @@
-import { useAccount, useAccountConnect } from '../../contexts/AccountContext'
-import { truncateAddress } from '../../utils/truncateAddress'
+import { useAccount, useAccountConnect } from '@contexts/AccountContext'
+import { truncateAddress } from '@utils/truncateAddress'
 
 export function Header() {
   const { currentAccount, ensName } = useAccount()

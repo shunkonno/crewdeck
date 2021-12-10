@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import useSWR from 'swr'
 // Components
-import { Header } from '../components/Header'
+import { Header } from '@components/Header'
 
 export default function Home() {
   // 検証のため、index.js に仮置き **********

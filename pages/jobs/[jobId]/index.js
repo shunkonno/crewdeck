@@ -3,9 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import sanitizeHTML from 'sanitize-html'
 // Components
-import { Header } from '../../../components/Header'
+import { Header } from '@components/Header'
 // Supabase
-import { supabase } from '../../../libs/supabase'
+import { supabase } from '@libs/supabase'
 
 export default function Job({ job }) {
   console.log({ job })

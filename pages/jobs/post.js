@@ -5,11 +5,11 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { ethers } from 'ethers'
 // Contexts
-import { useAccount } from '../../contexts/AccountContext'
+import { useAccount } from '@contexts/AccountContext'
 // Components
-import { Header } from '../../components/Header'
+import { Header } from '@components/Header'
 // Supabase
-import { supabase } from '../../libs/supabase'
+import { supabase } from '@libs/supabase'
 // Quill Editor - Dynamic import to prevent SSR
 // https://github.com/zenoamaro/react-quill
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
