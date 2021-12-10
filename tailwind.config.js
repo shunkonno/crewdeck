@@ -15,7 +15,7 @@ module.exports = {
       teal: colors.teal,
       blue: colors.blue,
       primary:{
-        default: '#1bebcf',
+        default: '#18cbdb',
         dark: '#128a7a'
       },
       secondary:{

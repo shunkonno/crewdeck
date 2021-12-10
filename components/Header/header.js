@@ -8,7 +8,7 @@ export function Header() {
 
   return (
     <header>
-      <div className="mb-8">
+      <div className="my-sm">
         <div className="flex justify-between">
           {/* Logo - START */}
           <div>Logo</div>
@@ -28,7 +28,7 @@ export function Header() {
             {/* If wallet isn't connected, display button to connect wallet. */}
             {!currentAccount && (
               <button
-                className="bg-blue-200 px-4 py-2 text-sm font-bold rounded-sm"
+                className="bg-primary-default text-white px-4 py-2 text-sm font-bold rounded-lg shadow-md shadow-primary-default/50"
                 onClick={connectWallet}
               >
                 Connect Wallet
