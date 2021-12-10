@@ -11,3 +11,10 @@
     @apply list-decimal list-inside;
   }
 }
+
+@layer components {
+  .min-view-height {
+     min-height: calc(100vh - 88px); /* フッターの高さを100vhから引く */
+  }
+}
+
