@@ -15,7 +15,7 @@ module.exports = {
       teal: colors.teal,
       blue: colors.blue,
       primary:{
-        default: '#18cbdb',
+        DEFAULT: '#18cbdb',
         dark: '#128a7a'
       },
       secondary:{
@@ -50,6 +50,9 @@ module.exports = {
         sm: '1.5rem',
         xs: '1.125rem',
         xxs: '0.75rem',
+      },
+      maxWidth: {
+        '8xl': '1920px'
       }
     }
   },
