@@ -61,10 +61,10 @@ export default function Home() {
             <label className="block text-sm font-medium text-slate-700">Search</label>
             <div className="mt-1 relative rounded-md shadow-sm">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <SearchIcon className="focus:text-teal-500 text-slate-400 w-6 h-6"/>
+                <SearchIcon className="focus:text-primary text-slate-400 w-6 h-6"/>
               </div>
               <input 
-                className="focus:outline-none focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 py-2 sm:text-sm border border-slate-300 rounded-md"
+                className="focus:outline-none focus:ring-primary focus:border-primary block w-full pl-10 py-2 sm:text-sm border border-slate-300 rounded-md"
                 placeholder="Keywords" 
               />
             </div>
@@ -76,7 +76,7 @@ export default function Home() {
                 return (
                   <div key={dao.id} className="mt-2 relative flex items-start">
                     <div className="flex items-center h-5">
-                      <input name="tag" type="checkbox" className="focus:ring-teal-500 h-4 w-4 text-teal-400  border-gray-300 rounded" />
+                      <input name="tag" type="checkbox" className="focus:ring-primary h-4 w-4 text-teal-400  border-gray-300 rounded" />
                     </div>
                     <div className="ml-3 text-sm truncate">
                       <span className="text-gray-500">{dao.name}</span>
@@ -95,7 +95,7 @@ export default function Home() {
                 return (
                   <div key={tag.id} className="mt-2 relative flex items-start">
                     <div className="flex items-center h-5">
-                      <input name="tag" type="checkbox" className="focus:ring-teal-500 h-4 w-4 text-teal-400  border-gray-300 rounded" />
+                      <input name="tag" type="checkbox" className="focus:ring-primary h-4 w-4 text-teal-400  border-gray-300 rounded" />
                     </div>
                     <div className="ml-3 text-sm  truncate">
                       <span className="text-gray-500">{tag.name}</span>
