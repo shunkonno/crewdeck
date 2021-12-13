@@ -23,11 +23,15 @@ export function AccountProvider({ children }) {
   async function connectWallet() {
     // Initialize Web3Modal.
     // https://github.com/Web3Modal/web3modal
-    const web3Modal = new Web3Modal({
-      cacheProvider: false,
-      providerOptions: {}
-    })
 
+    let web3Modal
+    if (typeof window !== 'undefined') {
+      web3Modal = new Web3Modal({
+        cacheProvider: false,
+        providerOptions: {}
+      })  
+    }
+    
     // Get provider.
     const web3Provider = await web3Modal.connect()
     // Wrap web3.js based provider to use with ethers.js.
@@ -46,7 +50,7 @@ export function AccountProvider({ children }) {
   }
 
   useEffect(() => {
-    connectWallet()
+    // connectWallet()
   }, [])
 
   return (
