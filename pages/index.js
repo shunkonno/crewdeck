@@ -133,16 +133,15 @@ export default function Home() {
         </div>
         {/* Filter - END */}
         {/* Filter Results - START */}
-        <main className="flex-1 px-sm">
-          {jobs.map((job) => {
-            return (
-              job.is_public && (
-                <div key={job.id} className="mb-sm">
-                  <Link href={`/jobs/${job.id}`}>
-                    <a>
-                      <div className="w-full border shadow-sm border-slate-300 rounded-sm">
-                        <div className="px-4 py-2">
-                          <div className="result-title">
+        <main className="flex-1 px-sm max-w-4xl">
+          {jobs.map(job => {
+            return(
+              job.is_public &&
+              <div key={job.id} className="mb-sm">
+                <Link href={`/jobs/${job.id}`}><a>
+                  <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">
+                    <div className="px-4 py-2">
+                      <div className="result-title">
                             <h2 className="text-lg font-medium truncate">
                               {job.title}
                             </h2>

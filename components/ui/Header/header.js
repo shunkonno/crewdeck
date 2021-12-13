@@ -34,7 +34,7 @@ export function Header() {
                 <div>
                   {
                     <div className="text-right">
-                    <Menu as="div" className="relative inline-block text-left">
+                    <Menu as="div" className="relative inline-block text-left bg-white">
                       <div>
                         <Menu.Button className="inline-flex justify-center w-full pl-4 pr-3 py-2 text-sm font-medium text-white border shadow-md border-slate-300 rounded-lg bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                           <span className="inline-flex items-center text-sm font-medium text-slate-800">
