@@ -69,7 +69,7 @@ export default function Job({ job }) {
        description="Job Detail"
       />
       {/* Grid - START */}
-      <div className="py-md block sm:flex px-4 sm:px-xs max-w-7xl mx-auto">
+      <div className="py-md block sm:flex px-4 sm:px-xs max-w-5xl mx-auto">
         {/* Job - START */}
         <div className="flex-1">
           {/* Job Title - START */}
