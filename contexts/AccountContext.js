@@ -24,13 +24,12 @@ export function AccountProvider({ children }) {
     // Initialize Web3Modal.
     // https://github.com/Web3Modal/web3modal
 
-    let web3Modal
-    if (typeof window !== 'undefined') {
-      web3Modal = new Web3Modal({
-        cacheProvider: false,
-        providerOptions: {}
-      })  
-    }
+  
+    const web3Modal = new Web3Modal({
+      cacheProvider: false,
+      providerOptions: {}
+    })  
+  
     
     // Get provider.
     const web3Provider = await web3Modal.connect()
@@ -50,7 +49,7 @@ export function AccountProvider({ children }) {
   }
 
   useEffect(() => {
-    // connectWallet()
+    connectWallet()
   }, [])
 
   return (
