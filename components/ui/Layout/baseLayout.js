@@ -9,7 +9,7 @@ export function BaseLayout({children}) {
       <div className="min-view-height bg-slate-50">
           <Header />
         {/* Header - END */}
-        <div className="container mx-auto">
+        <div className="container mx-auto relative z-0">
           {children}
         </div>
       </div>
