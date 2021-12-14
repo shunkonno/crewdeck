@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 // Assets
-import { ChevronDownIcon, PlusSmIcon } from '@heroicons/react/solid'
+import { ChevronDownIcon, DocumentTextIcon, PlusSmIcon } from '@heroicons/react/solid'
 
 // Components
 import { Menu, Transition } from '@headlessui/react'
@@ -12,13 +12,22 @@ import { Fragment } from 'react'
 import { useAccount, useAccountConnect } from '@contexts/AccountContext'
 import { truncateAddress } from '@utils/truncateAddress'
 
+function MyLink(props) {
+  let { href, children, ...rest } = props
+  return (
+    <Link href={href}>
+      <a {...rest}>{children}</a>
+    </Link>
+  )
+}
+
 export function Header() {
   const { currentAccount, ensName } = useAccount()
   const connectWallet = useAccountConnect()
   console.log({ currentAccount, ensName })
 
   return (
-    <header>
+    <header  className="relative z-50">
       <div className="py-xs px-xs">
         <div className="flex justify-between items-center">
           {/* Logo - START */}
@@ -52,19 +61,30 @@ export function Header() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 w-36 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <div className="px-4 py-2 flex justify-center">
+                        <Menu.Items className="absolute right-0 w-48 mt-2 origin-top-right bg-white divide-y divide-slate-100 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="p-2">
                             <Menu.Item>
                               {
-                                <Link href="/jobs/post"><a>
-                                <div className="inline-flex bg-primary text-white text-center px-3 py-2 text-sm font-bold rounded-lg">
-                                    <PlusSmIcon className="w-5 h-5 mr-1" />
+                                <MyLink href="/jobs/post"><a>
+                                <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
+                                    <DocumentTextIcon className="w-5 h-5 mr-2 " />
                                     <span>Post Job</span>
                                 </div>
-                                </a></Link>
+                                </a></MyLink>
                               }
                             </Menu.Item>
-                            
+                          </div>
+                          <div className="p-2">
+                            <Menu.Item>
+                              {
+                                <MyLink href="/register-nft"><a>
+                                <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
+                                    <PlusSmIcon className="w-5 h-5 mr-2" />
+                                    <span>Register NFT</span>
+                                </div>
+                                </a></MyLink>
+                              }
+                            </Menu.Item>
                           </div>
                           
                         </Menu.Items>
