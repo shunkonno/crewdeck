@@ -149,7 +149,7 @@ export default function Home() {
             <Popover className="relative flex-shrink-0">
               <Popover.Button>
                 <div className="bg-white rounded-full shadow-sm  p-2 flex justify-center items-center border border-slate-300">
-                  <AdjustmentsIcon className="h-6 w-6 focus:text-primary text-slate-400"/>
+                  <AdjustmentsIcon className="h-6 w-6 focus:text-primary text-slate-400" />
                 </div>
               </Popover.Button>
               <Transition
@@ -171,7 +171,10 @@ export default function Home() {
                         <div>
                           {DAOs.map((dao) => {
                             return (
-                              <div key={dao.id} className="mt-2 relative flex items-start">
+                              <div
+                                key={dao.id}
+                                className="mt-2 relative flex items-start"
+                              >
                                 <div className="flex items-center h-5">
                                   <input
                                     name="tag"
@@ -180,7 +183,9 @@ export default function Home() {
                                   />
                                 </div>
                                 <div className="ml-3 text-sm truncate">
-                                  <span className="text-gray-500">{dao.name}</span>
+                                  <span className="text-gray-500">
+                                    {dao.name}
+                                  </span>
                                 </div>
                               </div>
                             )
@@ -194,7 +199,10 @@ export default function Home() {
                         <div className="mt-2">
                           {tags.map((tag) => {
                             return (
-                              <div key={tag.id} className="mt-2 relative flex items-start">
+                              <div
+                                key={tag.id}
+                                className="mt-2 relative flex items-start"
+                              >
                                 <div className="flex items-center h-5">
                                   <input
                                     name="tag"
@@ -203,7 +211,9 @@ export default function Home() {
                                   />
                                 </div>
                                 <div className="ml-3 text-sm  truncate">
-                                  <span className="text-gray-500">{tag.name}</span>
+                                  <span className="text-gray-500">
+                                    {tag.name}
+                                  </span>
                                 </div>
                               </div>
                             )
