@@ -184,6 +184,12 @@ export default function PostJob({ daos }) {
                   This information will be displayed publicly so be careful what
                   you share.
                 </p>
+                {!daoSelectorOptions.length &&
+                  <p className="mt-1 text-sm text-red-500">
+                    {`You don't have any NFT assigned by DAO. You cannot post jobs. `}
+                  </p>
+                }
+                
               </div>
 
               <div>
@@ -211,26 +217,41 @@ export default function PostJob({ daos }) {
                           DAO
                         </Listbox.Label>
                         <div className="mt-1 relative">
-                          <Listbox.Button className="relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:border-primary sm:text-sm">
+                          <Listbox.Button 
+                            className={classNames(
+                              daoSelectorOptions.length ?
+                              "cursor-default focus:border-primary"
+                              :
+                              "cursor-not-allowed bg-slate-200",
+                              "relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm"
+                            )}
+                            
+                          >
                             <span className="flex items-center">
-                              {selectedDao === null ? (
-                                <span className="block truncate text-black">
-                                  {'select your dao'}
-                                </span>
-                              ) : (
-                                <>
-                                  <img
-                                    src={
-                                      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                                    }
-                                    alt=""
-                                    className="flex-shrink-0 h-6 w-6 rounded-full"
-                                  />
-                                  <span className="ml-3 block truncate text-black">
-                                    {selectedDao.name}
+                              {daoSelectorOptions.length ?
+                                selectedDao === null ? (
+                                  <span className="block truncate text-black">
+                                    {'select your dao'}
                                   </span>
-                                </>
-                              )}
+                                ) : (
+                                  <>
+                                    <img
+                                      src={
+                                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                                      }
+                                      alt=""
+                                      className="flex-shrink-0 h-6 w-6 rounded-full"
+                                    />
+                                    <span className="ml-3 block truncate text-black">
+                                      {selectedDao.name}
+                                    </span>
+                                  </>
+                                )
+                              :
+                              <span className="block truncate text-slate-600">
+                                {`no DAO options`}
+                              </span>
+                            }
                             </span>
                             <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                               <SelectorIcon
@@ -239,7 +260,8 @@ export default function PostJob({ daos }) {
                               />
                             </span>
                           </Listbox.Button>
-
+                          
+                          {daoSelectorOptions.length ?
                           <Transition
                             show={open}
                             as={Fragment}
@@ -304,6 +326,10 @@ export default function PostJob({ daos }) {
                               ))}
                             </Listbox.Options>
                           </Transition>
+                          :
+                          <>
+                          </>
+                          }
                         </div>
                       </>
                     )}
@@ -379,7 +405,14 @@ export default function PostJob({ daos }) {
           {/* Submit Button - START */}
           <div className="pt-5 flex justify-end">
             <button
-              className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary "
+              disabled={!daoSelectorOptions.length}
+              className={classNames(
+                daoSelectorOptions.length ?
+                "bg-primary cursor-pointer"
+                :
+                "bg-slate-300 cursor-not-allowed",
+                "py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  "
+              )}
               type="submit"
             >
               Post
