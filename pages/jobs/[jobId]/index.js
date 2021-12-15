@@ -92,47 +92,40 @@ export default function Job({ job, dao }) {
         <div className="flex-shrink-1 w-full sm:w-80 mt-md sm:mt-0">
           <div className="bg-white border border-slate-300 p-xs rounded-lg">
             <div className="inline-flex items-center">
-              {dao.logo_url &&
+              {dao.logo_url && (
                 <img
                   src={dao.logo_url}
                   className="inline-block flex-shrink-0 h-8 w-8 rounded-full mr-3"
                 />
-              }
+              )}
               <h1 className="text-lg font-semibold">{dao.name}</h1>
             </div>
             <p className="mt-1 text-slate-600">{dao.description}</p>
-            {dao.discord_url || dao.twitter_url && (
-              <div className="inline-flex gap-3 mt-xs">
-                {dao.discord_url && (
-                  <a
-                    href={dao.discord_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <div className="shadow-md p-2.5 rounded-full hover:shadow-lg">
-                      <img
-                        src={'/images/social/DiscordIcon.png'}
-                        className="flex-shrink-0 h-6 w-6"
-                      />
-                    </div>
-                  </a>
-                )}
-                {dao.twitter_url && (
-                  <a
-                    href={dao.twitter_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <div className="shadow-md p-2.5 rounded-full hover:shadow-lg">
-                      <img
-                        src={'/images/social/TwitterIcon.png'}
-                        className="flex-shrink-0 h-6 w-6"
-                      />
-                    </div>
-                  </a>
-                )}
-              </div>
-            )}
+            {dao.discord_url ||
+              (dao.twitter_url && (
+                <div className="inline-flex gap-3 mt-xs">
+                  {dao.discord_url && (
+                    <a href={dao.discord_url} target="_blank" rel="noreferrer">
+                      <div className="shadow-md p-2.5 rounded-full hover:shadow-lg">
+                        <img
+                          src={'/images/social/DiscordIcon.png'}
+                          className="flex-shrink-0 h-6 w-6"
+                        />
+                      </div>
+                    </a>
+                  )}
+                  {dao.twitter_url && (
+                    <a href={dao.twitter_url} target="_blank" rel="noreferrer">
+                      <div className="shadow-md p-2.5 rounded-full hover:shadow-lg">
+                        <img
+                          src={'/images/social/TwitterIcon.png'}
+                          className="flex-shrink-0 h-6 w-6"
+                        />
+                      </div>
+                    </a>
+                  )}
+                </div>
+              ))}
           </div>
         </div>
         {/* Sidebar - END */}
@@ -164,6 +157,41 @@ export const getStaticProps = async ({ params: { jobId } }) => {
     .select('*')
     .eq('id', jobId)
     .single()
+
+  // Get tag_ids.
+  const { data: tagIdList } = await supabase
+    .from('jobs_to_tags')
+    .select('tag_id')
+    .eq('job_id', jobId)
+
+  // If tags exist:
+  if (tagIdList.length > 0) {
+    // Compose query string for Supabase.
+    let tagIdListString = ''
+
+    tagIdList.map((item, index) => {
+      if (index !== tagIdList.length - 1) {
+        // Add a trailing comma until the last element.
+        tagIdListString += 'id.eq.'
+        tagIdListString += String(item.tag_id) + ','
+      } else {
+        tagIdListString += 'id.eq.'
+        tagIdListString += String(item.tag_id)
+      }
+    })
+
+    // Get tags.
+    const { data: tags } = await supabase
+      .from('tags')
+      .select('name')
+      .or(tagIdListString)
+
+    // Insert tags data into job object.
+    job.tags = tags
+  } else {
+    // If tags don't exist, set an empty array for job.tags element.
+    job.tags = []
+  }
 
   // Get info on the DAO that posted the job.
   const { data: dao } = await supabase
