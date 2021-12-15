@@ -65,24 +65,24 @@ export function Header() {
                           <div className="p-2">
                             <Menu.Item>
                               {
-                                <MyLink href="/jobs/post"><a>
+                                <MyLink href="/jobs/post">
                                 <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                                     <DocumentTextIcon className="w-5 h-5 mr-2 " />
                                     <span>Post Job</span>
                                 </div>
-                                </a></MyLink>
+                                </MyLink>
                               }
                             </Menu.Item>
                           </div>
                           <div className="p-2">
                             <Menu.Item>
                               {
-                                <MyLink href="/register-nft"><a>
+                                <MyLink href="/register-nft">
                                 <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                                     <PlusSmIcon className="w-5 h-5 mr-2" />
                                     <span>Register NFT</span>
                                 </div>
-                                </a></MyLink>
+                               </MyLink>
                               }
                             </Menu.Item>
                           </div>
