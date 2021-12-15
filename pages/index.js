@@ -67,9 +67,12 @@ export default function Home({ daos }) {
       {/* Grid - START */}
       <div className="py-xs sm:py-md block max-w-7xl mx-auto">
         {/* TopContainer - START */}
-        <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <div className="my-sm">
-            <p className="text-2xl">Let’s make 2022 the year to begin contributing.</p>
+        <div className="max-w-4xl mx-sm sm:mx-auto flex flex-col items-center">
+          <div className="mt-0 mb-sm sm:my-lg">
+            <p className="text-3xl font-bold leading-normal">
+              <span className="block sm:inline">Let’s make 2022 </span>
+              <span>the year to begin contributing.</span>
+            </p>
           </div>
           {/* SearchBar - START */}
           <div className="relative w-full rounded-md shadow-sm flex-1">
