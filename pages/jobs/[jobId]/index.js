@@ -11,16 +11,6 @@ const dummyTags = [
   { id: '3', name: 'NFT' }
 ]
 
-const dummyDao = {
-  id: '1',
-  name: 'buildspace',
-  description: 'buildspace is where people come to learn to build.',
-  logo_url:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  discord_url: 'aaa',
-  twitter_url: 'bbb'
-}
-
 export default function Job({ job, dao }) {
   console.log({ job, dao })
 
@@ -102,18 +92,20 @@ export default function Job({ job, dao }) {
         <div className="flex-shrink-1 w-full sm:w-80 mt-md sm:mt-0">
           <div className="bg-white border border-slate-300 p-xs rounded-lg">
             <div className="inline-flex items-center">
-              <img
-                src={dummyDao.logo_url}
-                className="flex-shrink-0 h-8 w-8 rounded-full"
-              />
-              <h1 className="ml-3 text-lg font-semibold">{dummyDao.name}</h1>
+              {dao.logo_url &&
+                <img
+                  src={dao.logo_url}
+                  className="inline-block flex-shrink-0 h-8 w-8 rounded-full mr-3"
+                />
+              }
+              <h1 className="text-lg font-semibold">{dao.name}</h1>
             </div>
-            <p className="mt-1 text-slate-600">{dummyDao.description}</p>
-            {dummyDao.discord_url && dummyDao.twitter_url && (
+            <p className="mt-1 text-slate-600">{dao.description}</p>
+            {dao.discord_url || dao.twitter_url && (
               <div className="inline-flex gap-3 mt-xs">
-                {dummyDao.discord_url && (
+                {dao.discord_url && (
                   <a
-                    href={dummyDao.discord_url}
+                    href={dao.discord_url}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -125,9 +117,9 @@ export default function Job({ job, dao }) {
                     </div>
                   </a>
                 )}
-                {dummyDao.twitter_url && (
+                {dao.twitter_url && (
                   <a
-                    href={dummyDao.twitter_url}
+                    href={dao.twitter_url}
                     target="_blank"
                     rel="noreferrer"
                   >
