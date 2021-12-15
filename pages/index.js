@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 // Assets
 import { SearchIcon, AdjustmentsIcon } from '@heroicons/react/solid'
@@ -17,7 +17,7 @@ export default function Home({ daos }) {
   const { currentAccount } = useAccount()
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
 
-  console.log({ daoSelectorOptions })
+  console.log(daoSelectorOptions)
 
   async function getTokenBalances(eoaAddress, contractAddress) {
     const response = await fetch(
@@ -31,28 +31,31 @@ export default function Home({ daos }) {
 
   // Filter the list of DAOs from DB, and filter the ones that the user owns tokens for. Set filtered array to state.
   // @params {array} daoList - The initial list of all DAOs.
-  function filterDaoSelectorOptions(daoList) {
-    let filterResult = []
-
-    daoList.map(async (dao) => {
+   const filterDaoSelectorOptions = useCallback(async(daoList) => {
+    //Filter DAO Function
+    const filterResult = await daoList.reduce(async(promise, dao) => {
+      let accumulator = []
+      accumulator = await promise
       const data = await getTokenBalances(currentAccount, dao.contract_address)
 
       // Get substring of tokenBalance. (e.g. 0x0000000000000000000000000000000000000000000000000000000000000001)
       // If tokenBalance is greater than 0, the user owns at least one token.
-      if (Number(data.tokenBalance?.substring(2)) > 0) {
-        filterResult.push(dao)
+      if(Number(data.tokenBalance?.substring(2)) > 0){
+        await accumulator.push(dao)
       }
-    })
+      return accumulator
+    }, [])
+    
+    await setDaoSelectorOptions(filterResult)
 
-    setDaoSelectorOptions(filterResult)
-  }
+  },[currentAccount])
 
   useEffect(() => {
     console.log('useEffect')
     if (currentAccount) {
       filterDaoSelectorOptions(daos)
     }
-  }, [currentAccount, daos])
+  }, [currentAccount, daos, filterDaoSelectorOptions])
 
 
   const tags = [
@@ -98,13 +101,14 @@ export default function Home({ daos }) {
           {/* Tags - END */}
         </div>
         {/* TopContainer - END */}
-        <div className="py-sm">
-          <h1 className="text-2xl ml-sm">Your Joining DAO</h1>
+        <div className="py-sm mx-sm">
+          <h1 className="text-2xl">Your Joining DAO</h1>
             {daoSelectorOptions.length ?
             <div className="flex mt-sm">
             {daoSelectorOptions.map(dao => (
-              <div key={dao.id} className="">
-                {dao.name}
+              <div key={dao.id} className="inline-flex shadow-md border border-slate-300 cursor-pointer py-2 px-4 rounded-lg">
+                <img src={dao.logo_url} alt="" className="block h-6 w-6 mr-3" />
+                <p>{dao.name}</p>
               </div>
             ))
             }
