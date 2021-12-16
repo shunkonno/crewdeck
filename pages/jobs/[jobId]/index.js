@@ -5,12 +5,6 @@ import { SEO } from '@components/ui/SEO'
 // Supabase
 import { supabase } from '@libs/supabase'
 
-const dummyTags = [
-  { id: '1', name: 'non-technical' },
-  { id: '2', name: 'graphics' },
-  { id: '3', name: 'NFT' }
-]
-
 export default function Job({ job, dao }) {
   console.log({ job, dao })
 
@@ -68,10 +62,10 @@ export default function Job({ job, dao }) {
           {/* Job Tags - START */}
           <div className="job-tag mt-sm">
             <div className="flex justify-start gap-1">
-              {dummyTags.map((dummyTag) => (
-                <div key={dummyTag.id}>
+              {job.tags.map((tag) => (
+                <div key={tag.id}>
                   <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-slate-200 text-slate-800">
-                    {dummyTag.name}
+                    {tag.name}
                   </span>
                 </div>
               ))}
@@ -183,7 +177,7 @@ export const getStaticProps = async ({ params: { jobId } }) => {
     // Get tags.
     const { data: tags } = await supabase
       .from('tags')
-      .select('name')
+      .select('*')
       .or(tagIdListString)
 
     // Insert tags data into job object.
