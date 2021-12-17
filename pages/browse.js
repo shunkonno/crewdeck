@@ -136,6 +136,7 @@ export default function Browse({ tags, daos }) {
         query = query.or(jobIdFilterString)
       }
     }
+
     const { data: jobs, error } = await query
 
     console.log({ jobs })

@@ -24,13 +24,11 @@ export function AccountProvider({ children }) {
     // Initialize Web3Modal.
     // https://github.com/Web3Modal/web3modal
 
-  
     const web3Modal = new Web3Modal({
       cacheProvider: false,
       providerOptions: {}
-    })  
-  
-    
+    })
+
     // Get provider.
     const web3Provider = await web3Modal.connect()
     // Wrap web3.js based provider to use with ethers.js.
