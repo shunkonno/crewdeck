@@ -55,12 +55,12 @@ export default function Job({ job, dao }) {
         {/* Job - START */}
         <div className="flex-1">
           {/* Job Title - START */}
-          <div className="job-title">
+          <div>
             <h1 className="text-2xl font-medium">{job.title}</h1>
           </div>
           {/* Job Title - END */}
           {/* Job Tags - START */}
-          <div className="job-tag mt-sm">
+          <div className="mt-1">
             <div className="flex justify-start gap-1">
               {job.tags.map((tag) => (
                 <div key={tag.id}>
