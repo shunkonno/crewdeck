@@ -74,6 +74,10 @@ export default function Browse({ tags, daos }) {
       return tagFilter[key]
     })
 
+    // **************************************************
+    // DAO FILTER
+    // **************************************************
+
     // Filter DAO.
     if (daoFilterIds.length > 0) {
       let daoFilterString = ''
@@ -90,6 +94,10 @@ export default function Browse({ tags, daos }) {
       // Chain base query.
       query = query.or(daoFilterString)
     }
+
+    // **************************************************
+    // TAG FILTER
+    // **************************************************
 
     // Get jobs with filtered tags.
     if (tagFilterIds.length > 0) {
