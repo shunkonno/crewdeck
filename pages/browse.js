@@ -1,16 +1,21 @@
-import { Fragment } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
-
 // Assets
 import { SearchIcon, AdjustmentsIcon } from '@heroicons/react/solid'
-
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
 import { Popover, Transition } from '@headlessui/react'
+// Supabase
+import { supabase } from '@libs/supabase'
 
-export default function Browse() {
+export default function Browse({ tags, daos }) {
+  console.log({ tags, daos })
+
+  const [daoFilter, setDaoFilter] = useState({})
+  const [tagFilter, setTagFilter] = useState({})
+
   const jobs = [
     {
       id: '2',
@@ -48,17 +53,91 @@ export default function Browse() {
     }
   ]
 
-  const DAOs = [
-    { id: '1', name: 'buildspace' },
-    { id: '2', name: 'Klima DAO' },
-    { id: '3', name: 'Crypto, Culture, and Society aaaaaaaaa' }
-  ]
+  function changeFilterState(filterType, id, state) {
+    if (filterType === 'dao') {
+      setDaoFilter({ ...daoFilter, [id]: state })
+    } else if (filterType === 'tag') {
+      setTagFilter({ ...tagFilter, [id]: state })
+    }
+  }
 
-  const tags = [
-    { id: '1', name: 'non-technical' },
-    { id: '2', name: 'graphics' },
-    { id: '3', name: 'NFT' }
-  ]
+  async function getSearchResults() {
+    // Base query.
+    let query = supabase.from('jobs').select('created_at, title, dao_id')
+
+    // Get ids to filter for.
+    const daoFilterIds = Object.keys(daoFilter).filter((key) => {
+      return daoFilter[key]
+    })
+
+    const tagFilterIds = Object.keys(tagFilter).filter((key) => {
+      return tagFilter[key]
+    })
+
+    // Filter DAO.
+    if (daoFilterIds.length > 0) {
+      let daoFilterString = ''
+
+      daoFilterIds.map((daoId, index) => {
+        if (index !== daoFilterIds.length - 1) {
+          // Add a trailing comma until the last element.
+          daoFilterString += `dao_id.eq.${String(daoId)},`
+        } else {
+          daoFilterString += `dao_id.eq.${String(daoId)}`
+        }
+      })
+
+      // Chain base query.
+      query = query.or(daoFilterString)
+    }
+
+    // Get jobs with filtered tags.
+    if (tagFilterIds.length > 0) {
+      let tagFilterString = ''
+
+      tagFilterIds.map((tagId, index) => {
+        if (index !== tagFilterIds.length - 1) {
+          // Add a trailing comma until the last element.
+          tagFilterString += `tag_id.eq.${String(tagId)},`
+        } else {
+          tagFilterString += `tag_id.eq.${String(tagId)}`
+        }
+      })
+
+      const { data: jobIdWithTag } = await supabase
+        .from('jobs_to_tags')
+        .select('job_id')
+        .or(tagFilterString)
+
+      console.log({ jobIdWithTag })
+
+      // Filter query with job_id associated with tags.
+      if (jobIdWithTag.length > 0) {
+        let jobIdFilterString = ''
+
+        jobIdWithTag.map((item, index) => {
+          if (index !== jobIdWithTag.length - 1) {
+            // Add a trailing comma until the last element.
+            jobIdFilterString += `id.eq.${String(item.job_id)},`
+          } else {
+            jobIdFilterString += `id.eq.${String(item.job_id)}`
+          }
+        })
+
+        // Append job_id filter to base query.
+        query = query.or(jobIdFilterString)
+      }
+    }
+    const { data: jobs, error } = await query
+
+    console.log({ jobs })
+
+    return jobs
+  }
+
+  useEffect(() => {
+    getSearchResults()
+  }, [daoFilter, tagFilter])
 
   return (
     <>
@@ -86,7 +165,7 @@ export default function Browse() {
               DAO
             </label>
             <div className="mt-2">
-              {DAOs.map((dao) => {
+              {daos.map((dao) => {
                 return (
                   <div key={dao.id} className="mt-2 relative flex items-start">
                     <div className="flex items-center h-5">
@@ -94,6 +173,9 @@ export default function Browse() {
                         name="tag"
                         type="checkbox"
                         className="focus:ring-primary h-4 w-4 text-teal-400  border-gray-300 rounded"
+                        onChange={(event) => {
+                          changeFilterState('dao', dao.id, event.target.checked)
+                        }}
                       />
                     </div>
                     <div className="ml-3 text-sm truncate">
@@ -117,6 +199,9 @@ export default function Browse() {
                         name="tag"
                         type="checkbox"
                         className="focus:ring-primary h-4 w-4 text-teal-400  border-gray-300 rounded"
+                        onChange={(event) => {
+                          changeFilterState('tag', tag.id, event.target.checked)
+                        }}
                       />
                     </div>
                     <div className="ml-3 text-sm  truncate">
@@ -169,7 +254,7 @@ export default function Browse() {
                           DAO
                         </label>
                         <div>
-                          {DAOs.map((dao) => {
+                          {daos.map((dao) => {
                             return (
                               <div
                                 key={dao.id}
@@ -286,3 +371,14 @@ export default function Browse() {
 }
 
 Browse.Layout = BaseLayout
+
+export const getStaticProps = async () => {
+  // Get all tags.
+  const { data: tags } = await supabase.from('tags').select('id, name')
+
+  console.log(tags)
+  // Get all DAOs.
+  const { data: daos } = await supabase.from('daos').select('id, name')
+
+  return { props: { tags, daos } }
+}
