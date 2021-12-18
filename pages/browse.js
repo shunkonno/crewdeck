@@ -1,16 +1,33 @@
 import { Fragment, useState, useEffect } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
+
 // Assets
 import { SearchIcon, AdjustmentsIcon } from '@heroicons/react/solid'
+
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
 import { Popover, Transition } from '@headlessui/react'
+
 // Supabase
 import { supabase } from '@libs/supabase'
 
+// Algolia
+import algoliasearch from 'algoliasearch'
+import {
+  InstantSearch,
+  SearchBox,
+  Hits,
+  RefinementList
+} from 'react-instantsearch-dom'
+
 export default function Browse({ tags, daos }) {
+  const searchClient = algoliasearch(
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+    process.env.NEXT_PUBLIC_ALGOLIA_API_KEY
+  )
+
   console.log({ tags, daos })
 
   const [daoFilter, setDaoFilter] = useState({})
@@ -148,13 +165,63 @@ export default function Browse({ tags, daos }) {
     getSearchResults()
   }, [daoFilter, tagFilter])
 
+  function Hit(props) {
+    return (
+      <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
+        <Link href={`/jobs/${props.hit.objectID}`}>
+          <a>
+            <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">
+              <div className="px-4 py-2">
+                <div>
+                  <h2 className="text-lg font-medium truncate">
+                    {props.hit.title}
+                  </h2>
+                </div>
+                <div>
+                  <h3 className="text-sm">{props.hit.dao}</h3>
+                </div>
+                {/* <div className="mt-3">
+                    <div className="flex justify-start gap-1">
+                      {job.tags &&
+                        job.tags.map((tag) => {
+                          return (
+                            <div key={tag.id}>
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800">
+                                {tag.name}
+                              </span>
+                            </div>
+                          )
+                        })}
+                    </div>
+                </div> */}
+              </div>
+            </div>
+          </a>
+        </Link>
+      </div>
+    )
+  }
+
   return (
     <>
       <SEO title="Browse" description="Browse Jobs" />
-      {/* Grid - START */}
+      {/* Search - START */}
       <div className="py-xs sm:py-md block sm:flex spacing-x-4">
+        <InstantSearch searchClient={searchClient} indexName="jobs">
+          <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
+            <h3 className="text-sm font-medium">DAO</h3>
+            <RefinementList
+              attribute="dao"
+              searchable
+              translations={{ placeholder: 'Search DAO' }}
+            />
+          </div>
+          <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
+            <Hits hitComponent={Hit} />
+          </main>
+        </InstantSearch>
         {/* Filter - START */}
-        <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
+        {/* <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
           <div>
             <label className="block text-sm font-medium text-slate-700">
               Search
@@ -176,14 +243,14 @@ export default function Browse({ tags, daos }) {
             <div className="mt-2">
               {daos.map((dao) => {
                 return (
-                  <div key={dao.id} className="mt-2 relative flex items-start">
+                  <div key={dao.dao_id} className="mt-2 relative flex items-start">
                     <div className="flex items-center h-5">
                       <input
                         name="tag"
                         type="checkbox"
                         className="focus:ring-primary h-4 w-4 text-teal-400  border-gray-300 rounded"
                         onChange={(event) => {
-                          changeFilterState('dao', dao.id, event.target.checked)
+                          changeFilterState('dao', dao.dao_id, event.target.checked)
                         }}
                       />
                     </div>
@@ -226,10 +293,10 @@ export default function Browse({ tags, daos }) {
               Search
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Filter - END */}
         {/* Filter SP - START */}
-        <div className="block sm:hidden px-sm">
+        {/* <div className="block sm:hidden px-sm">
           <div className="mt-1 flex gap-2 w-full">
             <div className="relative rounded-md shadow-sm flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -266,7 +333,7 @@ export default function Browse({ tags, daos }) {
                           {daos.map((dao) => {
                             return (
                               <div
-                                key={dao.id}
+                                key={dao.dao_id}
                                 className="mt-2 relative flex items-start"
                               >
                                 <div className="flex items-center h-5">
@@ -325,15 +392,15 @@ export default function Browse({ tags, daos }) {
               </Transition>
             </Popover>
           </div>
-        </div>
+        </div> */}
         {/* Filter SP - END */}
         {/* Filter Results - START */}
-        <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
+        {/* <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
           {jobs.map((job) => {
             return (
               job.is_public && (
-                <div key={job.id} className="mb-4 sm:mb-sm">
-                  <Link href={`/jobs/${job.id}`}>
+                <div key={job.job_id} className="mb-4 sm:mb-sm">
+                  <Link href={`/jobs/${job.job_id}`}>
                     <a>
                       <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">
                         <div className="px-4 py-2">
@@ -371,10 +438,10 @@ export default function Browse({ tags, daos }) {
               )
             )
           })}
-        </main>
+        </main> */}
         {/* Filter Results - END */}
       </div>
-      {/* Grid - END */}
+      {/* Search - END */}
     </>
   )
 }
@@ -383,11 +450,11 @@ Browse.Layout = BaseLayout
 
 export const getStaticProps = async () => {
   // Get all tags.
-  const { data: tags } = await supabase.from('tags').select('id, name')
+  const { data: tags } = await supabase.from('tags').select('tag_id, name')
 
   console.log(tags)
   // Get all DAOs.
-  const { data: daos } = await supabase.from('daos').select('id, name')
+  const { data: daos } = await supabase.from('daos').select('dao_id, name')
 
   return { props: { tags, daos } }
 }
