@@ -5,7 +5,6 @@
 // @returns {object} response
 export default async function handler(req, res) {
   const { user, contract } = req.query
-  console.log({ user, contract })
 
   const url = `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY_MAINNET}`
 
