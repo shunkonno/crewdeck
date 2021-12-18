@@ -51,12 +51,12 @@ export default function Job({ job, dao }) {
     <>
       <SEO title="Job Detail" description="Job Detail" />
       {/* Grid - START */}
-      <div className="py-md block sm:flex px-4 sm:px-xs max-w-5xl mx-auto">
+      <div className="py-md flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
         {/* Job - START */}
-        <div className="flex-1">
+        <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-lg">
           {/* Job Title - START */}
           <div>
-            <h1 className="text-2xl font-medium">{job.title}</h1>
+            <h1 className="text-2xl font-semibold">{job.title}</h1>
           </div>
           {/* Job Title - END */}
           {/* Job Tags - START */}
@@ -83,7 +83,7 @@ export default function Job({ job, dao }) {
         </div>
         {/* Job - END */}
         {/* Sidebar - START */}
-        <div className="flex-shrink-1 w-full sm:w-80 mt-md sm:mt-0">
+        <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
           <div className="bg-white border border-slate-300 p-xs rounded-lg">
             <div className="inline-flex items-center">
               {dao.logo_url && (
@@ -95,31 +95,26 @@ export default function Job({ job, dao }) {
               <h1 className="text-lg font-semibold">{dao.name}</h1>
             </div>
             <p className="mt-1 text-slate-600">{dao.description}</p>
-            {dao.discord_url ||
-              (dao.twitter_url && (
-                <div className="inline-flex gap-3 mt-xs">
+            {(dao.discord_url || dao.twitter_url) && (
+                <div className="inline-flex gap-4 mt-xs">
                   {dao.discord_url && (
                     <a href={dao.discord_url} target="_blank" rel="noreferrer">
-                      <div className="shadow-md p-2.5 rounded-full hover:shadow-lg">
-                        <img
-                          src={'/images/social/DiscordIcon.png'}
-                          className="flex-shrink-0 h-6 w-6"
-                        />
-                      </div>
+                      <img
+                        src={'/images/social/DiscordIcon.png'}
+                        className="flex-shrink-0 h-6 w-6"
+                      />
                     </a>
                   )}
                   {dao.twitter_url && (
                     <a href={dao.twitter_url} target="_blank" rel="noreferrer">
-                      <div className="shadow-md p-2.5 rounded-full hover:shadow-lg">
-                        <img
-                          src={'/images/social/TwitterIcon.png'}
-                          className="flex-shrink-0 h-6 w-6"
-                        />
-                      </div>
+                      <img
+                        src={'/images/social/TwitterIcon.png'}
+                        className="flex-shrink-0 h-6 w-6"
+                      />
                     </a>
                   )}
                 </div>
-              ))}
+              )}
           </div>
         </div>
         {/* Sidebar - END */}
