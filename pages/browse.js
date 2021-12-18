@@ -152,7 +152,7 @@ export default function Browse({ tags, daos }) {
     <>
       <SEO title="Browse" description="Browse Jobs" />
       {/* Grid - START */}
-      <div className="py-xs sm:py-md block sm:flex spacing-x-4">
+      <div className="py-xs sm:py-md block sm:flex spacing-x-4 max-w-7xl mx-auto">
         {/* Filter - START */}
         <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
           <div>
@@ -328,7 +328,7 @@ export default function Browse({ tags, daos }) {
         </div>
         {/* Filter SP - END */}
         {/* Filter Results - START */}
-        <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
+        <main className="flex-1 px-sm mt-sm sm:mt-0">
           {jobs.map((job) => {
             return (
               job.is_public && (
