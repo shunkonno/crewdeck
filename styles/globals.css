@@ -20,15 +20,15 @@
 
 /* Customize Algolia InstantSearch */
 .ais-SearchBox-form {
-  @apply flex justify-between mb-2;
+  @apply mb-2;
 }
 
 .ais-SearchBox-input {
-  @apply py-2 border-b border-slate-300 bg-transparent focus:outline-none;
+  @apply pt-2 border-b border-slate-300 bg-transparent focus:outline-none;
 }
 
 .ais-SearchBox-submitIcon {
-  @apply w-4 h-4;
+  @apply hidden;
 }
 
 .ais-RefinementList-labelText {

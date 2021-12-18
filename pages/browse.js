@@ -213,7 +213,7 @@ export default function Browse({ tags, daos }) {
             <RefinementList
               attribute="dao"
               searchable
-              translations={{ placeholder: 'Search DAO' }}
+              translations={{ placeholder: 'Type to filter DAO' }}
             />
           </div>
           <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
