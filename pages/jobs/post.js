@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 
 // Assets
@@ -15,17 +16,16 @@ import { Listbox, Transition } from '@headlessui/react'
 
 // Functions
 import classNames from 'classnames'
-
 // Supabase
 import { supabase } from '@libs/supabase'
 
-// Quill Editor - Dynamic import to prevent SSR
-// https://github.com/zenoamaro/react-quill
+// Quill Editor - Dynamic import to prevent SSR --- https://github.com/zenoamaro/react-quill
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
 
 export default function PostJob({ daos }) {
   const { currentAccount, ethersProvider } = useAccount()
+  const router = useRouter()
 
   // **************************************************
   // VALUES TO SUBMIT TO SERVER
@@ -35,15 +35,14 @@ export default function PostJob({ daos }) {
   const [editorContent, setEditorContent] = useState('')
   const [isPublic, setIsPublic] = useState(true)
 
-  console.log({ daos })
-  // console.log({ selectedDao })
+  // console.log({ daos, selectedDao })
 
   // **************************************************
   // FORM SETTINGS
   // **************************************************
 
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
-  console.log({ daoSelectorOptions })
+  // console.log({ daoSelectorOptions })
 
   const publicSettings = [
     {
@@ -66,6 +65,10 @@ export default function PostJob({ daos }) {
       ['blockquote']
     ]
   }
+
+  // **************************************************
+  // HANDLE OPTIONS
+  // **************************************************
 
   // Get token balance for a user's address to validate user's membership in a DAO.
   // @params {string} eoaAddress - The public address of the user.
@@ -100,7 +103,6 @@ export default function PostJob({ daos }) {
   }
 
   useEffect(() => {
-    console.log('useEffect')
     if (currentAccount) {
       filterDaoSelectorOptions(daos)
     }
@@ -110,9 +112,22 @@ export default function PostJob({ daos }) {
   // HANDLE DATA SUBMIT
   // **************************************************
 
+  // Saves search object to Algolia.
+  async function saveToAlgolia(algoliaObject) {
+    const response = await fetch('/api/algolia/saveJobs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(algoliaObject)
+    })
+
+    return response
+  }
+
   // Saves data to DB.
   async function saveToDB() {
-    const { data, error } = await supabase.from('jobs').insert([
+    const { data: result, error } = await supabase.from('jobs').insert([
       {
         title: title,
         description: editorContent,
@@ -123,7 +138,11 @@ export default function PostJob({ daos }) {
 
     if (error) {
       console.log(error)
+      return false
     }
+
+    // Return saved object.
+    return result
   }
 
   // Verifies if the user holds the private key for the public address. (EIP-191)
@@ -157,11 +176,30 @@ export default function PostJob({ daos }) {
     }
 
     // Save data to DB.
-    await saveToDB()
+    const result = await saveToDB()
 
-    console.log('Successfully saved to DB.')
+    // If result if false, exit function.
+    if (!result) {
+      console.log('Could not save data to DB.')
+      // TODO: Handle error message.
+      return
+    } else {
+      console.log('Successfully saved to DB.')
 
-    // TODO: Redirect user to the newly created job post.
+      // If isPublic is true, save object to Algolia to be indexed.
+      if (isPublic) {
+        const algoliaObject = {
+          objectID: result[0].id,
+          title: title,
+          dao: selectedDao.name
+        }
+
+        await saveToAlgolia(algoliaObject)
+      }
+
+      // Redirect user to the newly created job post.
+      router.push(`/jobs/${result[0].id}`)
+    }
   }
 
   return (
