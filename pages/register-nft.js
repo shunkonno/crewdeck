@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useCallback } from 'react'
 import { ethers } from 'ethers'
 
 // Assets
@@ -53,28 +53,32 @@ export default function RegisterNFT({ daos }) {
 
   // Filter the list of DAOs from DB, and filter the ones that the user owns tokens for. Set filtered array to state.
   // @params {array} daoList - The initial list of all DAOs.
-  function filterDaoSelectorOptions(daoList) {
-    let filterResult = []
-
-    daoList.map(async (dao) => {
+  const filterDaoSelectorOptions = useCallback(async(daoList) => {
+    //Filter DAO Function
+    const filterResult = await daoList.reduce(async(promise, dao) => {
+      let accumulator = []
+      accumulator = await promise
       const data = await getTokenBalances(currentAccount, dao.contract_address)
 
       // Get substring of tokenBalance. (e.g. 0x0000000000000000000000000000000000000000000000000000000000000001)
       // If tokenBalance is greater than 0, the user owns at least one token.
-      if (Number(data.tokenBalance?.substring(2)) > 0) {
-        filterResult.push(dao)
+      if(Number(data.tokenBalance?.substring(2)) > 0){
+        await accumulator.push(dao)
       }
-    })
+      return accumulator
+    }, [])
+    
+    await setDaoSelectorOptions(filterResult)
 
-    setDaoSelectorOptions(filterResult)
-  }
+  },[currentAccount])
+
 
   useEffect(() => {
     console.log('useEffect')
     if (currentAccount) {
       filterDaoSelectorOptions(daos)
     }
-  }, [currentAccount, daos])
+  }, [currentAccount, daos, filterDaoSelectorOptions])
 
   // **************************************************
   // HANDLE DATA SUBMIT
@@ -138,7 +142,7 @@ export default function RegisterNFT({ daos }) {
     <>
       <SEO title="Register NFT" description="Register NFT" />
 
-      <div className="py-md max-w-4xl mx-auto px-4 sm:px-0">
+      <div className="py-md max-w-4xl mx-auto px-4 lg:px-0">
         {/* Form - START */}
         <form
           className="space-y-8 divide-y divide-slate-200"
@@ -223,7 +227,7 @@ export default function RegisterNFT({ daos }) {
                             leaveTo="opacity-0"
                           >
                             <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-                              {daos.map((dao) => (
+                              {daoSelectorOptions.map((dao) => (
                                 <Listbox.Option
                                   key={dao.id}
                                   className={({ active }) =>
@@ -239,13 +243,15 @@ export default function RegisterNFT({ daos }) {
                                   {({ selected, active }) => (
                                     <>
                                       <div className="flex items-center">
-                                        <img
-                                          src={
-                                            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                                          }
-                                          alt=""
-                                          className="flex-shrink-0 h-6 w-6 rounded-full"
-                                        />
+                                        {dao.logo_url &&
+                                          <img
+                                            src={
+                                              dao.logo_url
+                                            }
+                                            alt=""
+                                            className="flex-shrink-0 h-6 w-6 rounded-full"
+                                          />
+                                        }
                                         <span
                                           className={classNames(
                                             selected
