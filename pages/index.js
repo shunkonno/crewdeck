@@ -31,24 +31,29 @@ export default function Home({ daos }) {
 
   // Filter the list of DAOs from DB, and filter the ones that the user owns tokens for. Set filtered array to state.
   // @params {array} daoList - The initial list of all DAOs.
-   const filterDaoSelectorOptions = useCallback(async(daoList) => {
-    //Filter DAO Function
-    const filterResult = await daoList.reduce(async(promise, dao) => {
-      let accumulator = []
-      accumulator = await promise
-      const data = await getTokenBalances(currentAccount, dao.contract_address)
+  const filterDaoSelectorOptions = useCallback(
+    async (daoList) => {
+      //Filter DAO Function
+      const filterResult = await daoList.reduce(async (promise, dao) => {
+        let accumulator = []
+        accumulator = await promise
+        const data = await getTokenBalances(
+          currentAccount,
+          dao.contract_address
+        )
 
-      // Get substring of tokenBalance. (e.g. 0x0000000000000000000000000000000000000000000000000000000000000001)
-      // If tokenBalance is greater than 0, the user owns at least one token.
-      if(Number(data.tokenBalance?.substring(2)) > 0){
-        await accumulator.push(dao)
-      }
-      return accumulator
-    }, [])
-    
-    await setDaoSelectorOptions(filterResult)
+        // Get substring of tokenBalance. (e.g. 0x0000000000000000000000000000000000000000000000000000000000000001)
+        // If tokenBalance is greater than 0, the user owns at least one token.
+        if (Number(data.tokenBalance?.substring(2)) > 0) {
+          await accumulator.push(dao)
+        }
+        return accumulator
+      }, [])
 
-  },[currentAccount])
+      await setDaoSelectorOptions(filterResult)
+    },
+    [currentAccount]
+  )
 
   useEffect(() => {
     console.log('useEffect')
@@ -56,7 +61,6 @@ export default function Home({ daos }) {
       filterDaoSelectorOptions(daos)
     }
   }, [currentAccount, daos, filterDaoSelectorOptions])
-
 
   const tags = [
     { id: '1', name: 'non-technical' },
@@ -103,21 +107,27 @@ export default function Home({ daos }) {
         {/* TopContainer - END */}
         <div className="py-sm mx-sm">
           <h1 className="text-2xl">Your Joining DAO</h1>
-            {daoSelectorOptions.length ?
+          {daoSelectorOptions.length ? (
             <div className="flex mt-sm">
-            {daoSelectorOptions.map(dao => (
-              <div key={dao.id} className="inline-flex shadow-md border border-slate-300 cursor-pointer py-2 px-4 rounded-lg">
-                <img src={dao.logo_url} alt="" className="block h-6 w-6 mr-3" />
-                <p>{dao.name}</p>
-              </div>
-            ))
-            }
+              {daoSelectorOptions.map((dao) => (
+                <div
+                  key={dao.dao_id}
+                  className="inline-flex shadow-md border border-slate-300 cursor-pointer py-2 px-4 rounded-lg"
+                >
+                  <img
+                    src={dao.logo_url}
+                    alt=""
+                    className="block h-6 w-6 mr-3"
+                  />
+                  <p>{dao.name}</p>
+                </div>
+              ))}
             </div>
-            :
+          ) : (
             <div className="flex justify-center mt-sm">
               <p>you are not joining dao.</p>
             </div>
-            }
+          )}
         </div>
       </div>
       {/* Grid - END */}
@@ -130,7 +140,7 @@ Home.Layout = BaseLayout
 export const getStaticProps = async () => {
   const { data: daos } = await supabase
     .from('daos')
-    .select('id, name, logo_url, contract_address')
+    .select('dao_id, name, logo_url, contract_address')
 
   return { props: { daos } }
 }

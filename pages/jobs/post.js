@@ -131,7 +131,7 @@ export default function PostJob({ daos }) {
       {
         title: title,
         description: editorContent,
-        dao_id: selectedDao.id,
+        dao_id: selectedDao.dao_id,
         is_public: isPublic
       }
     ])
@@ -189,7 +189,7 @@ export default function PostJob({ daos }) {
       // If isPublic is true, save object to Algolia to be indexed.
       if (isPublic) {
         const algoliaObject = {
-          objectID: result[0].id,
+          objectID: result[0].job_id,
           title: title,
           dao: selectedDao.name
         }
@@ -198,7 +198,7 @@ export default function PostJob({ daos }) {
       }
 
       // Redirect user to the newly created job post.
-      router.push(`/jobs/${result[0].id}`)
+      router.push(`/jobs/${result[0].job_id}`)
     }
   }
 
@@ -307,7 +307,7 @@ export default function PostJob({ daos }) {
                               <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                                 {daos.map((dao) => (
                                   <Listbox.Option
-                                    key={dao.id}
+                                    key={dao.dao_id}
                                     className={({ active }) =>
                                       classNames(
                                         active
@@ -464,7 +464,7 @@ PostJob.Layout = BaseLayout
 export const getStaticProps = async () => {
   const { data: daos } = await supabase
     .from('daos')
-    .select('id, name, logo_url, contract_address')
+    .select('dao_id, name, logo_url, contract_address')
 
   return { props: { daos } }
 }
