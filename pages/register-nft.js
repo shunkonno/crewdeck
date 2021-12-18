@@ -225,7 +225,7 @@ export default function RegisterNFT({ daos }) {
                             <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                               {daoSelectorOptions.map((dao) => (
                                 <Listbox.Option
-                                  key={dao.id}
+                                  key={dao.dao_id}
                                   className={({ active }) =>
                                     classNames(
                                       active
@@ -337,7 +337,9 @@ RegisterNFT.Layout = BaseLayout
 export const getStaticProps = async () => {
   const { data: daos } = await supabase
     .from('daos')
-    .select('id, name, logo_url, contract_address')
+    .select('dao_id, name, logo_url, contract_address')
 
   return { props: { daos } }
 }
+
+

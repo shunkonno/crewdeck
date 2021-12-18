@@ -205,7 +205,6 @@ export default function Browse({ tags, daos }) {
   return (
     <>
       <SEO title="Browse" description="Browse Jobs" />
-
       {/* Search - START */}
       <div className="py-md max-w-5xl mx-auto px-4 sm:px-0 block sm:flex spacing-x-4">
         <InstantSearch searchClient={searchClient} indexName="jobs">
@@ -221,7 +220,6 @@ export default function Browse({ tags, daos }) {
             <Hits hitComponent={Hit} />
           </main>
         </InstantSearch>
-
         {/* Filter - START */}
         {/* <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
           <div>

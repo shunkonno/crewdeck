@@ -120,7 +120,7 @@ export function Header() {
                   :
                   <div className='flex justify-center mt-xs'>
                     <button
-                      className="bg-primary text-white px-4 py-2 text-sm font-bold rounded-lg shadow-md shadow-primary-default/50"
+                      className="bg-primary text-white outline-none px-4 py-2 text-sm font-bold rounded-lg shadow-md shadow-primary-default/50"
                       onClick={connectWallet}
                     >
                       Connect Wallet
