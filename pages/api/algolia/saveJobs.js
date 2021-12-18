@@ -4,7 +4,7 @@ export default function handler(req, res) {
   const objectArray = [req.body]
 
   const client = algoliasearch(
-    process.env.ALGOLIA_APP_ID,
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
     process.env.ALGOLIA_API_KEY_ADMIN
   )
 
