@@ -1,4 +1,5 @@
-import { Fragment, useState, useEffect } from 'react'
+
+  import { Fragment, useState, useEffect } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
 
@@ -205,7 +206,6 @@ export default function Browse({ tags, daos }) {
   return (
     <>
       <SEO title="Browse" description="Browse Jobs" />
-
       {/* Search - START */}
       <div className="py-xs sm:py-md block sm:flex spacing-x-4">
         <InstantSearch searchClient={searchClient} indexName="jobs">
@@ -221,9 +221,8 @@ export default function Browse({ tags, daos }) {
             <Hits hitComponent={Hit} />
           </main>
         </InstantSearch>
-
         {/* Filter - START */}
-        <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
+        {/* <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
           <div>
             <label className="block text-sm font-medium text-slate-700">
               Search
@@ -295,10 +294,10 @@ export default function Browse({ tags, daos }) {
               Search
             </div>
           </div>
-        </div> 
+        </div> */}
         {/* Filter - END */}
         {/* Filter SP - START */}
-        <div className="block sm:hidden px-sm">
+        {/* <div className="block sm:hidden px-sm">
           <div className="mt-1 flex gap-2 w-full">
             <div className="relative rounded-md shadow-sm flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -394,11 +393,10 @@ export default function Browse({ tags, daos }) {
               </Transition>
             </Popover>
           </div>
-        </div>
+        </div> */}
         {/* Filter SP - END */}
         {/* Filter Results - START */}
-        <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
-
+        {/* <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
           {jobs.map((job) => {
             return (
               job.is_public && (
@@ -441,7 +439,7 @@ export default function Browse({ tags, daos }) {
               )
             )
           })}
-        </main>
+        </main> */}
         {/* Filter Results - END */}
       </div>
       {/* Search - END */}
