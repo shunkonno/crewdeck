@@ -128,11 +128,11 @@ Job.Layout = BaseLayout
 
 export const getStaticPaths = async () => {
   // Get all ids in jobs table.
-  const { data: jobs } = await supabase.from('jobs').select('id')
+  const { data: jobs } = await supabase.from('jobs').select('job_id')
 
-  const paths = jobs.map(({ id }) => ({
+  const paths = jobs.map(({ job_id }) => ({
     params: {
-      jobId: id.toString()
+      jobId: job_id.toString()
     }
   }))
 
@@ -144,7 +144,7 @@ export const getStaticProps = async ({ params: { jobId } }) => {
   const { data: job } = await supabase
     .from('jobs')
     .select('*')
-    .eq('id', jobId)
+    .eq('job_id', jobId)
     .single()
 
   // Get tag_ids.
@@ -186,7 +186,7 @@ export const getStaticProps = async ({ params: { jobId } }) => {
   const { data: dao } = await supabase
     .from('daos')
     .select('*')
-    .eq('id', job.dao_id)
+    .eq('dao_id', job.dao_id)
     .single()
 
   return { props: { job, dao } }

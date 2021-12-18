@@ -94,7 +94,6 @@ export default function RegisterNFT({ daos }) {
     //     is_public: isPublic
     //   }
     // ])
-
     // if (error) {
     //   console.log(error)
     // }
@@ -155,16 +154,16 @@ export default function RegisterNFT({ daos }) {
                   Register NFT
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  hoge hoge description. hoge hoge description. hoge hoge description.
+                  hoge hoge description. hoge hoge description. hoge hoge
+                  description.
                 </p>
-                {!daoSelectorOptions.length &&
+                {!daoSelectorOptions.length && (
                   <p className="mt-1 text-sm text-red-500">
                     {`You don't have any NFT assigned by DAO. You cannot register NFT. `}
                   </p>
-                }
+                )}
               </div>
               <div>
-
                 {/* DAO Selector - START */}
                 <div className="mt-sm w-2/3 sm:w-1/3">
                   <Listbox value={selectedDao} onChange={setSelectedDao}>
@@ -174,18 +173,16 @@ export default function RegisterNFT({ daos }) {
                           DAO
                         </Listbox.Label>
                         <div className="mt-1 relative">
-                          <Listbox.Button 
+                          <Listbox.Button
                             className={classNames(
-                              daoSelectorOptions.length ?
-                              "cursor-default focus:border-primary"
-                              :
-                              "cursor-not-allowed bg-slate-200",
-                              "relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm"
+                              daoSelectorOptions.length
+                                ? 'cursor-default focus:border-primary'
+                                : 'cursor-not-allowed bg-slate-200',
+                              'relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
                             )}
-                            
                           >
                             <span className="flex items-center">
-                              {daoSelectorOptions.length ?
+                              {daoSelectorOptions.length ? (
                                 selectedDao === null ? (
                                   <span className="block truncate text-black">
                                     {'select your dao'}
@@ -204,11 +201,11 @@ export default function RegisterNFT({ daos }) {
                                     </span>
                                   </>
                                 )
-                              :
-                              <span className="block truncate text-slate-600">
-                                {`no DAO options`}
-                              </span>
-                            }
+                              ) : (
+                                <span className="block truncate text-slate-600">
+                                  {`no DAO options`}
+                                </span>
+                              )}
                             </span>
                             <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                               <SelectorIcon
@@ -217,7 +214,6 @@ export default function RegisterNFT({ daos }) {
                               />
                             </span>
                           </Listbox.Button>
-                          
                           {daoSelectorOptions.length ?
                           <Transition
                             show={open}
@@ -276,19 +272,18 @@ export default function RegisterNFT({ daos }) {
                                           <CheckIcon
                                             className="h-5 w-5"
                                             aria-hidden="true"
-                                          />
-                                        </span>
-                                      ) : null}
-                                    </>
-                                  )}
-                                </Listbox.Option>
-                              ))}
-                            </Listbox.Options>
-                          </Transition>
-                          :
-                          <>
-                          </>
-                          }
+                                            />
+                                          </span>
+                                        ) : null}
+                                      </>
+                                    )}
+                                  </Listbox.Option>
+                                ))}
+                              </Listbox.Options>
+                            </Transition>
+                          : (
+                            <></>
+                          )}
                         </div>
                       </>
                     )}
@@ -319,11 +314,10 @@ export default function RegisterNFT({ daos }) {
             <button
               disabled={!daoSelectorOptions.length}
               className={classNames(
-                daoSelectorOptions.length ?
-                "bg-primary cursor-pointer"
-                :
-                "bg-slate-300 cursor-not-allowed",
-                "py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  "
+                daoSelectorOptions.length
+                  ? 'bg-primary cursor-pointer'
+                  : 'bg-slate-300 cursor-not-allowed',
+                'py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  '
               )}
               type="submit"
             >

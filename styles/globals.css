@@ -14,11 +14,32 @@
 
 @layer components {
   .min-view-height {
-     min-height: calc(100vh - 88px); /* フッターの高さを100vhから引く */
+    min-height: calc(100vh - 88px); /* フッターの高さを100vhから引く */
   }
 }
 
-/* customize style react-quill */
+/* Customize Algolia InstantSearch */
+.ais-SearchBox-form {
+  @apply flex justify-between mb-2;
+}
+
+.ais-SearchBox-input {
+  @apply py-2 border-b border-slate-300 bg-transparent focus:outline-none;
+}
+
+.ais-SearchBox-submitIcon {
+  @apply w-4 h-4;
+}
+
+.ais-RefinementList-labelText {
+  @apply ml-1;
+}
+
+.ais-RefinementList-count {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800;
+}
+
+/* Customize react-quill */
 .quill {
   border-radius: 0.375rem;
   border: 1px solid #cbd5e1 !important;
@@ -28,13 +49,13 @@
   border-radius: 0.375rem;
   border: 1px solid #18cbdb !important;
 }
-.ql-toolbar{
+.ql-toolbar {
   border-top: 0px solid #cbd5e1 !important;
   border-right: 0px solid #cbd5e1 !important;
   border-left: 0px solid #cbd5e1 !important;
   border-bottom: 1px solid #cbd5e1 !important;
 }
-.ql-container{
+.ql-container {
   border: 0px solid !important;
 }
 

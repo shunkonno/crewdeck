@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState, useCallback } from 'react'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 
 // Assets
@@ -15,17 +16,16 @@ import { Listbox, Transition } from '@headlessui/react'
 
 // Functions
 import classNames from 'classnames'
-
 // Supabase
 import { supabase } from '@libs/supabase'
 
-// Quill Editor - Dynamic import to prevent SSR
-// https://github.com/zenoamaro/react-quill
+// Quill Editor - Dynamic import to prevent SSR --- https://github.com/zenoamaro/react-quill
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
 
 export default function PostJob({ daos }) {
   const { currentAccount, ethersProvider } = useAccount()
+  const router = useRouter()
 
   // **************************************************
   // VALUES TO SUBMIT TO SERVER
@@ -35,15 +35,14 @@ export default function PostJob({ daos }) {
   const [editorContent, setEditorContent] = useState('')
   const [isPublic, setIsPublic] = useState(true)
 
-  console.log({ daos })
-  // console.log({ selectedDao })
+  // console.log({ daos, selectedDao })
 
   // **************************************************
   // FORM SETTINGS
   // **************************************************
 
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
-  console.log({ daoSelectorOptions })
+  // console.log({ daoSelectorOptions })
 
   const publicSettings = [
     {
@@ -66,6 +65,10 @@ export default function PostJob({ daos }) {
       ['blockquote']
     ]
   }
+
+  // **************************************************
+  // HANDLE OPTIONS
+  // **************************************************
 
   // Get token balance for a user's address to validate user's membership in a DAO.
   // @params {string} eoaAddress - The public address of the user.
@@ -103,7 +106,6 @@ export default function PostJob({ daos }) {
   },[currentAccount])
 
   useEffect(() => {
-    console.log('useEffect')
     if (currentAccount) {
       filterDaoSelectorOptions(daos)
     }
@@ -113,20 +115,37 @@ export default function PostJob({ daos }) {
   // HANDLE DATA SUBMIT
   // **************************************************
 
+  // Saves search object to Algolia.
+  async function saveToAlgolia(algoliaObject) {
+    const response = await fetch('/api/algolia/saveJobs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(algoliaObject)
+    })
+
+    return response
+  }
+
   // Saves data to DB.
   async function saveToDB() {
-    const { data, error } = await supabase.from('jobs').insert([
+    const { data: result, error } = await supabase.from('jobs').insert([
       {
         title: title,
         description: editorContent,
-        dao_id: selectedDao.id,
+        dao_id: selectedDao.dao_id,
         is_public: isPublic
       }
     ])
 
     if (error) {
       console.log(error)
+      return false
     }
+
+    // Return saved object.
+    return result
   }
 
   // Verifies if the user holds the private key for the public address. (EIP-191)
@@ -160,11 +179,30 @@ export default function PostJob({ daos }) {
     }
 
     // Save data to DB.
-    await saveToDB()
+    const result = await saveToDB()
 
-    console.log('Successfully saved to DB.')
+    // If result if false, exit function.
+    if (!result) {
+      console.log('Could not save data to DB.')
+      // TODO: Handle error message.
+      return
+    } else {
+      console.log('Successfully saved to DB.')
 
-    // TODO: Redirect user to the newly created job post.
+      // If isPublic is true, save object to Algolia to be indexed.
+      if (isPublic) {
+        const algoliaObject = {
+          objectID: result[0].job_id,
+          title: title,
+          dao: selectedDao.name
+        }
+
+        await saveToAlgolia(algoliaObject)
+      }
+
+      // Redirect user to the newly created job post.
+      router.push(`/jobs/${result[0].job_id}`)
+    }
   }
 
   return (
@@ -192,7 +230,6 @@ export default function PostJob({ daos }) {
                     {`You don't have any NFT assigned by DAO. You cannot post jobs. `}
                   </p>
                 }
-                
               </div>
 
               <div>
@@ -220,7 +257,7 @@ export default function PostJob({ daos }) {
                           DAO
                         </Listbox.Label>
                         <div className="mt-1 relative">
-                          <Listbox.Button 
+                          <Listbox.Button
                             className={classNames(
                               daoSelectorOptions?.length ?
                               "cursor-default focus:border-primary"
@@ -228,10 +265,9 @@ export default function PostJob({ daos }) {
                               "cursor-not-allowed bg-slate-200",
                               "relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm"
                             )}
-                            
                           >
-                            <span className="flex items-center">
-                              {daoSelectorOptions?.length ?
+                            <span className="flex items-center"> 
+                              {daoSelectorOptions.length ? (
                                 selectedDao === null ? (
                                   <span className="block truncate text-black">
                                     {'select your dao'}
@@ -250,11 +286,11 @@ export default function PostJob({ daos }) {
                                     </span>
                                   </>
                                 )
-                              :
-                              <span className="block truncate text-slate-600">
-                                {`no DAO options`}
-                              </span>
-                            }
+                              ) : (
+                                <span className="block truncate text-slate-600">
+                                  {`no DAO options`}
+                                </span>
+                              )}
                             </span>
                             <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                               <SelectorIcon
@@ -263,6 +299,7 @@ export default function PostJob({ daos }) {
                               />
                             </span>
                           </Listbox.Button>
+
                           
                           {daoSelectorOptions?.length ?
                           <Transition
@@ -322,19 +359,18 @@ export default function PostJob({ daos }) {
                                           <CheckIcon
                                             className="h-5 w-5"
                                             aria-hidden="true"
-                                          />
-                                        </span>
-                                      ) : null}
-                                    </>
-                                  )}
-                                </Listbox.Option>
-                              ))}
-                            </Listbox.Options>
-                          </Transition>
-                          :
-                          <>
-                          </>
-                          }
+                                            />
+                                          </span>
+                                        ) : null}
+                                      </>
+                                    )}
+                                  </Listbox.Option>
+                                ))}
+                              </Listbox.Options>
+                            </Transition>
+                           : (
+                            <></>
+                          )}
                         </div>
                       </>
                     )}
@@ -412,11 +448,10 @@ export default function PostJob({ daos }) {
             <button
               disabled={!daoSelectorOptions?.length}
               className={classNames(
-                daoSelectorOptions?.length ?
-                "bg-primary cursor-pointer"
-                :
-                "bg-slate-300 cursor-not-allowed",
-                "py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  "
+                daoSelectorOptions.length
+                  ? 'bg-primary cursor-pointer'
+                  : 'bg-slate-300 cursor-not-allowed',
+                'py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  '
               )}
               type="submit"
             >
@@ -436,7 +471,7 @@ PostJob.Layout = BaseLayout
 export const getStaticProps = async () => {
   const { data: daos } = await supabase
     .from('daos')
-    .select('id, name, logo_url, contract_address')
+    .select('dao_id, name, logo_url, contract_address')
 
   return { props: { daos } }
 }
