@@ -17,7 +17,7 @@ export default function Home({ daos }) {
   const { currentAccount } = useAccount()
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
 
-  console.log(daoSelectorOptions)
+  console.log(daos)
 
   async function getTokenBalances(eoaAddress, contractAddress) {
     const response = await fetch(
@@ -33,7 +33,7 @@ export default function Home({ daos }) {
   // @params {array} daoList - The initial list of all DAOs.
    const filterDaoSelectorOptions = useCallback(async(daoList) => {
     //Filter DAO Function
-    const filterResult = await daoList.reduce(async(promise, dao) => {
+    const filterResult = await daoList?.reduce(async(promise, dao) => {
       let accumulator = []
       accumulator = await promise
       const data = await getTokenBalances(currentAccount, dao.contract_address)
@@ -73,7 +73,7 @@ export default function Home({ daos }) {
         <div className="max-w-4xl mx-sm sm:mx-auto flex flex-col items-center">
           <div className="mt-0 mb-sm sm:my-lg">
             <p className="text-3xl font-bold leading-normal">
-              <span className="block sm:inline">Let’s make 2022 </span>
+              <span className="block sm:inline">{`Let’s make 2022 `}</span>
               <span>the year to begin contributing.</span>
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function Home({ daos }) {
         {/* TopContainer - END */}
         <div className="py-sm mx-sm">
           <h1 className="text-2xl">Your Joining DAO</h1>
-            {daoSelectorOptions.length ?
+            {daoSelectorOptions?.length ?
             <div className="flex mt-sm">
             {daoSelectorOptions.map(dao => (
               <div key={dao.id} className="inline-flex shadow-md border border-slate-300 cursor-pointer py-2 px-4 rounded-lg">
