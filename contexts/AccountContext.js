@@ -20,6 +20,13 @@ export function AccountProvider({ children }) {
   const [ensName, setEnsName] = useState('')
   const [ethersProvider, setEthersProvider] = useState()
 
+  const setAccountListener = (provider) => {
+    // subscribe to provider events compatible with EIP-1193 standard. (web3.js. not ethers)
+    provider.on("accountsChanged", _ => window.location.reload())
+    provider.on("chainChanged", _ => window.location.reload())
+  }
+
+
   async function connectWallet() {
     // Initialize Web3Modal.
     // https://github.com/Web3Modal/web3modal
@@ -44,10 +51,13 @@ export function AccountProvider({ children }) {
     const ensName = await provider.lookupAddress(address)
     // Set ENS in state, ignore if ensName is null.
     ensName ? setEnsName(ensName) : null
+
+    return web3Provider 
   }
 
-  useEffect(() => {
-    connectWallet()
+  useEffect(async() => {
+    let web3Provider   = await connectWallet()
+    await setAccountListener(web3Provider)
   }, [])
 
   return (
