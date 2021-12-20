@@ -27,15 +27,12 @@ export default function RegisterNFT({ daos }) {
   // **************************************************
   const [selectedDao, setSelectedDao] = useState(null)
 
-  console.log({ daos })
-  // console.log({ selectedDao })
-
   // **************************************************
   // FORM SETTINGS
   // **************************************************
 
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
-  console.log({ daoSelectorOptions })
+  const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
 
   // Get token balance for a user's address to validate user's membership in a DAO.
   // @params {string} eoaAddress - The public address of the user.
@@ -73,10 +70,11 @@ export default function RegisterNFT({ daos }) {
   },[currentAccount])
 
 
-  useEffect(() => {
+  useEffect(async() => {
     console.log('useEffect')
     if (currentAccount) {
-      filterDaoSelectorOptions(daos)
+      await filterDaoSelectorOptions(daos)
+      await setIsReadyDaoOptions(true)
     }
   }, [currentAccount, daos, filterDaoSelectorOptions])
 
@@ -157,7 +155,7 @@ export default function RegisterNFT({ daos }) {
                   hoge hoge description. hoge hoge description. hoge hoge
                   description.
                 </p>
-                {!daoSelectorOptions.length && (
+                {(isReadyDaoOptions && !daoSelectorOptions.length) && (
                   <p className="mt-1 text-sm text-red-500">
                     {`You don't have any NFT assigned by DAO. You cannot register NFT. `}
                   </p>
@@ -182,30 +180,39 @@ export default function RegisterNFT({ daos }) {
                             )}
                           >
                             <span className="flex items-center">
-                              {daoSelectorOptions.length ? (
-                                selectedDao === null ? (
-                                  <span className="block truncate text-black">
-                                    {'select your dao'}
-                                  </span>
-                                ) : (
-                                  <>
-                                    <img
-                                      src={
-                                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                                      }
-                                      alt=""
-                                      className="flex-shrink-0 h-6 w-6 rounded-full"
-                                    />
-                                    <span className="ml-3 block truncate text-black">
-                                      {selectedDao.name}
+                              {isReadyDaoOptions ?
+                                daoSelectorOptions.length ? (
+                                  selectedDao === null ? (
+                                    <span className="block truncate text-black">
+                                      {'select your dao'}
                                     </span>
-                                  </>
+                                  ) : (
+                                    <>
+                                      {selectedDao.logo_url &&
+                                        <img
+                                          src={
+                                            selectedDao.logo_url
+                                          }
+                                          alt=""
+                                          className="flex-shrink-0 h-6 w-6 rounded-full"
+                                        />
+                                      }
+                                      <span className="ml-3 block truncate text-black">
+                                        {selectedDao.name}
+                                      </span>
+                                    </>
+                                  )
+                                ) : (
+                                  <span className="block truncate text-slate-600">
+                                    {`no DAO options`}
+                                  </span>
                                 )
-                              ) : (
+                              : (
                                 <span className="block truncate text-slate-600">
-                                  {`no DAO options`}
+                                  {`Loading...`}
                                 </span>
-                              )}
+                              )
+                            }
                             </span>
                             <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                               <SelectorIcon
