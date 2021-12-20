@@ -100,7 +100,7 @@ export function Header() {
                       <div className="pt-2">
                         <div>
                           {
-                            <a onClick={() => handleRouting('/jobs/post')}>
+                            <a onClick={() => handleRouting('/job/post')}>
                               <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                                 <DocumentTextIcon className="w-5 h-5 mr-2 " />
                                 <span>Post Job</span>
@@ -112,7 +112,9 @@ export function Header() {
                       <div className="pt-2">
                         <div>
                           {
-                            <a onClick={() => handleRouting('/register-nft')}>
+                            <a
+                              onClick={() => handleRouting('/dao/register/nft')}
+                            >
                               <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                                 <PlusSmIcon className="w-5 h-5 mr-2" />
                                 <span>Register NFT</span>
@@ -181,7 +183,7 @@ export function Header() {
                               <div className="p-2">
                                 <Menu.Item>
                                   {
-                                    <MyLink href="/jobs/post">
+                                    <MyLink href="/job/post">
                                       <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                                         <DocumentTextIcon className="w-5 h-5 mr-2 " />
                                         <span>Post Job</span>
