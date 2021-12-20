@@ -14,12 +14,13 @@ import { JoinedDaosListSection } from '@components/ui/Section'
 // Supabase
 import { supabase } from '@libs/supabase'
 
-export default function Home({ daos }) {
+export default function Home({ daos, tags }) {
   const { currentAccount } = useAccount()
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
   const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
 
   console.log(daos)
+  console.log(tags)
 
   async function getTokenBalances(eoaAddress, contractAddress) {
     const response = await fetch(
@@ -67,13 +68,6 @@ export default function Home({ daos }) {
     
   }, [currentAccount, daos, filterDaoSelectorOptions])
 
-  console.log(isReadyDaoOptions)
-  const tags = [
-    { id: '1', name: 'non-technical' },
-    { id: '2', name: 'graphics' },
-    { id: '3', name: 'NFT' }
-  ]
-
   return (
     <>
       <SEO title="Crewdeck" description="Crewdeck's Top Page" />
@@ -102,7 +96,7 @@ export default function Home({ daos }) {
           <div className="inline-flex w-full py-md">
             {tags.map((tag) => (
               <div key={tag.id}>
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-slate-200 text-slate-800 mr-4">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4" style={{ backgroundColor: tag.color_code}}>
                   {tag.name}
                 </span>
               </div>
@@ -125,9 +119,12 @@ export default function Home({ daos }) {
 Home.Layout = BaseLayout
 
 export const getStaticProps = async () => {
+  // Get all tags.
+  const { data: tags } = await supabase.from('tags').select('tag_id, name, color_code')
+
   const { data: daos } = await supabase
     .from('daos')
     .select('dao_id, name, logo_url, contract_address')
 
-  return { props: { daos } }
+  return { props: { daos, tags } }
 }
