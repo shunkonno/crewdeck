@@ -35,14 +35,12 @@ export default function PostJob({ daos }) {
   const [editorContent, setEditorContent] = useState('')
   const [isPublic, setIsPublic] = useState(true)
 
-  // console.log({ daos, selectedDao })
-
   // **************************************************
   // FORM SETTINGS
   // **************************************************
 
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
-  // console.log({ daoSelectorOptions })
+  const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
 
   const publicSettings = [
     {
@@ -105,9 +103,10 @@ export default function PostJob({ daos }) {
 
   },[currentAccount])
 
-  useEffect(() => {
+  useEffect(async() => {
     if (currentAccount) {
-      filterDaoSelectorOptions(daos)
+      await filterDaoSelectorOptions(daos)
+      await setIsReadyDaoOptions(true)
     }
   }, [currentAccount, daos, filterDaoSelectorOptions])
 
@@ -225,11 +224,11 @@ export default function PostJob({ daos }) {
                   This information will be displayed publicly so be careful what
                   you share.
                 </p>
-                {!daoSelectorOptions?.length &&
+                {(isReadyDaoOptions && !daoSelectorOptions?.length) && (
                   <p className="mt-1 text-sm text-red-500">
                     {`You don't have any NFT assigned by DAO. You cannot post jobs. `}
                   </p>
-                }
+                )}
               </div>
 
               <div>
@@ -267,32 +266,40 @@ export default function PostJob({ daos }) {
                             )}
                           >
                             <span className="flex items-center"> 
-                              {daoSelectorOptions.length ? (
-                                selectedDao === null ? (
-                                  <span className="block truncate text-black">
-                                    {'select your dao'}
-                                  </span>
-                                ) : (
-                                  <>
-                                    {selectedDao.logo_url &&
-                                      <img
-                                        src={
-                                          selectedDao.logo_url
-                                        }
-                                        alt=""
-                                        className="flex-shrink-0 h-6 w-6 rounded-full"
-                                      />
-                                    }
-                                    <span className="ml-3 block truncate text-black">
-                                      {selectedDao.name}
+                              {isReadyDaoOptions ?
+                                daoSelectorOptions.length ? (
+                                  selectedDao === null ? (
+                                    <span className="block truncate text-black">
+                                      {'select your dao'}
                                     </span>
-                                  </>
+                                  ) : (
+                                    <>
+                                      {selectedDao.logo_url &&
+                                        <img
+                                          src={
+                                            selectedDao.logo_url
+                                          }
+                                          alt=""
+                                          className="flex-shrink-0 h-6 w-6 rounded-full"
+                                        />
+                                      }
+                                      <span className="ml-3 block truncate text-black">
+                                        {selectedDao.name}
+                                      </span>
+                                    </>
+                                  )
+                                ) : (
+                                  <span className="block truncate text-slate-600">
+                                    {`no DAO options`}
+                                  </span>
                                 )
-                              ) : (
+                              :
+                              (
                                 <span className="block truncate text-slate-600">
-                                  {`no DAO options`}
+                                  {`Loading...`}
                                 </span>
-                              )}
+                              )
+                            }
                             </span>
                             <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                               <SelectorIcon
