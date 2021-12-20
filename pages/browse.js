@@ -10,6 +10,9 @@ import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
 import { Popover, Transition } from '@headlessui/react'
 
+// Functions
+import classNames from 'classnames'
+
 // Supabase
 import { supabase } from '@libs/supabase'
 
@@ -28,47 +31,15 @@ export default function Browse({ tags, daos }) {
     process.env.NEXT_PUBLIC_ALGOLIA_API_KEY
   )
 
-  console.log({ tags, daos })
-
   const [daoFilter, setDaoFilter] = useState({})
   const [tagFilter, setTagFilter] = useState({})
 
-  const jobs = [
-    {
-      id: '2',
-      title: 'We need a React engineer.',
-      description: 'So, we need a React engineer.',
-      is_public: true,
-      tags: [
-        { id: '1', name: 'non-technical' },
-        { id: '2', name: 'graphics' }
-      ]
-    },
-    {
-      id: '4',
-      title: "We'd like to implement an awesome NFT project.",
-      description: "Hi, this is me. Let's go!",
-      is_public: false,
-      tags: [
-        { id: '2', name: 'graphics' },
-        { id: '3', name: 'NFT' }
-      ]
-    },
-    {
-      id: '5',
-      title: 'Check what tags exist',
-      description: 'aaaaaa',
-      is_public: true,
-      tags: [{ id: '1', name: 'non-technical' }]
-    },
-    {
-      id: '6',
-      title: 'another test',
-      description: 'this job has no tag...',
-      is_public: true,
-      tags: []
-    }
-  ]
+  
+  const tagsStateObject = tags.reduce((accum,tag) => {
+    return  { ...accum, [tag.tag_id] : false }   
+  },{})
+
+  const [selectedTags, setSelectedTags] = useState(tagsStateObject)
 
   function changeFilterState(filterType, id, state) {
     if (filterType === 'dao') {
@@ -215,6 +186,24 @@ export default function Browse({ tags, daos }) {
               searchable
               translations={{ placeholder: 'Type to filter DAO' }}
             />
+            <h3 className="text-sm font-medium mt-sm">Tags</h3>
+            
+            {tags.map((tag) => (
+              <span 
+                key={tag.tag_id} 
+                className={classNames(selectedTags[tag.tag_id] ?
+                  "ring-offset-2 ring-2 ring-teal-400"
+                  :
+                  "font-medium",
+                  "inline-block mt-4 items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4 cursor-pointer"
+                )} 
+                style={{ backgroundColor: tag.color_code}}
+                onClick={() => setSelectedTags((prev)=> ({...prev, [tag.tag_id]: !prev[tag.tag_id] }))}
+              >
+                {tag.name}
+              </span>
+            ))}
+            
           </div>
           <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
             <Hits hitComponent={Hit} />
@@ -451,7 +440,7 @@ Browse.Layout = BaseLayout
 
 export const getStaticProps = async () => {
   // Get all tags.
-  const { data: tags } = await supabase.from('tags').select('tag_id, name')
+  const { data: tags } = await supabase.from('tags').select('tag_id, name, color_code')
 
   console.log(tags)
   // Get all DAOs.
