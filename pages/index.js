@@ -9,6 +9,7 @@ import { useAccount } from '@contexts/AccountContext'
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
+import { JoinedDaosListSection } from '@components/ui/Section'
 
 // Supabase
 import { supabase } from '@libs/supabase'
@@ -16,6 +17,7 @@ import { supabase } from '@libs/supabase'
 export default function Home({ daos }) {
   const { currentAccount } = useAccount()
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
+  const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
 
   console.log(daos)
 
@@ -51,17 +53,21 @@ export default function Home({ daos }) {
       }, [])
 
       await setDaoSelectorOptions(filterResult)
+
     },
     [currentAccount]
   )
 
-  useEffect(() => {
+  useEffect(async() => {
     console.log('useEffect')
     if (currentAccount) {
-      filterDaoSelectorOptions(daos)
+      await filterDaoSelectorOptions(daos)
+      await setIsReadyDaoOptions(true)
     }
+    
   }, [currentAccount, daos, filterDaoSelectorOptions])
 
+  console.log(isReadyDaoOptions)
   const tags = [
     { id: '1', name: 'non-technical' },
     { id: '2', name: 'graphics' },
@@ -74,7 +80,7 @@ export default function Home({ daos }) {
       {/* Grid - START */}
       <div className="py-xs sm:py-md block max-w-7xl mx-auto">
         {/* TopContainer - START */}
-        <div className="max-w-4xl mx-sm sm:mx-auto flex flex-col items-center">
+        <div className="max-w-4xl mx-sm lg:mx-auto flex flex-col items-center">
           <div className="mt-0 mb-sm sm:my-lg">
             <p className="text-3xl font-bold leading-normal">
               <span className="block sm:inline">{`Let’s make 2022 `}</span>
@@ -105,30 +111,11 @@ export default function Home({ daos }) {
           {/* Tags - END */}
         </div>
         {/* TopContainer - END */}
-        <div className="py-sm mx-sm">
-          <h1 className="text-2xl">Your Joining DAO</h1>
-          {daoSelectorOptions.length ? (
-            <div className="flex mt-sm">
-              {daoSelectorOptions.map((dao) => (
-                <div
-                  key={dao.dao_id}
-                  className="inline-flex shadow-md border border-slate-300 cursor-pointer py-2 px-4 rounded-lg"
-                >
-                  <img
-                    src={dao.logo_url}
-                    alt=""
-                    className="block h-6 w-6 mr-3"
-                  />
-                  <p>{dao.name}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex justify-center mt-sm">
-              <p>you are not joining dao.</p>
-            </div>
-          )}
-        </div>
+        <JoinedDaosListSection 
+          currentAccount={currentAccount}
+          daoSelectorOptions={daoSelectorOptions}
+          isReadyDaoOptions={isReadyDaoOptions}
+        />
       </div>
       {/* Grid - END */}
     </>
