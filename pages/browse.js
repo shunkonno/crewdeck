@@ -31,115 +31,114 @@ export default function Browse({ tags, daos }) {
     process.env.NEXT_PUBLIC_ALGOLIA_API_KEY
   )
 
-  const [daoFilter, setDaoFilter] = useState({})
-  const [tagFilter, setTagFilter] = useState({})
+  // const [daoFilter, setDaoFilter] = useState({})
+  // const [tagFilter, setTagFilter] = useState({})
 
-  
-  const tagsStateObject = tags.reduce((accum,tag) => {
-    return  { ...accum, [tag.tag_id] : false }   
-  },{})
+  const tagsStateObject = tags.reduce((accum, tag) => {
+    return { ...accum, [tag.tag_id]: false }
+  }, {})
 
   const [selectedTags, setSelectedTags] = useState(tagsStateObject)
 
-  function changeFilterState(filterType, id, state) {
-    if (filterType === 'dao') {
-      setDaoFilter({ ...daoFilter, [id]: state })
-    } else if (filterType === 'tag') {
-      setTagFilter({ ...tagFilter, [id]: state })
-    }
-  }
+  // function changeFilterState(filterType, id, state) {
+  //   if (filterType === 'dao') {
+  //     setDaoFilter({ ...daoFilter, [id]: state })
+  //   } else if (filterType === 'tag') {
+  //     setTagFilter({ ...tagFilter, [id]: state })
+  //   }
+  // }
 
-  async function getSearchResults() {
-    // Base query.
-    let query = supabase.from('jobs').select('created_at, title, dao_id')
+  // async function getSearchResults() {
+  //   // Base query.
+  //   let query = supabase.from('jobs').select('created_at, title, dao_id')
 
-    // Get ids to filter for.
-    const daoFilterIds = Object.keys(daoFilter).filter((key) => {
-      return daoFilter[key]
-    })
+  //   // Get ids to filter for.
+  //   const daoFilterIds = Object.keys(daoFilter).filter((key) => {
+  //     return daoFilter[key]
+  //   })
 
-    const tagFilterIds = Object.keys(tagFilter).filter((key) => {
-      return tagFilter[key]
-    })
+  //   const tagFilterIds = Object.keys(tagFilter).filter((key) => {
+  //     return tagFilter[key]
+  //   })
 
-    // **************************************************
-    // DAO FILTER
-    // **************************************************
+  //   // **************************************************
+  //   // DAO FILTER
+  //   // **************************************************
 
-    // Filter DAO.
-    if (daoFilterIds.length > 0) {
-      let daoFilterString = ''
+  //   // Filter DAO.
+  //   if (daoFilterIds.length > 0) {
+  //     let daoFilterString = ''
 
-      daoFilterIds.map((daoId, index) => {
-        if (index !== daoFilterIds.length - 1) {
-          // Add a trailing comma until the last element.
-          daoFilterString += `dao_id.eq.${String(daoId)},`
-        } else {
-          daoFilterString += `dao_id.eq.${String(daoId)}`
-        }
-      })
+  //     daoFilterIds.map((daoId, index) => {
+  //       if (index !== daoFilterIds.length - 1) {
+  //         // Add a trailing comma until the last element.
+  //         daoFilterString += `dao_id.eq.${String(daoId)},`
+  //       } else {
+  //         daoFilterString += `dao_id.eq.${String(daoId)}`
+  //       }
+  //     })
 
-      // Chain base query.
-      query = query.or(daoFilterString)
-    }
+  //     // Chain base query.
+  //     query = query.or(daoFilterString)
+  //   }
 
-    // **************************************************
-    // TAG FILTER
-    // **************************************************
+  //   // **************************************************
+  //   // TAG FILTER
+  //   // **************************************************
 
-    // Get jobs with filtered tags.
-    if (tagFilterIds.length > 0) {
-      let tagFilterString = ''
+  //   // Get jobs with filtered tags.
+  //   if (tagFilterIds.length > 0) {
+  //     let tagFilterString = ''
 
-      tagFilterIds.map((tagId, index) => {
-        if (index !== tagFilterIds.length - 1) {
-          // Add a trailing comma until the last element.
-          tagFilterString += `tag_id.eq.${String(tagId)},`
-        } else {
-          tagFilterString += `tag_id.eq.${String(tagId)}`
-        }
-      })
+  //     tagFilterIds.map((tagId, index) => {
+  //       if (index !== tagFilterIds.length - 1) {
+  //         // Add a trailing comma until the last element.
+  //         tagFilterString += `tag_id.eq.${String(tagId)},`
+  //       } else {
+  //         tagFilterString += `tag_id.eq.${String(tagId)}`
+  //       }
+  //     })
 
-      const { data: jobIdWithTag } = await supabase
-        .from('jobs_to_tags')
-        .select('job_id')
-        .or(tagFilterString)
+  //     const { data: jobIdWithTag } = await supabase
+  //       .from('jobs_to_tags')
+  //       .select('job_id')
+  //       .or(tagFilterString)
 
-      console.log({ jobIdWithTag })
+  //     console.log({ jobIdWithTag })
 
-      // Filter query with job_id associated with tags.
-      if (jobIdWithTag.length > 0) {
-        let jobIdFilterString = ''
+  //     // Filter query with job_id associated with tags.
+  //     if (jobIdWithTag.length > 0) {
+  //       let jobIdFilterString = ''
 
-        jobIdWithTag.map((item, index) => {
-          if (index !== jobIdWithTag.length - 1) {
-            // Add a trailing comma until the last element.
-            jobIdFilterString += `id.eq.${String(item.job_id)},`
-          } else {
-            jobIdFilterString += `id.eq.${String(item.job_id)}`
-          }
-        })
+  //       jobIdWithTag.map((item, index) => {
+  //         if (index !== jobIdWithTag.length - 1) {
+  //           // Add a trailing comma until the last element.
+  //           jobIdFilterString += `id.eq.${String(item.job_id)},`
+  //         } else {
+  //           jobIdFilterString += `id.eq.${String(item.job_id)}`
+  //         }
+  //       })
 
-        // Append job_id filter to base query.
-        query = query.or(jobIdFilterString)
-      }
-    }
+  //       // Append job_id filter to base query.
+  //       query = query.or(jobIdFilterString)
+  //     }
+  //   }
 
-    const { data: jobs, error } = await query
+  //   const { data: jobs, error } = await query
 
-    console.log({ jobs })
+  //   console.log({ jobs })
 
-    return jobs
-  }
+  //   return jobs
+  // }
 
-  useEffect(() => {
-    getSearchResults()
-  }, [daoFilter, tagFilter])
+  // useEffect(() => {
+  //   getSearchResults()
+  // }, [daoFilter, tagFilter])
 
   function Hit(props) {
     return (
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
-        <Link href={`/jobs/${props.hit.objectID}`}>
+        <Link href={`/job/${props.hit.objectID}`}>
           <a>
             <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">
               <div className="px-4 py-2">
@@ -187,23 +186,27 @@ export default function Browse({ tags, daos }) {
               translations={{ placeholder: 'Type to filter DAO' }}
             />
             <h3 className="text-sm font-medium mt-sm">Tags</h3>
-            
+
             {tags.map((tag) => (
-              <span 
-                key={tag.tag_id} 
-                className={classNames(selectedTags[tag.tag_id] ?
-                  "ring-offset-2 ring-2 ring-teal-400"
-                  :
-                  "font-medium",
-                  "inline-block mt-4 items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4 cursor-pointer"
-                )} 
-                style={{ backgroundColor: tag.color_code}}
-                onClick={() => setSelectedTags((prev)=> ({...prev, [tag.tag_id]: !prev[tag.tag_id] }))}
+              <span
+                key={tag.tag_id}
+                className={classNames(
+                  selectedTags[tag.tag_id]
+                    ? 'ring-offset-2 ring-2 ring-teal-400'
+                    : 'font-medium',
+                  'inline-block mt-4 items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4 cursor-pointer'
+                )}
+                style={{ backgroundColor: tag.color_code }}
+                onClick={() =>
+                  setSelectedTags((prev) => ({
+                    ...prev,
+                    [tag.tag_id]: !prev[tag.tag_id]
+                  }))
+                }
               >
                 {tag.name}
               </span>
             ))}
-            
           </div>
           <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
             <Hits hitComponent={Hit} />
@@ -440,7 +443,9 @@ Browse.Layout = BaseLayout
 
 export const getStaticProps = async () => {
   // Get all tags.
-  const { data: tags } = await supabase.from('tags').select('tag_id, name, color_code')
+  const { data: tags } = await supabase
+    .from('tags')
+    .select('tag_id, name, color_code')
 
   console.log(tags)
   // Get all DAOs.
