@@ -23,7 +23,7 @@ import { supabase } from '@libs/supabase'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
 
-export default function PostJob({ daos }) {
+export default function PostJob({ daos, tags }) {
   const { currentAccount, ethersProvider } = useAccount()
   const router = useRouter()
 
@@ -34,6 +34,13 @@ export default function PostJob({ daos }) {
   const [selectedDao, setSelectedDao] = useState(null)
   const [editorContent, setEditorContent] = useState('')
   const [isPublic, setIsPublic] = useState(true)
+
+  // tagsの数だけtag_idをキーの持つ、value falseのオブジェクトを作る
+  const tagsStateObject = tags.reduce((accum, tag) => {
+    return { ...accum, [tag.tag_id]: false }
+  }, {})
+
+  const [selectedTags, setSelectedTags] = useState(tagsStateObject)
 
   // **************************************************
   // FORM SETTINGS
@@ -403,6 +410,31 @@ export default function PostJob({ daos }) {
                 </div>
                 {/* Editor - END */}
 
+                {/* Tags - END */}
+                <div className="mt-sm">
+                  <h3 className="text-sm font-medium mt-sm">Tags</h3>
+                  {tags.map((tag) => (
+                    <span
+                      key={tag.tag_id}
+                      className={classNames(
+                        selectedTags[tag.tag_id]
+                          ? 'ring-offset-2 ring-2 ring-teal-400'
+                          : 'opacity-50',
+                        'inline-block mt-4 items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4 cursor-pointer'
+                      )}
+                      style={{ backgroundColor: tag.color_code }}
+                      onClick={() =>
+                        setSelectedTags((prev) => ({
+                          ...prev,
+                          [tag.tag_id]: !prev[tag.tag_id]
+                        }))
+                      }
+                    >
+                      {tag.name}
+                    </span>
+                  ))}
+                </div>
+                {/* Tags - END */}
                 {/* Public Settings - START */}
                 <div className="mt-sm">
                   <fieldset>
@@ -482,5 +514,10 @@ export const getStaticProps = async () => {
     .from('daos')
     .select('dao_id, name, logo_url, contract_address')
 
-  return { props: { daos } }
+  // Get all tags.
+  const { data: tags } = await supabase
+  .from('tags')
+  .select('tag_id, name, color_code')
+
+  return { props: { daos, tags } }
 }
