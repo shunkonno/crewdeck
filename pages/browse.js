@@ -34,12 +34,6 @@ export default function Browse({ tags, daos }) {
   // const [daoFilter, setDaoFilter] = useState({})
   // const [tagFilter, setTagFilter] = useState({})
 
-  const tagsStateObject = tags.reduce((accum, tag) => {
-    return { ...accum, [tag.tag_id]: false }
-  }, {})
-
-  const [selectedTags, setSelectedTags] = useState(tagsStateObject)
-
   // function changeFilterState(filterType, id, state) {
   //   if (filterType === 'dao') {
   //     setDaoFilter({ ...daoFilter, [id]: state })
@@ -185,28 +179,7 @@ export default function Browse({ tags, daos }) {
               searchable
               translations={{ placeholder: 'Type to filter DAO' }}
             />
-            <h3 className="text-sm font-medium mt-sm">Tags</h3>
 
-            {tags.map((tag) => (
-              <span
-                key={tag.tag_id}
-                className={classNames(
-                  selectedTags[tag.tag_id]
-                    ? 'ring-offset-2 ring-2 ring-teal-400'
-                    : 'font-medium',
-                  'inline-block mt-4 items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4 cursor-pointer'
-                )}
-                style={{ backgroundColor: tag.color_code }}
-                onClick={() =>
-                  setSelectedTags((prev) => ({
-                    ...prev,
-                    [tag.tag_id]: !prev[tag.tag_id]
-                  }))
-                }
-              >
-                {tag.name}
-              </span>
-            ))}
           </div>
           <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
             <Hits hitComponent={Hit} />
