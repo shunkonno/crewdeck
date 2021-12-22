@@ -3,6 +3,8 @@ import { ethers } from 'ethers'
 
 // Assets
 import { SelectorIcon, CheckIcon } from '@heroicons/react/solid'
+// Vercel
+import { useRouter } from 'next/router'
 
 // Contexts
 import { useAccount } from '@contexts/AccountContext'
@@ -20,6 +22,7 @@ import { supabase } from '@libs/supabase'
 
 export default function RegisterNFT({ daos, networks }) {
   const { currentAccount, ethersProvider } = useAccount()
+  const router = useRouter()
 
   // **************************************************
   // VALUES TO SUBMIT TO SERVER
