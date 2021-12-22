@@ -12,6 +12,7 @@ import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
 import { DaoSelectBox } from '@components/ui/SelectBox'
 import { NetworkSelectBox } from '@components/ui/SelectBox'
+import { NftContractAddressInput } from '@components/ui/Input'
 
 // Functions
 import classNames from 'classnames'
@@ -23,11 +24,6 @@ import { supabase } from '@libs/supabase'
 export default function RegisterNFT({ daos, networks }) {
   const { currentAccount, ethersProvider } = useAccount()
   const router = useRouter()
-
-  // **************************************************
-  // VALUES TO SUBMIT TO SERVER
-  // **************************************************
-  const [nftContractAddress, setNftContractAddress] = useState('')
 
   // **************************************************
   // FORM SETTINGS
@@ -241,18 +237,22 @@ export default function RegisterNFT({ daos, networks }) {
                   <label className="block font-medium text-slate-700">
                     {`NFT Contract Address`}
                   </label>
-                  <input
-                    type="text"
-                    className="mt-1 py-2 shadow-sm border focus:outline-none focus:border-primary px-2 block w-full rounded-md border-slate-300"
-                    placeholder="0x..."
-                    onChange={(e) => {
-                      setNftContractAddress(e.target.value)
-                    }}
-                    {...register('nftContractAddress', {
+                  <Controller
+                    control={control}
+                    name="nftContractAddress"
+                    rules={ {
                       required: true,
                       minLength: 42,
                       maxLength: 42
-                    })}
+                    } }
+                    render={({ 
+                      field: { onChange, value } 
+                    }) => (
+                      <NftContractAddressInput
+                        onChange={onChange}
+                        nftContractAddress={value}
+                      />
+                    )}
                   />
                 </div>
                 <div className="mt-2">
