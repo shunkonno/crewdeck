@@ -95,7 +95,7 @@ export default function Home({ daos, tags }) {
           {/* Tags - START */}
           <div className="inline-flex w-full py-md">
             {tags.map((tag) => (
-              <div key={tag.id}>
+              <div key={tag.tag_id}>
                 <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4" style={{ backgroundColor: tag.color_code}}>
                   {tag.name}
                 </span>
