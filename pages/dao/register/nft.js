@@ -29,8 +29,6 @@ export default function RegisterNFT({ daos, networks }) {
   // **************************************************
   const [nftContractAddress, setNftContractAddress] = useState('')
 
-  // console.log({ selectedDao, selectedNetwork })
-
   // **************************************************
   // FORM SETTINGS
   // **************************************************
@@ -41,7 +39,7 @@ export default function RegisterNFT({ daos, networks }) {
 
   const { register, handleSubmit, control, formState: { errors } } = useForm()
 
-  console.log('errors',errors)
+  console.log('react-hook-form Errors', errors)
 
 
   // Get token balance for a user's address to validate user's membership in a DAO.
@@ -98,8 +96,7 @@ export default function RegisterNFT({ daos, networks }) {
 
   // Saves data to DB.
   async function saveToDB( selectedDao, selectedNetwork) {
-    console.log('selectedDao',selectedDao)
-    console.log('selectedNetwork',selectedNetwork)
+    
     const { data, error } = await supabase
       .from('daos')
       .update({
@@ -136,7 +133,10 @@ export default function RegisterNFT({ daos, networks }) {
   // Handles data submit via react-hook-form
   async function onSubmit(data) {
 
-    console.log('SubmitData',data)
+    //////////  ↓↓↓↓↓↓↓↓フォームに入力されているデータ↓↓↓↓↓↓↓↓////////// 
+                console.log('SubmitData', data) 
+    //////////  ↑↑↑↑↑↑↑↑フォームに入力されているデータ↑↑↑↑↑↑↑↑////////// 
+
 
     const { selectedDao, selectedNetwork } = data
 
