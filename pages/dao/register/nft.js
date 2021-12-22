@@ -254,11 +254,12 @@ export default function RegisterNFT({ daos, networks }) {
                       maxLength: 42
                     } }
                     render={({ 
-                      field: { onChange, value } 
+                      field: { onChange, value, name } 
                     }) => (
                       <NftContractAddressInput
                         onChange={onChange}
                         nftContractAddress={value}
+                        name={name}
                       />
                     )}
                   />
