@@ -94,7 +94,9 @@ export default function RegisterNFT({ daos, networks }) {
   // **************************************************
 
   // Saves data to DB.
-  async function saveToDB() {
+  async function saveToDB( selectedDao, selectedNetwork) {
+    console.log('selectedDao',selectedDao)
+    console.log('selectedNetwork',selectedNetwork)
     const { data, error } = await supabase
       .from('daos')
       .update({
@@ -128,9 +130,12 @@ export default function RegisterNFT({ daos, networks }) {
     return isVerified
   }
 
-  // Handles data submit.
-  async function handleSubmit(event) {
-    event.preventDefault()
+  // Handles data submit via react-hook-form
+  async function onSubmit(data) {
+
+    console.log('SubmitData',data)
+
+    const { selectedDao, selectedNetwork } = data
 
     // Verify users' address.
     const isVerified = await verifyAddressOwnership()
@@ -141,13 +146,13 @@ export default function RegisterNFT({ daos, networks }) {
     }
 
     // Save data to DB.
-    const result = await saveToDB()
+    const result = await saveToDB(selectedDao, selectedNetwork)
 
     if (result) {
       console.log('Successfully saved to DB.')
 
-      // Redirect user to nudge job posting.
-      // TODO: Display a message telling them they can add a job now.
+    // Redirect user to nudge job posting.
+    // TODO: Display a message telling them they can add a job now.
       router.push(`/job/post`)
     } else {
       router.push(`/`)
@@ -162,7 +167,7 @@ export default function RegisterNFT({ daos, networks }) {
         {/* Form - START */}
         <form
           className="space-y-8 divide-y divide-slate-200"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <div className="space-y-8 divide-y divide-slate-200">
             <div>
