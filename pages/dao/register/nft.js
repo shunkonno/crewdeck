@@ -28,6 +28,8 @@ export default function RegisterNFT({ daos, networks }) {
   const [selectedDao, setSelectedDao] = useState(null)
   const [selectedNetwork, setSelectedNetwork] = useState(null)
 
+  console.log({ selectedDao, selectedNetwork })
+
   // **************************************************
   // FORM SETTINGS
   // **************************************************
@@ -90,17 +92,19 @@ export default function RegisterNFT({ daos, networks }) {
 
   // Saves data to DB.
   async function saveToDB() {
-    // const { data, error } = await supabase.from('jobs').insert([
-    //   {
-    //     title: title,
-    //     description: editorContent,
-    //     dao_id: selectedDao.id,
-    //     is_public: isPublic
-    //   }
-    // ])
-    // if (error) {
-    //   console.log(error)
-    // }
+    const { data, error } = await supabase
+      .from('daos')
+      .update({
+        network_id: selectedNetwork.network_id
+      })
+      .match({ dao_id: selectedDao.dao_id })
+
+    if (error) {
+      console.log(error)
+      return false
+    }
+
+    return data
   }
 
   // Verifies if the user holds the private key for the public address. (EIP-191)
@@ -134,11 +138,17 @@ export default function RegisterNFT({ daos, networks }) {
     }
 
     // Save data to DB.
-    await saveToDB()
+    const result = await saveToDB()
 
-    console.log('Successfully saved to DB.')
+    if (result) {
+      console.log('Successfully saved to DB.')
 
-    // TODO: Redirect user to the newly created job post.
+      // Redirect user to nudge job posting.
+      // TODO: Display a message telling them they can add a job now.
+      router.push(`/job/post`)
+    } else {
+      router.push(`/`)
+    }
   }
 
   return (
