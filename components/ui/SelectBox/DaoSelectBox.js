@@ -32,6 +32,9 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
           <Listbox.Label className="block font-medium text-slate-700">
             DAO
           </Listbox.Label>
+          <p className="mt-1 text-sm text-slate-500">
+            Select the DAO you own a token for.
+          </p>
           <div className="mt-1 relative">
             <Listbox.Button
               className={classNames(
