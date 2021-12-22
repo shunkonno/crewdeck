@@ -444,7 +444,21 @@ export default function RegisterNFT({ daos, networks }) {
                     onChange={(e) => {
                       setNftContractAddress(e.target.value)
                     }}
+                    {...register("nftContractAddress",{
+                      required: true,
+                      minLength: 42,
+                      maxLength: 42
+                    })
+                    }
                   />
+                </div>
+                <div className="mt-2">
+                  {errors.nftContractAddress?.type === 'required' && 
+                    <p className="text-red-400 text-sm">入力必須です。</p>
+                  }
+                  {(errors.nftContractAddress?.type === 'minLength' || errors.nftContractAddress?.type === 'maxLength') && 
+                    <p className="text-red-400 text-sm">0xから始まる42文字のコントラクトアドレスである必要があります。</p>
+                  }
                 </div>
                 {/* NftContractAddress - END */}
               </div>
