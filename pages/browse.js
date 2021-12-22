@@ -179,7 +179,7 @@ export default function Browse({ tags, daos }) {
               searchable
               translations={{ placeholder: 'Type to filter DAO' }}
             />
-
+            <RefinementList attribute="tags" />
           </div>
           <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
             <Hits hitComponent={Hit} />

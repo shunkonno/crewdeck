@@ -42,6 +42,8 @@ export default function PostJob({ daos, tags }) {
 
   const [selectedTags, setSelectedTags] = useState(tagsStateObject)
 
+  // console.log({ selectedTags, tags })
+
   // **************************************************
   // FORM SETTINGS
   // **************************************************
@@ -91,26 +93,31 @@ export default function PostJob({ daos, tags }) {
 
   // Filter the list of DAOs from DB, and filter the ones that the user owns tokens for. Set filtered array to state.
   // @params {array} daoList - The initial list of all DAOs.
-  const filterDaoSelectorOptions = useCallback(async(daoList) => {
-    //Filter DAO Function
-    const filterResult = await daoList?.reduce(async(promise, dao) => {
-      let accumulator = []
-      accumulator = await promise
-      const data = await getTokenBalances(currentAccount, dao.contract_address)
+  const filterDaoSelectorOptions = useCallback(
+    async (daoList) => {
+      //Filter DAO Function
+      const filterResult = await daoList?.reduce(async (promise, dao) => {
+        let accumulator = []
+        accumulator = await promise
+        const data = await getTokenBalances(
+          currentAccount,
+          dao.contract_address
+        )
 
-      // Get substring of tokenBalance. (e.g. 0x0000000000000000000000000000000000000000000000000000000000000001)
-      // If tokenBalance is greater than 0, the user owns at least one token.
-      if(Number(data.tokenBalance?.substring(2)) > 0){
-        await accumulator.push(dao)
-      }
-      return accumulator
-    }, [])
-    
-    await setDaoSelectorOptions(filterResult)
+        // Get substring of tokenBalance. (e.g. 0x0000000000000000000000000000000000000000000000000000000000000001)
+        // If tokenBalance is greater than 0, the user owns at least one token.
+        if (Number(data.tokenBalance?.substring(2)) > 0) {
+          await accumulator.push(dao)
+        }
+        return accumulator
+      }, [])
 
-  },[currentAccount])
+      await setDaoSelectorOptions(filterResult)
+    },
+    [currentAccount]
+  )
 
-  useEffect(async() => {
+  useEffect(async () => {
     if (currentAccount) {
       await filterDaoSelectorOptions(daos)
       await setIsReadyDaoOptions(true)
@@ -134,9 +141,9 @@ export default function PostJob({ daos, tags }) {
     return response
   }
 
-  // Saves data to DB.
-  async function saveToDB() {
-    const { data: result, error } = await supabase.from('jobs').insert([
+  // Saves job.
+  async function saveJob() {
+    const { data: result, saveJobError } = await supabase.from('jobs').insert([
       {
         title: title,
         description: editorContent,
@@ -145,13 +152,51 @@ export default function PostJob({ daos, tags }) {
       }
     ])
 
-    if (error) {
+    if (saveJobError) {
       console.log(error)
       return false
     }
 
     // Return saved object.
     return result
+  }
+
+  // Saves tags.
+  async function saveTags(jobId, tagIds) {
+    const insertObjectList = []
+
+    tagIds.map((tagId) => {
+      insertObjectList.push({ job_id: jobId, tag_id: tagId })
+    })
+
+    const { data: result, saveTagsError } = await supabase
+      .from('jobs_to_tags')
+      .insert(insertObjectList)
+
+    if (saveTagsError) {
+      console.log(error)
+      return false
+    }
+
+    // Return saved object.
+    return result
+  }
+
+  // Saves data to DB.
+  async function saveToDB() {
+    // Save job.
+    const saveJobResult = await saveJob()
+
+    if (saveJobResult) {
+      // Save tagIds with true bool value.
+      const selectedTagIds = Object.keys(selectedTags).filter((key) => {
+        return selectedTags[key]
+      })
+
+      await saveTags(saveJobResult[0].job_id, selectedTagIds)
+    }
+
+    return saveJobResult
   }
 
   // Verifies if the user holds the private key for the public address. (EIP-191)
@@ -197,17 +242,34 @@ export default function PostJob({ daos, tags }) {
 
       // If isPublic is true, save object to Algolia to be indexed.
       if (isPublic) {
+        // Extract tags IDs.
+        const selectedTagIds = Object.keys(selectedTags).filter((key) => {
+          return selectedTags[key]
+        })
+
+        // Extract tag names.
+        const selectedTagNames = []
+
+        selectedTagIds.map((selectedTagId) => {
+          tags.map((tag) => {
+            if (tag.tag_id === selectedTagId) {
+              selectedTagNames.push(tag.name)
+            }
+          })
+        })
+
         const algoliaObject = {
           objectID: result[0].job_id,
           title: title,
-          dao: selectedDao.name
+          dao: selectedDao.name,
+          tags: selectedTagNames
         }
 
         await saveToAlgolia(algoliaObject)
       }
 
       // Redirect user to the newly created job post.
-      router.push(`/jobs/${result[0].job_id}`)
+      router.push(`/job/${result[0].job_id}`)
     }
   }
 
@@ -224,14 +286,10 @@ export default function PostJob({ daos, tags }) {
           <div className="space-y-8 divide-y divide-slate-200">
             <div>
               <div>
-                <h3 className="text-lg leading-6 font-medium text-slate-900">
-                  Write Job Details
-                </h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  This information will be displayed publicly so be careful what
-                  you share.
-                </p>
-                {(isReadyDaoOptions && !daoSelectorOptions?.length) && (
+                <h1 className="text-2xl leading-6 font-medium text-slate-900">
+                  Post a Job
+                </h1>
+                {isReadyDaoOptions && !daoSelectorOptions?.length && (
                   <p className="mt-1 text-sm text-red-500">
                     {`You don't have any NFT assigned by DAO. You cannot post jobs. `}
                   </p>
@@ -244,6 +302,9 @@ export default function PostJob({ daos, tags }) {
                   <label className="block font-medium text-slate-700">
                     Title
                   </label>
+                  <p className="mt-1 text-sm text-slate-500">
+                    This is the first thing shown. Try to make it concise.
+                  </p>
                   <input
                     type="text"
                     className="mt-1 text-xl py-1 shadow-sm border focus:outline-none focus:border-primary px-2 block w-full rounded-md border-slate-300"
@@ -262,34 +323,34 @@ export default function PostJob({ daos, tags }) {
                         <Listbox.Label className="block font-medium text-slate-700">
                           DAO
                         </Listbox.Label>
+                        <p className="mt-1 text-sm text-slate-500">
+                          Select the DAO you own a token for.
+                        </p>
                         <div className="mt-1 relative">
                           <Listbox.Button
                             className={classNames(
-                              daoSelectorOptions?.length ?
-                              "cursor-default focus:border-primary"
-                              :
-                              "cursor-not-allowed bg-slate-200",
-                              "relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm"
+                              daoSelectorOptions?.length
+                                ? 'cursor-default focus:border-primary'
+                                : 'cursor-not-allowed bg-slate-200',
+                              'relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
                             )}
                           >
-                            <span className="flex items-center"> 
-                              {isReadyDaoOptions ?
+                            <span className="flex items-center">
+                              {isReadyDaoOptions ? (
                                 daoSelectorOptions.length ? (
                                   selectedDao === null ? (
                                     <span className="block truncate text-black">
-                                      {'select your dao'}
+                                      {'Select your DAO'}
                                     </span>
                                   ) : (
                                     <>
-                                      {selectedDao.logo_url &&
+                                      {selectedDao.logo_url && (
                                         <img
-                                          src={
-                                            selectedDao.logo_url
-                                          }
+                                          src={selectedDao.logo_url}
                                           alt=""
                                           className="flex-shrink-0 h-6 w-6 rounded-full"
                                         />
-                                      }
+                                      )}
                                       <span className="ml-3 block truncate text-black">
                                         {selectedDao.name}
                                       </span>
@@ -297,16 +358,14 @@ export default function PostJob({ daos, tags }) {
                                   )
                                 ) : (
                                   <span className="block truncate text-slate-600">
-                                    {`no DAO options`}
+                                    {`No DAOs`}
                                   </span>
                                 )
-                              :
-                              (
+                              ) : (
                                 <span className="block truncate text-slate-600">
                                   {`Loading...`}
                                 </span>
-                              )
-                            }
+                              )}
                             </span>
                             <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                               <SelectorIcon
@@ -316,65 +375,62 @@ export default function PostJob({ daos, tags }) {
                             </span>
                           </Listbox.Button>
 
-                          
-                          {daoSelectorOptions?.length ?
-                          <Transition
-                            show={open}
-                            as={Fragment}
-                            leave="transition ease-in duration-100"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                          >
-                            <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-                              {daoSelectorOptions?.map((dao) => (
-                                <Listbox.Option
-                                  key={dao.dao_id}
-                                  className={({ active }) =>
-                                    classNames(
-                                      active
-                                        ? 'text-white bg-primary'
-                                        : 'text-slate-900',
-                                      'cursor-default select-none relative py-2 pl-3 pr-9 list-none'
-                                    )
-                                  }
-                                  value={dao}
-                                >
-                                  {({ selected, active }) => (
-                                    <>
-                                      <div className="flex items-center">
-                                      {dao.logo_url &&
-                                        <img
-                                          src={
-                                            dao.logo_url
-                                          }
-                                          alt=""
-                                          className="flex-shrink-0 h-6 w-6 rounded-full"
-                                        />
-                                      }
-                                        <span
-                                          className={classNames(
-                                            selected
-                                              ? 'font-semibold'
-                                              : 'font-normal',
-                                            'ml-3 block truncate'
+                          {daoSelectorOptions?.length ? (
+                            <Transition
+                              show={open}
+                              as={Fragment}
+                              leave="transition ease-in duration-100"
+                              leaveFrom="opacity-100"
+                              leaveTo="opacity-0"
+                            >
+                              <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                                {daoSelectorOptions?.map((dao) => (
+                                  <Listbox.Option
+                                    key={dao.dao_id}
+                                    className={({ active }) =>
+                                      classNames(
+                                        active
+                                          ? 'text-white bg-primary'
+                                          : 'text-slate-900',
+                                        'cursor-default select-none relative py-2 pl-3 pr-9 list-none'
+                                      )
+                                    }
+                                    value={dao}
+                                  >
+                                    {({ selected, active }) => (
+                                      <>
+                                        <div className="flex items-center">
+                                          {dao.logo_url && (
+                                            <img
+                                              src={dao.logo_url}
+                                              alt=""
+                                              className="flex-shrink-0 h-6 w-6 rounded-full"
+                                            />
                                           )}
-                                        >
-                                          {dao.name}
-                                        </span>
-                                      </div>
+                                          <span
+                                            className={classNames(
+                                              selected
+                                                ? 'font-semibold'
+                                                : 'font-normal',
+                                              'ml-3 block truncate'
+                                            )}
+                                          >
+                                            {dao.name}
+                                          </span>
+                                        </div>
 
-                                      {selected ? (
-                                        <span
-                                          className={classNames(
-                                            active
-                                              ? 'text-white'
-                                              : 'text-primary',
-                                            'absolute inset-y-0 right-0 flex items-center pr-4'
-                                          )}
-                                        >
-                                          <CheckIcon
-                                            className="h-5 w-5"
-                                            aria-hidden="true"
+                                        {selected ? (
+                                          <span
+                                            className={classNames(
+                                              active
+                                                ? 'text-white'
+                                                : 'text-primary',
+                                              'absolute inset-y-0 right-0 flex items-center pr-4'
+                                            )}
+                                          >
+                                            <CheckIcon
+                                              className="h-5 w-5"
+                                              aria-hidden="true"
                                             />
                                           </span>
                                         ) : null}
@@ -384,7 +440,7 @@ export default function PostJob({ daos, tags }) {
                                 ))}
                               </Listbox.Options>
                             </Transition>
-                           : (
+                          ) : (
                             <></>
                           )}
                         </div>
@@ -399,6 +455,9 @@ export default function PostJob({ daos, tags }) {
                   <label className="block font-medium text-slate-700">
                     Description
                   </label>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Describe the job, including some background.
+                  </p>
                   <div className="mt-1">
                     <ReactQuill
                       theme="snow"
@@ -516,8 +575,8 @@ export const getStaticProps = async () => {
 
   // Get all tags.
   const { data: tags } = await supabase
-  .from('tags')
-  .select('tag_id, name, color_code')
+    .from('tags')
+    .select('tag_id, name, color_code')
 
   return { props: { daos, tags } }
 }

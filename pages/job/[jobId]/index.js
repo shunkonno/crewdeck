@@ -96,25 +96,25 @@ export default function Job({ job, dao }) {
             </div>
             <p className="mt-1 text-slate-600">{dao.description}</p>
             {(dao.discord_url || dao.twitter_url) && (
-                <div className="inline-flex gap-4 mt-xs">
-                  {dao.discord_url && (
-                    <a href={dao.discord_url} target="_blank" rel="noreferrer">
-                      <img
-                        src={'/images/social/DiscordIcon.png'}
-                        className="flex-shrink-0 h-6 w-6"
-                      />
-                    </a>
-                  )}
-                  {dao.twitter_url && (
-                    <a href={dao.twitter_url} target="_blank" rel="noreferrer">
-                      <img
-                        src={'/images/social/TwitterIcon.png'}
-                        className="flex-shrink-0 h-6 w-6"
-                      />
-                    </a>
-                  )}
-                </div>
-              )}
+              <div className="inline-flex gap-4 mt-xs">
+                {dao.discord_url && (
+                  <a href={dao.discord_url} target="_blank" rel="noreferrer">
+                    <img
+                      src={'/images/social/DiscordIcon.png'}
+                      className="flex-shrink-0 h-6 w-6"
+                    />
+                  </a>
+                )}
+                {dao.twitter_url && (
+                  <a href={dao.twitter_url} target="_blank" rel="noreferrer">
+                    <img
+                      src={'/images/social/TwitterIcon.png'}
+                      className="flex-shrink-0 h-6 w-6"
+                    />
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
         {/* Sidebar - END */}
@@ -161,10 +161,10 @@ export const getStaticProps = async ({ params: { jobId } }) => {
     tagIdList.map((item, index) => {
       if (index !== tagIdList.length - 1) {
         // Add a trailing comma until the last element.
-        tagIdListString += 'id.eq.'
+        tagIdListString += 'tag_id.eq.'
         tagIdListString += String(item.tag_id) + ','
       } else {
-        tagIdListString += 'id.eq.'
+        tagIdListString += 'tag_id.eq.'
         tagIdListString += String(item.tag_id)
       }
     })
