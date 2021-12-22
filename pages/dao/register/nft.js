@@ -33,10 +33,14 @@ export default function RegisterNFT({ daos, networks }) {
   const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
   const networkSelectorOptions = networks
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors }
+  } = useForm()
 
   console.log('react-hook-form Errors', errors)
-
 
   // Get token balance for a user's address to validate user's membership in a DAO.
   // @params {string} eoaAddress - The public address of the user.
@@ -91,12 +95,12 @@ export default function RegisterNFT({ daos, networks }) {
   // **************************************************
 
   // Saves data to DB.
-  async function saveToDB( selectedDao, selectedNetwork) {
-    
+  async function saveToDB(selectedDao, selectedNetwork, nftContractAddress) {
     const { data, error } = await supabase
       .from('daos')
       .update({
-        network_id: selectedNetwork.network_id
+        network_id: selectedNetwork.network_id,
+        contract_address: nftContractAddress
       })
       .match({ dao_id: selectedDao.dao_id })
 
@@ -128,13 +132,11 @@ export default function RegisterNFT({ daos, networks }) {
 
   // Handles data submit via react-hook-form
   async function onSubmit(data) {
+    //////////  ↓↓↓↓↓↓↓↓フォームに入力されているデータ↓↓↓↓↓↓↓↓//////////
+    console.log('SubmitData', data)
+    //////////  ↑↑↑↑↑↑↑↑フォームに入力されているデータ↑↑↑↑↑↑↑↑//////////
 
-    //////////  ↓↓↓↓↓↓↓↓フォームに入力されているデータ↓↓↓↓↓↓↓↓////////// 
-                console.log('SubmitData', data) 
-    //////////  ↑↑↑↑↑↑↑↑フォームに入力されているデータ↑↑↑↑↑↑↑↑////////// 
-
-
-    const { selectedDao, selectedNetwork } = data
+    const { selectedDao, selectedNetwork, nftContractAddress } = data
 
     // Verify users' address.
     const isVerified = await verifyAddressOwnership()
@@ -145,13 +147,17 @@ export default function RegisterNFT({ daos, networks }) {
     }
 
     // Save data to DB.
-    const result = await saveToDB(selectedDao, selectedNetwork)
+    const result = await saveToDB(
+      selectedDao,
+      selectedNetwork,
+      nftContractAddress
+    )
 
     if (result) {
       console.log('Successfully saved to DB.')
 
-    // Redirect user to nudge job posting.
-    // TODO: Display a message telling them they can add a job now.
+      // Redirect user to nudge job posting.
+      // TODO: Display a message telling them they can add a job now.
       router.push(`/job/post`)
     } else {
       router.push(`/`)
@@ -187,24 +193,26 @@ export default function RegisterNFT({ daos, networks }) {
               <div>
                 {/* DAO Selector - START */}
                 <div className="mt-sm w-2/3 sm:w-1/3">
-                <Controller
-                  control={control}
-                  name="selectedDao"
-                  rules={ { required: true } }
-                  render={({ 
-                    field: { onChange, value } 
-                  }) => (
-                    <DaoSelectBox 
-                      onChange={onChange}
-                      selectedDao={value}
-                      isReadyDaoOptions={isReadyDaoOptions}
-                      daoSelectorOptions={daoSelectorOptions}
-                    />
-                  )}
-                />
-                <div className="mt-2">
-                  {errors.selectedDao?.type === 'required' &&  <p className="text-red-400 text-sm">Daoを選択してください。</p>}
-                </div>
+                  <Controller
+                    control={control}
+                    name="selectedDao"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                      <DaoSelectBox
+                        onChange={onChange}
+                        selectedDao={value}
+                        isReadyDaoOptions={isReadyDaoOptions}
+                        daoSelectorOptions={daoSelectorOptions}
+                      />
+                    )}
+                  />
+                  <div className="mt-2">
+                    {errors.selectedDao?.type === 'required' && (
+                      <p className="text-red-400 text-sm">
+                        Daoを選択してください。
+                      </p>
+                    )}
+                  </div>
                 </div>
                 {/* DAO Selector - END */}
 
@@ -213,11 +221,9 @@ export default function RegisterNFT({ daos, networks }) {
                   <Controller
                     control={control}
                     name="selectedNetwork"
-                    rules={ { required: true } }
-                    render={({ 
-                      field: { onChange, value } 
-                    }) => (
-                      <NetworkSelectBox 
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                      <NetworkSelectBox
                         onChange={onChange}
                         selectedNetwork={value}
                         networkSelectorOptions={networkSelectorOptions}
@@ -225,7 +231,11 @@ export default function RegisterNFT({ daos, networks }) {
                     )}
                   />
                   <div className="mt-2">
-                    {errors.selectedNetwork?.type === 'required' &&  <p className="text-red-400 text-sm">Networkを選択してください。</p>}
+                    {errors.selectedNetwork?.type === 'required' && (
+                      <p className="text-red-400 text-sm">
+                        Networkを選択してください。
+                      </p>
+                    )}
                   </div>
                 </div>
                 {/* Network Selector - END */}
@@ -254,12 +264,15 @@ export default function RegisterNFT({ daos, networks }) {
                   />
                 </div>
                 <div className="mt-2">
-                  {errors.nftContractAddress?.type === 'required' && 
+                  {errors.nftContractAddress?.type === 'required' && (
                     <p className="text-red-400 text-sm">入力必須です。</p>
-                  }
-                  {(errors.nftContractAddress?.type === 'minLength' || errors.nftContractAddress?.type === 'maxLength') && 
-                    <p className="text-red-400 text-sm">0xから始まる42文字のコントラクトアドレスである必要があります。</p>
-                  }
+                  )}
+                  {(errors.nftContractAddress?.type === 'minLength' ||
+                    errors.nftContractAddress?.type === 'maxLength') && (
+                    <p className="text-red-400 text-sm">
+                      0xから始まる42文字のコントラクトアドレスである必要があります。
+                    </p>
+                  )}
                 </div>
                 {/* NftContractAddress - END */}
               </div>
