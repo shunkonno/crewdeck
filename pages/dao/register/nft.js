@@ -181,16 +181,12 @@ export default function RegisterNFT({ daos, networks }) {
           <div className="space-y-8 divide-y divide-slate-200">
             <div>
               <div>
-                <h3 className="text-lg leading-6 font-medium text-slate-900">
+                <h1 className="text-2xl leading-6 font-medium text-slate-900">
                   Register NFT
-                </h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  hoge hoge description. hoge hoge description. hoge hoge
-                  description.
-                </p>
+                </h1>
                 {isReadyDaoOptions && !daoSelectorOptions.length && (
                   <p className="mt-1 text-sm text-red-500">
-                    {`You don't have any NFT assigned by DAO. You cannot register NFT. `}
+                    {`You don't have any NFTs for a DAO. You cannot register NFT. `}
                   </p>
                 )}
               </div>
@@ -212,9 +208,7 @@ export default function RegisterNFT({ daos, networks }) {
                   />
                   <div className="mt-2">
                     {errors.selectedDao?.type === 'required' && (
-                      <p className="text-red-400 text-sm">
-                        Daoを選択してください。
-                      </p>
+                      <p className="text-red-400 text-sm">Select DAO.</p>
                     )}
                   </div>
                 </div>
@@ -236,9 +230,7 @@ export default function RegisterNFT({ daos, networks }) {
                   />
                   <div className="mt-2">
                     {errors.selectedNetwork?.type === 'required' && (
-                      <p className="text-red-400 text-sm">
-                        Networkを選択してください。
-                      </p>
+                      <p className="text-red-400 text-sm">Select network.</p>
                     )}
                   </div>
                 </div>
@@ -265,12 +257,14 @@ export default function RegisterNFT({ daos, networks }) {
                 </div>
                 <div className="mt-2">
                   {errors.nftContractAddress?.type === 'required' && (
-                    <p className="text-red-400 text-sm">入力必須です。</p>
+                    <p className="text-red-400 text-sm">
+                      This input is required.
+                    </p>
                   )}
                   {(errors.nftContractAddress?.type === 'minLength' ||
                     errors.nftContractAddress?.type === 'maxLength') && (
                     <p className="text-red-400 text-sm">
-                      0xから始まる42文字のコントラクトアドレスである必要があります。
+                      A contract address must be 42 letters starting with 0x.
                     </p>
                   )}
                 </div>
