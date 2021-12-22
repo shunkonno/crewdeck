@@ -24,7 +24,7 @@
 }
 
 .ais-SearchBox-input {
-  @apply pt-2 border-b border-slate-300 bg-transparent focus:outline-none;
+  @apply border-b border-slate-300 bg-transparent focus:outline-none;
 }
 
 .ais-SearchBox-submitIcon {
@@ -36,7 +36,7 @@
 }
 
 .ais-RefinementList-count {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800;
+  @apply inline-flex items-center px-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800;
 }
 
 /* Customize react-quill */

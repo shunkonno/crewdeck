@@ -173,13 +173,18 @@ export default function Browse({ tags, daos }) {
       <div className="py-md max-w-5xl mx-auto px-4 sm:px-0 block sm:flex spacing-x-4">
         <InstantSearch searchClient={searchClient} indexName="jobs">
           <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
-            <h3 className="text-sm font-medium">DAO</h3>
-            <RefinementList
-              attribute="dao"
-              searchable
-              translations={{ placeholder: 'Type to filter DAO' }}
-            />
-            <RefinementList attribute="tags" />
+            <div>
+              <h3 className="text-sm font-medium pb-2">DAO</h3>
+              <RefinementList
+                attribute="dao"
+                searchable
+                translations={{ placeholder: 'Type to filter DAO' }}
+              />
+            </div>
+            <div className="mt-4">
+              <h3 className="text-sm font-medium pb-2">Tag</h3>
+              <RefinementList attribute="tags" />
+            </div>
           </div>
           <main className="flex-1 px-sm mt-sm sm:mt-0 max-w-4xl">
             <Hits hitComponent={Hit} />
