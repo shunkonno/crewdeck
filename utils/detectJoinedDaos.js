@@ -1,4 +1,4 @@
-import { useGetTokenBalances } from '@components/hooks/useGetTokenBalances'
+import { getTokenBalances } from '@utils/getTokenBalances'
 
 // Filter the list of DAOs from DB, and filter the ones that the user owns tokens for. Set filtered array to state.
   // @params {array} daoList - The initial list of all DAOs.
@@ -8,7 +8,7 @@ import { useGetTokenBalances } from '@components/hooks/useGetTokenBalances'
       const filterResult = await daoList?.reduce(async (promise, dao) => {
         let accumulator = []
         accumulator = await promise
-        const data = await useGetTokenBalances(
+        const data = await getTokenBalances(
           currentAccount,
           dao.contract_address
         )

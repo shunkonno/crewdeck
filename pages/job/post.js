@@ -254,11 +254,13 @@ export default function PostJob({ daos, tags }) {
                   />
                 </div>
                 {/* Tags - END */}
+
                 {/* Public Settings - START */}
                 <div className="mt-sm">
                   <JobPublicSettingsFormField register={register} />
                 </div>
                 {/* Public Settings - END */}
+                
               </div>
             </div>
           </div>
