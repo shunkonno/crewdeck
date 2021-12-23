@@ -17,6 +17,8 @@ import { NftContractAddressInput } from '@components/ui/Input'
 // Functions
 import classNames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
+import { detectJoinedDaos } from '@utils/detectJoinedDaos'
+
 
 // Supabase
 import { supabase } from '@libs/supabase'
@@ -25,14 +27,12 @@ export default function RegisterNFT({ daos, networks }) {
   const { currentAccount, ethersProvider } = useAccount()
   const router = useRouter()
 
-  // **************************************************
-  // FORM SETTINGS
-  // **************************************************
-
+  // Dao Options UI Control State
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
   const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
   const networkSelectorOptions = networks
 
+  // React Hook Form Settings
   const {
     register,
     handleSubmit,
@@ -40,55 +40,14 @@ export default function RegisterNFT({ daos, networks }) {
     formState: { errors }
   } = useForm()
 
-  console.log('react-hook-form Errors', errors)
-
-  // Get token balance for a user's address to validate user's membership in a DAO.
-  // @params {string} eoaAddress - The public address of the user.
-  // @params {string} contractAddress - The contract address of the NFT for a DAO.
-  // @returns {object} tokenBalance - Returns either the balance or an error.
-  async function getTokenBalances(eoaAddress, contractAddress) {
-    const response = await fetch(
-      `/api/alchemy/ethereum/mainnet/getTokenBalances/?user=${eoaAddress}&contract=${contractAddress}`
-    )
-
-    const data = await response.json()
-
-    return data
-  }
-
-  // Filter the list of DAOs from DB, and filter the ones that the user owns tokens for. Set filtered array to state.
-  // @params {array} daoList - The initial list of all DAOs.
-  const filterDaoSelectorOptions = useCallback(
-    async (daoList) => {
-      // Filter DAO.
-      const filterResult = await daoList.reduce(async (promise, dao) => {
-        let accumulator = []
-        accumulator = await promise
-        const data = await getTokenBalances(
-          currentAccount,
-          dao.contract_address
-        )
-
-        // Get substring of tokenBalance. (e.g. 0x0000000000000000000000000000000000000000000000000000000000000001)
-        // If tokenBalance is greater than 0, the user owns at least one token.
-        if (Number(data.tokenBalance?.substring(2)) > 0) {
-          await accumulator.push(dao)
-        }
-        return accumulator
-      }, [])
-
-      setDaoSelectorOptions(filterResult)
-    },
-    [currentAccount]
-  )
+  Object.keys(errors).length && console.log('react-hook-form Errors', errors)
 
   useEffect(async () => {
-    console.log('useEffect')
     if (currentAccount) {
-      await filterDaoSelectorOptions(daos)
+      await detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions)
       await setIsReadyDaoOptions(true)
     }
-  }, [currentAccount, daos, filterDaoSelectorOptions])
+  }, [currentAccount, daos, detectJoinedDaos])
 
   // **************************************************
   // HANDLE DATA SUBMIT
