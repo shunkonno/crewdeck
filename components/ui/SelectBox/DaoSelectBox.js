@@ -20,10 +20,10 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
 
   return(
     <Listbox 
-      value={selected} 
+      value={selected}
       onChange={(e) => {
           setSelected
-          onChange && onChange(e);
+          onChange && onChange(e)
         }
       }
     >
