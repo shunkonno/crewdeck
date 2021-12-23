@@ -31,7 +31,6 @@ export default function PostJob({ daos, tags }) {
   // **************************************************
   // VALUES TO SUBMIT TO SERVER
   // **************************************************
-
   // tagsの数だけtag_idをキーの持つ、value falseのオブジェクトを作る
   const tagsStateObject = tags.reduce((accum, tag) => {
     return { ...accum, [tag.tag_id]: false }
@@ -40,7 +39,7 @@ export default function PostJob({ daos, tags }) {
   const [selectedTags, setSelectedTags] = useState(tagsStateObject)
 
   // React Hook Form Setting
-  const { register, handleSubmit, setValue, watch, control, formState: { errors } } = useForm()
+  const { register, handleSubmit, control, formState: { errors } } = useForm()
 
   Object.keys(errors).length && console.log('react-hook-form Errors', errors)
 
