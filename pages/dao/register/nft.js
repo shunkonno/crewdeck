@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import { ethers } from 'ethers'
+import React, { useEffect, useState } from 'react'
 
 // Vercel
 import { useRouter } from 'next/router'
@@ -34,7 +33,6 @@ export default function RegisterNFT({ daos, networks }) {
 
   // React Hook Form Settings
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors }

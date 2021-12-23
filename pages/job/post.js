@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { ethers } from 'ethers'
 
 // Contexts
 import { useAccount } from '@contexts/AccountContext'
