@@ -1,10 +1,6 @@
-import React, { Fragment, useEffect, useState, useCallback } from 'react'
-import dynamic from 'next/dynamic'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
-
-// Assets
-import { SelectorIcon, CheckIcon } from '@heroicons/react/solid'
 
 // Contexts
 import { useAccount } from '@contexts/AccountContext'
@@ -12,9 +8,14 @@ import { useAccount } from '@contexts/AccountContext'
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
-import { DaoSelectBox } from '@components/ui/SelectBox'
 
-import { Listbox, Transition } from '@headlessui/react'
+import { 
+  JobTitleFormField, 
+  JobDescriptionFormField, 
+  JobDaoFormField, 
+  JobTagsFormField, 
+  JobPublicSettingsFormField 
+} from '@components/ui/FormField'
 
 // Functions
 import classNames from 'classnames'
@@ -23,10 +24,6 @@ import { useForm, Controller } from 'react-hook-form'
 // Supabase
 import { supabase } from '@libs/supabase'
 
-// Quill Editor - Dynamic import to prevent SSR --- https://github.com/zenoamaro/react-quill
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
-import 'react-quill/dist/quill.snow.css'
-
 export default function PostJob({ daos, tags }) {
   const { currentAccount, ethersProvider } = useAccount()
   const router = useRouter()
@@ -34,9 +31,6 @@ export default function PostJob({ daos, tags }) {
   // **************************************************
   // VALUES TO SUBMIT TO SERVER
   // **************************************************
-  const [title, setTitle] = useState('')
-  const [editorContent, setEditorContent] = useState('')
-  const [isPublic, setIsPublic] = useState(true)
 
   // tagsの数だけtag_idをキーの持つ、value falseのオブジェクトを作る
   const tagsStateObject = tags.reduce((accum, tag) => {
@@ -46,9 +40,9 @@ export default function PostJob({ daos, tags }) {
   const [selectedTags, setSelectedTags] = useState(tagsStateObject)
 
   // React Hook Form Setting
-  const { register, handleSubmit, control, formState: { errors } } = useForm()
+  const { register, handleSubmit, setValue, watch, control, formState: { errors } } = useForm()
 
-  console.log('react-hook-form Errors', errors)
+  Object.keys(errors).length && console.log('react-hook-form Errors', errors)
 
   // **************************************************
   // FORM SETTINGS
@@ -56,28 +50,6 @@ export default function PostJob({ daos, tags }) {
 
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
   const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
-
-  const publicSettings = [
-    {
-      id: 'public',
-      name: 'Public',
-      description: 'Your post will show up on search results.'
-    },
-    {
-      id: 'private',
-      name: 'Private',
-      description:
-        'Access only if the person knows the URL. Your post will not show up on search results.'
-    }
-  ]
-
-  const quillModules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      ['blockquote']
-    ]
-  }
 
   // **************************************************
   // HANDLE OPTIONS
@@ -148,7 +120,7 @@ export default function PostJob({ daos, tags }) {
   }
 
   // Saves job.
-  async function saveJob(selectedDao) {
+  async function saveJob(title, selectedDao, editorContent, isPublic) {
     const { data: result, saveJobError } = await supabase.from('jobs').insert([
       {
         title: title,
@@ -189,9 +161,10 @@ export default function PostJob({ daos, tags }) {
   }
 
   // Saves data to DB.
-  async function saveToDB(selectedDao) {
+  async function saveToDB(title, selectedDao, editorContent, isPublic) {
+
     // Save job.
-    const saveJobResult = await saveJob(selectedDao)
+    const saveJobResult = await saveJob(title, selectedDao, editorContent, isPublic)
 
     if (saveJobResult) {
       // Save tagIds with true bool value.
@@ -223,12 +196,14 @@ export default function PostJob({ daos, tags }) {
     return isVerified
   }
 
+  function onTestSubmit (data) { console.log(data) }
+
   // Handles data submit.
   async function onSubmit(data) {
     
     console.log('SubmitData', data) 
 
-    const {} = data
+    const { title, selectedDao, editorContent, isPublic } = data
 
     // Verify users' address.
     const isVerified = await verifyAddressOwnership()
@@ -239,7 +214,7 @@ export default function PostJob({ daos, tags }) {
     }
 
     // Save data to DB.
-    const result = await saveToDB()
+    const result = await saveToDB(title, selectedDao, editorContent, isPublic)
 
     // If result if false, exit function.
     if (!result) {
@@ -308,149 +283,43 @@ export default function PostJob({ daos, tags }) {
               <div>
                 {/* Title - START */}
                 <div className="mt-sm">
-                  <label className="block font-medium text-slate-700">
-                    Title
-                  </label>
-                  <p className="mt-1 text-sm text-slate-500">
-                    This is the first thing shown. Try to make it concise.
-                  </p>
-                  <input
-                    type="text"
-                    className="mt-1 text-xl py-1 shadow-sm border focus:outline-none focus:border-primary px-2 block w-full rounded-md border-slate-300"
-                    onChange={(e) => {
-                      setTitle(e.target.value)
-                    }}
-                    {...register("title",{
-                      required: true,
-                      maxLength: 80
-                    })
-                    }
-                  />
-                </div>
-                <div className="mt-2">
-                  {errors.title?.type === 'required' && 
-                    <p className="text-red-400 text-sm">入力必須です。</p>
-                  }
-                  {errors.title?.type === 'minLength' && 
-                    <p className="text-red-400 text-sm">最小10文字</p>
-                  }
-                  {errors.title?.type === 'maxLength' && 
-                    <p className="text-red-400 text-sm">最大80文字</p>
-                  }
-                </div>
+                  <JobTitleFormField errors={errors} register={register} />
                 {/* Title - END */}
+                </div>
 
                 {/* DAO Selector - START */}
                 <div className="mt-sm w-2/3 sm:w-1/3">
-                  <Controller
-                    control={control}
-                    name="selectedDao"
-                    rules={ { required: true } }
-                    render={({ 
-                      field: { onChange, value } 
-                    }) => (
-                      <DaoSelectBox 
-                        onChange={onChange}
-                        selectedDao={value}
-                        isReadyDaoOptions={isReadyDaoOptions}
-                        daoSelectorOptions={daoSelectorOptions}
-                      />
-                    )}
+                  <JobDaoFormField 
+                    Controller={Controller} 
+                    control={control} 
+                    errors={errors}
+                    isReadyDaoOptions={isReadyDaoOptions} 
+                    daoSelectorOptions={daoSelectorOptions}
                   />
-                </div>
-                <div className="mt-2">
-                  {errors.selectedDao?.type === 'required' &&  <p className="text-red-400 text-sm">Daoを選択してください。</p>}
                 </div>
                 {/* DAO Selector - END */}
 
                 {/* Editor - START */}
                 <div className="mt-sm">
-                  <label className="block font-medium text-slate-700">
-                    Description
-                  </label>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Describe the job, including some background.
-                  </p>
-                  <div className="mt-1">
-                    <ReactQuill
-                      theme="snow"
-                      modules={quillModules}
-                      value={editorContent}
-                      onChange={setEditorContent}
-                    />
-                  </div>
+                  <JobDescriptionFormField
+                    Controller={Controller} 
+                    control={control}
+                  />
                 </div>
                 {/* Editor - END */}
 
                 {/* Tags - END */}
                 <div className="mt-sm">
-                  <h3 className="text-sm font-medium mt-sm">Tags</h3>
-                  {tags.map((tag) => (
-                    <span
-                      key={tag.tag_id}
-                      className={classNames(
-                        selectedTags[tag.tag_id]
-                          ? 'ring-offset-2 ring-2 ring-teal-400'
-                          : 'opacity-50',
-                        'inline-block mt-4 items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4 cursor-pointer'
-                      )}
-                      style={{ backgroundColor: tag.color_code }}
-                      onClick={() =>
-                        setSelectedTags((prev) => ({
-                          ...prev,
-                          [tag.tag_id]: !prev[tag.tag_id]
-                        }))
-                      }
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
+                  <JobTagsFormField 
+                    tags={tags} 
+                    selectedTags={selectedTags} 
+                    setSelectedTags={setSelectedTags}
+                  />
                 </div>
                 {/* Tags - END */}
                 {/* Public Settings - START */}
                 <div className="mt-sm">
-                  <fieldset>
-                    <legend className="sr-only">Public Settings</legend>
-                    <label className="block font-medium text-slate-700">
-                      Public Settings
-                    </label>
-                    <div className="mt-xs space-y-5">
-                      {publicSettings.map((publicSetting) => (
-                        <div
-                          key={publicSetting.id}
-                          className="relative flex items-start"
-                        >
-                          <div className="flex items-center h-5">
-                            <input
-                              id={publicSetting.id}
-                              aria-describedby={`${publicSetting.id}-description`}
-                              name="publicSetting"
-                              type="radio"
-                              defaultChecked={publicSetting.id === 'public'}
-                              className="h-4 w-4 text-primary border-slate-300"
-                              onClick={() => {
-                                setIsPublic(publicSetting.id === 'public')
-                              }}
-                            />
-                          </div>
-                          <div className="ml-3 text-sm">
-                            <label
-                              htmlFor={publicSetting.id}
-                              className="font-medium text-slate-700"
-                            >
-                              {publicSetting.name}
-                            </label>
-                            <p
-                              id={`${publicSetting.id}-description`}
-                              className="text-slate-500"
-                            >
-                              {publicSetting.description}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </fieldset>
+                  <JobPublicSettingsFormField register={register} />
                 </div>
                 {/* Public Settings - END */}
               </div>
