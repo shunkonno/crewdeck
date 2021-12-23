@@ -22,6 +22,7 @@ import { useForm, Controller } from 'react-hook-form'
 // Functions
 import classNames from 'classnames'
 import { detectJoinedDaos } from '@utils/detectJoinedDaos'
+import { verifyAddressOwnership } from '@utils/verifyAddressOwnership'
 
 // Supabase
 import { supabase } from '@libs/supabase'
@@ -133,24 +134,6 @@ export default function PostJob({ daos, tags }) {
     return saveJobResult
   }
 
-  // Verifies if the user holds the private key for the public address. (EIP-191)
-  // @returns {bool} isVerified - Returns whether the address has been verified.
-  async function verifyAddressOwnership() {
-    // Sign a message.
-    const signer = ethersProvider.getSigner()
-    const message =
-      'Please sign this message for verification. This does not incur any gas fees.'
-    const signature = await signer.signMessage(message)
-
-    // Get public address used to sign the message.
-    const address = ethers.utils.verifyMessage(message, signature)
-
-    // If currentAccount equals address, we know that the user has the private key for the currentAccount.
-    const isVerified = currentAccount === address ? true : false
-
-    return isVerified
-  }
-
   function onTestSubmit (data) { console.log(data) }
 
   // Handles data submit.
@@ -161,7 +144,7 @@ export default function PostJob({ daos, tags }) {
     const { title, selectedDao, editorContent, isPublic } = data
 
     // Verify users' address.
-    const isVerified = await verifyAddressOwnership()
+    const isVerified = await verifyAddressOwnership(currentAccount, ethersProvider)
 
     // Exit process if the users' address can't be verified.
     if (!isVerified) {
