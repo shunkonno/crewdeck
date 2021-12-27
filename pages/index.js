@@ -93,10 +93,10 @@ export default function Home({ daos, tags }) {
           </div>
           {/* SearchBar - END */}
           {/* Tags - START */}
-          <div className="inline-flex w-full py-md">
+          <div className="inline-flex flex-wrap w-full py-md gap-4">
             {tags.map((tag) => (
               <div key={tag.tag_id}>
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800 mr-4" style={{ backgroundColor: tag.color_code}}>
+                <span className="inline-block items-center px-2 py-0.5 rounded text-sm font-medium text-slate-800" style={{ backgroundColor: tag.color_code}}>
                   {tag.name}
                 </span>
               </div>
