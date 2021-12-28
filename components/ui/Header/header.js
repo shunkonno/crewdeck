@@ -109,7 +109,7 @@ export function Header() {
                           }
                         </div>
                       </div>
-                      <div className="pt-2">
+                      {/* <div className="pt-2">
                         <div>
                           {
                             <a
@@ -122,7 +122,7 @@ export function Header() {
                             </a>
                           }
                         </div>
-                      </div>
+                      </div> */}
                     </>
                   ) : (
                     <div className="flex justify-center mt-xs">
@@ -192,7 +192,7 @@ export function Header() {
                                   }
                                 </Menu.Item>
                               </div>
-                              <div className="p-2">
+                              {/* <div className="p-2">
                                 <Menu.Item>
                                   {
                                     <MyLink href="/dao/register/nft">
@@ -203,7 +203,7 @@ export function Header() {
                                     </MyLink>
                                   }
                                 </Menu.Item>
-                              </div>
+                              </div> */}
                             </Menu.Items>
                           </Transition>
                         </Menu>
