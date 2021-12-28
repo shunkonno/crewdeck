@@ -9,22 +9,24 @@ import { Listbox, Transition } from '@headlessui/react'
 // Functions
 import classNames from 'classnames'
 
-export function NetworkSelectBox({onChange, selectedNetwork, networkSelectorOptions}) {
-
+export function NetworkSelectBox({
+  onChange,
+  selectedNetwork,
+  networkSelectorOptions
+}) {
   const [selected, setSelected] = useState(selectedNetwork || null)
 
-  useEffect(()=>{
+  useEffect(() => {
     setSelected(selectedNetwork)
-  },[selectedNetwork])
+  }, [selectedNetwork])
 
-  return(
+  return (
     <Listbox
       value={selected}
       onChange={(e) => {
-          setSelected
-          onChange && onChange(e);
-        }
-      }
+        setSelected
+        onChange && onChange(e)
+      }}
     >
       {({ open }) => (
         <>
@@ -40,7 +42,7 @@ export function NetworkSelectBox({onChange, selectedNetwork, networkSelectorOpti
               <span className="flex items-center">
                 {selected === undefined ? (
                   <span className="block truncate text-black">
-                    {'select your network'}
+                    {'Select your network'}
                   </span>
                 ) : (
                   <>
@@ -77,9 +79,7 @@ export function NetworkSelectBox({onChange, selectedNetwork, networkSelectorOpti
                     key={network.network_id}
                     className={({ active }) =>
                       classNames(
-                        active
-                          ? 'text-white bg-primary'
-                          : 'text-slate-900',
+                        active ? 'text-white bg-primary' : 'text-slate-900',
                         'cursor-default select-none relative py-2 pl-3 pr-9 list-none'
                       )
                     }
@@ -97,9 +97,7 @@ export function NetworkSelectBox({onChange, selectedNetwork, networkSelectorOpti
                           )}
                           <span
                             className={classNames(
-                              selected
-                                ? 'font-semibold'
-                                : 'font-normal',
+                              selected ? 'font-semibold' : 'font-normal',
                               'ml-3 block truncate'
                             )}
                           >
@@ -110,16 +108,11 @@ export function NetworkSelectBox({onChange, selectedNetwork, networkSelectorOpti
                         {selected ? (
                           <span
                             className={classNames(
-                              active
-                                ? 'text-white'
-                                : 'text-primary',
+                              active ? 'text-white' : 'text-primary',
                               'absolute inset-y-0 right-0 flex items-center pr-4'
                             )}
                           >
-                            <CheckIcon
-                              className="h-5 w-5"
-                              aria-hidden="true"
-                            />
+                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>
                         ) : null}
                       </>

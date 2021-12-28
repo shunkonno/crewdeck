@@ -5,7 +5,7 @@ import useSWR from 'swr'
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
-import {JobFilterPopover} from '@components/ui/Popover'
+import { JobFilterPopover } from '@components/ui/Popover'
 
 // Supabase
 import { supabase } from '@libs/supabase'
@@ -126,11 +126,14 @@ export default function Browse({ tags, daos }) {
   function Hit(props) {
     console.log(props.hit)
     const tagsForRender = []
-    props.hit.tags && 
-      props.hit.tags.map((tag,index) => {
-        tagsForRender.push({name: tag, color_code: props.hit.tagColors[index]})
+    props.hit.tags &&
+      props.hit.tags.map((tag, index) => {
+        tagsForRender.push({
+          name: tag,
+          color_code: props.hit.tagColors[index]
+        })
       })
-    
+
     console.log(tagsForRender)
     return (
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
@@ -143,16 +146,16 @@ export default function Browse({ tags, daos }) {
                     {props.hit.title}
                   </h2>
                 </div>
-                <div className='inline-flex'>
+                <div className="inline-flex">
                   {/* <img src={props.hit.logo_url} className='w-6 h-6' /> */}
                   <h3 className="text-sm">{props.hit.dao}</h3>
                 </div>
-                <div className='mt-4 inline-flex w-full gap-2 flex-wrap'>
-                  {tagsForRender?.map((tag)=>(
+                <div className="mt-4 inline-flex w-full gap-2 flex-wrap">
+                  {tagsForRender?.map((tag) => (
                     <span
-                      key={tag.name} 
-                      className='inline-block px-2 py-0.5 rounded text-sm font-medium text-slate-800' 
-                      style={{backgroundColor: tag.color_code}}
+                      key={tag.name}
+                      className="inline-block px-2 py-0.5 rounded text-sm font-medium text-slate-800"
+                      style={{ backgroundColor: tag.color_code }}
                     >
                       {tag.name}
                     </span>
@@ -171,7 +174,6 @@ export default function Browse({ tags, daos }) {
       <SEO title="Browse" description="Browse Jobs" />
       {/* Search - START */}
       <div className="py-md max-w-5xl mx-auto px-xs sm:px-0 block sm:flex spacing-x-4">
-        
         <InstantSearch searchClient={searchClient} indexName="jobs">
           <JobFilterPopover RefinementList={RefinementList} />
           <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
@@ -191,7 +193,7 @@ export default function Browse({ tags, daos }) {
             </div>
           </div>
           <main className="flex-1 mt-xs sm:mt-0 max-w-4xl">
-            <h1 className="text-3xl font-bold hidden sm:block mb-4">Find Job</h1>
+            <h1 className="text-3xl font-bold hidden sm:block mb-4">Jobs</h1>
             <Hits hitComponent={Hit} />
           </main>
         </InstantSearch>
