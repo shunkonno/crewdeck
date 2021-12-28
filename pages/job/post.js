@@ -92,9 +92,10 @@ export default function PostJob({ daos, tags }) {
   async function saveTags(jobId, tagIds) {
     const insertObjectList = []
 
-    tagIds.map((tagId) => {
-      insertObjectList.push({ job_id: jobId, tag_id: tagId })
-    })
+    tagIds.length &&
+      tagIds.map((tagId) => {
+        insertObjectList.push({ job_id: jobId, tag_id: tagId })
+      })
 
     const { data: result, saveTagsError } = await supabase
       .from('jobs_to_tags')
@@ -175,6 +176,7 @@ export default function PostJob({ daos, tags }) {
         const selectedTagNames = []
         const selectedTagColors = []
 
+        selectedTags.length &&
         selectedTags.map((selectedTagId) => {
           tags.map((tag) => {
             if (tag.tag_id === selectedTagId) {
