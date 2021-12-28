@@ -9,23 +9,25 @@ import { Listbox, Transition } from '@headlessui/react'
 // Functions
 import classNames from 'classnames'
 
+export function DaoSelectBox({
+  onChange,
+  selectedDao,
+  daoSelectorOptions,
+  isReadyDaoOptions
+}) {
+  const [selected, setSelected] = useState(selectedDao || null)
 
-export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReadyDaoOptions}) {
-
-  const [selected, setSelected] = useState(selectedDao|| null)
-
-  useEffect(()=>{
+  useEffect(() => {
     setSelected(selectedDao)
-  },[selectedDao])
+  }, [selectedDao])
 
-  return(
-    <Listbox 
+  return (
+    <Listbox
       value={selected}
       onChange={(e) => {
-          setSelected
-          onChange && onChange(e)
-        }
-      }
+        setSelected
+        onChange && onChange(e)
+      }}
     >
       {({ open }) => (
         <>
@@ -34,6 +36,16 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
           </Listbox.Label>
           <p className="mt-1 text-sm text-slate-500">
             Select the DAO you own a token for.
+            <br />
+            Not in the list?{' '}
+            <span>
+              <a
+                className="text-blue-500"
+                href="https://docs.google.com/forms/d/1J_xx0eTRmsSwzsXFUVUwilhtOYqJfBJhqQH_5Wt9NH0/"
+              >
+                Apply here.
+              </a>
+            </span>
           </p>
           <div className="mt-1 relative">
             <Listbox.Button
@@ -49,7 +61,7 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
                   daoSelectorOptions.length ? (
                     selected === undefined ? (
                       <span className="block truncate text-black">
-                        {'select your dao'}
+                        {'Select your DAO'}
                       </span>
                     ) : (
                       <>
@@ -67,7 +79,7 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
                     )
                   ) : (
                     <span className="block truncate text-slate-600">
-                      {`no DAO options`}
+                      {`No DAO options`}
                     </span>
                   )
                 ) : (
@@ -97,9 +109,7 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
                       key={dao.dao_id}
                       className={({ active }) =>
                         classNames(
-                          active
-                            ? 'text-white bg-primary'
-                            : 'text-slate-900',
+                          active ? 'text-white bg-primary' : 'text-slate-900',
                           'cursor-default select-none relative py-2 pl-3 pr-9 list-none'
                         )
                       }
@@ -117,9 +127,7 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
                             )}
                             <span
                               className={classNames(
-                                selected
-                                  ? 'font-semibold'
-                                  : 'font-normal',
+                                selected ? 'font-semibold' : 'font-normal',
                                 'ml-3 block truncate'
                               )}
                             >
@@ -130,9 +138,7 @@ export function DaoSelectBox({onChange, selectedDao, daoSelectorOptions, isReady
                           {selected ? (
                             <span
                               className={classNames(
-                                active
-                                  ? 'text-white'
-                                  : 'text-primary',
+                                active ? 'text-white' : 'text-primary',
                                 'absolute inset-y-0 right-0 flex items-center pr-4'
                               )}
                             >
