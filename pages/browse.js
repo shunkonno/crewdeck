@@ -125,7 +125,13 @@ export default function Browse({ tags, daos }) {
 
   function Hit(props) {
     console.log(props.hit)
+    const tagsForRender = []
+    props.hit.tags && 
+      props.hit.tags.map((tag,index) => {
+        tagsForRender.push({name: tag, color_code: props.hit.tagColors[index]})
+      })
     
+    console.log(tagsForRender)
     return (
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
         <Link href={`/job/${props.hit.objectID}`}>
@@ -142,8 +148,12 @@ export default function Browse({ tags, daos }) {
                   <h3 className="text-sm">{props.hit.dao}</h3>
                 </div>
                 <div className='mt-4 inline-flex w-full gap-2 flex-wrap'>
-                  {props.hit.tags.map((tag)=>(
-                    <span className='bg-slate-200 px-3 rounded-md text-sm'>
+                  {tagsForRender?.map((tag)=>(
+                    <span
+                      key={tag.name} 
+                      className='inline-block px-2 py-0.5 rounded text-sm font-medium text-slate-800' 
+                      style={{backgroundColor: tag.color_code}}
+                    >
                       {tag.name}
                     </span>
                   ))}
