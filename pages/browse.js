@@ -150,17 +150,19 @@ export default function Browse({ tags, daos }) {
                   {/* <img src={props.hit.logo_url} className='w-6 h-6' /> */}
                   <h3 className="text-sm">{props.hit.dao}</h3>
                 </div>
-                <div className="mt-4 inline-flex w-full gap-2 flex-wrap">
-                  {tagsForRender?.map((tag) => (
-                    <span
-                      key={tag.name}
-                      className="inline-block px-2 py-0.5 rounded text-sm font-medium text-slate-800"
-                      style={{ backgroundColor: tag.color_code }}
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
-                </div>
+                {tagsForRender.length > 0 && (
+                  <div className="mt-2 inline-flex w-full gap-2 flex-wrap">
+                    {tagsForRender.map((tag) => (
+                      <span
+                        key={tag.name}
+                        className="inline-block px-2 py-0.5 rounded text-sm font-medium text-slate-800"
+                        style={{ backgroundColor: tag.color_code }}
+                      >
+                        {tag.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </a>
