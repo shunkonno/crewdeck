@@ -125,6 +125,7 @@ export default function Browse({ tags, daos }) {
 
   function Hit(props) {
     console.log(props.hit)
+    
     return (
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
         <Link href={`/job/${props.hit.objectID}`}>
@@ -143,7 +144,7 @@ export default function Browse({ tags, daos }) {
                 <div className='mt-4 inline-flex w-full gap-2 flex-wrap'>
                   {props.hit.tags.map((tag)=>(
                     <span className='bg-slate-200 px-3 rounded-md text-sm'>
-                      {tag}
+                      {tag.name}
                     </span>
                   ))}
                 </div>

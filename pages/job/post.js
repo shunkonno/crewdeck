@@ -132,6 +132,8 @@ export default function PostJob({ daos, tags }) {
     return saveJobResult
   }
 
+  function onTestSubmit(data) {console.log(data)}
+
   // Handles data submit.
   async function onSubmit(data) {
     console.log('SubmitData', data)
@@ -170,14 +172,13 @@ export default function PostJob({ daos, tags }) {
       // If isPublic is true, save object to Algolia to be indexed.
       if (isPublic) {
         // Extract tag names.
-        const selectedTagNames = []
-        const selectedTagColors = []
+        const selectedTagArray = []
+        // const selectedTagColors = []
 
         selectedTags.map((selectedTagId) => {
           tags.map((tag) => {
             if (tag.tag_id === selectedTagId) {
-              selectedTagNames.push(tag.name)
-              selectedTagColors.push(tag.color_code)
+              selectedTagObj.push({name: tag.name, color_code: tag.color_code})
             }
           })
         })
@@ -187,8 +188,7 @@ export default function PostJob({ daos, tags }) {
           title: title,
           dao: selectedDao.name,
           daoLogo: selectedDao.logo_url,
-          tags: selectedTagNames,
-          tagColors: selectedTagColors
+          tags: selectedTagArray,
         }
 
         await saveToAlgolia(algoliaObject)
