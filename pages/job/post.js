@@ -30,21 +30,11 @@ export default function PostJob({ daos, tags }) {
   const { currentAccount, ethersProvider } = useAccount()
   const router = useRouter()
 
-  // **************************************************
-  // VALUES TO SUBMIT TO SERVER
-  // **************************************************
-  // tagsの数だけtag_idをキーの持つ、value falseのオブジェクトを作る
-  const tagsStateObject = tags.reduce((accum, tag) => {
-    return { ...accum, [tag.tag_id]: false }
-  }, {})
-
-  const [selectedTags, setSelectedTags] = useState(tagsStateObject)
-
   // React Hook Form Setting
   const { register, handleSubmit, control, formState: { errors } } = useForm()
 
-  Object.keys(errors).length && console.log('react-hook-form Errors', errors)
-
+  Object.keys(errors).length && 
+    console.log('react-hook-form Errors', errors)
 
   // Dao Options UI Control State
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
@@ -116,31 +106,24 @@ export default function PostJob({ daos, tags }) {
   }
 
   // Saves data to DB.
-  async function saveToDB(title, selectedDao, editorContent, isPublic) {
+  async function saveToDB(title, selectedDao, editorContent, selectedTags, isPublic) {
 
     // Save job.
     const saveJobResult = await saveJob(title, selectedDao, editorContent, isPublic)
 
     if (saveJobResult) {
-      // Save tagIds with true bool value.
-      const selectedTagIds = Object.keys(selectedTags).filter((key) => {
-        return selectedTags[key]
-      })
-
-      await saveTags(saveJobResult[0].job_id, selectedTagIds)
+      await saveTags(saveJobResult[0].job_id, selectedTags)
     }
 
     return saveJobResult
   }
-
-  function onTestSubmit (data) { console.log(data) }
 
   // Handles data submit.
   async function onSubmit(data) {
     
     console.log('SubmitData', data) 
 
-    const { title, selectedDao, editorContent, isPublic } = data
+    const { title, selectedDao, editorContent, selectedTags, isPublic } = data
 
     // Verify users' address.
     const isVerified = await verifyAddressOwnership(currentAccount, ethersProvider)
@@ -151,7 +134,7 @@ export default function PostJob({ daos, tags }) {
     }
 
     // Save data to DB.
-    const result = await saveToDB(title, selectedDao, editorContent, isPublic)
+    const result = await saveToDB(title, selectedDao, editorContent, selectedTags, isPublic)
 
     // If result if false, exit function.
     if (!result) {
@@ -163,15 +146,10 @@ export default function PostJob({ daos, tags }) {
 
       // If isPublic is true, save object to Algolia to be indexed.
       if (isPublic) {
-        // Extract tags IDs.
-        const selectedTagIds = Object.keys(selectedTags).filter((key) => {
-          return selectedTags[key]
-        })
-
         // Extract tag names.
         const selectedTagNames = []
 
-        selectedTagIds.map((selectedTagId) => {
+        selectedTags.map((selectedTagId) => {
           tags.map((tag) => {
             if (tag.tag_id === selectedTagId) {
               selectedTagNames.push(tag.name)
@@ -249,8 +227,7 @@ export default function PostJob({ daos, tags }) {
                 <div className="mt-sm">
                   <JobTagsFormField 
                     tags={tags} 
-                    selectedTags={selectedTags} 
-                    setSelectedTags={setSelectedTags}
+                    register={register}
                   />
                 </div>
                 {/* Tags - END */}
@@ -260,7 +237,7 @@ export default function PostJob({ daos, tags }) {
                   <JobPublicSettingsFormField register={register} />
                 </div>
                 {/* Public Settings - END */}
-                
+
               </div>
             </div>
           </div>
