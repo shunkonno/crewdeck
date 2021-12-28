@@ -8,12 +8,12 @@ import { useAccount } from '@contexts/AccountContext'
 import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
 
-import { 
-  JobTitleFormField, 
-  JobDescriptionFormField, 
-  JobDaoFormField, 
-  JobTagsFormField, 
-  JobPublicSettingsFormField 
+import {
+  JobTitleFormField,
+  JobDescriptionFormField,
+  JobDaoFormField,
+  JobTagsFormField,
+  JobPublicSettingsFormField
 } from '@components/ui/FormField'
 
 import { useForm, Controller } from 'react-hook-form'
@@ -31,10 +31,14 @@ export default function PostJob({ daos, tags }) {
   const router = useRouter()
 
   // React Hook Form Setting
-  const { register, handleSubmit, control, formState: { errors } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors }
+  } = useForm()
 
-  Object.keys(errors).length && 
-    console.log('react-hook-form Errors', errors)
+  Object.keys(errors).length && console.log('react-hook-form Errors', errors)
 
   // Dao Options UI Control State
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
@@ -106,10 +110,20 @@ export default function PostJob({ daos, tags }) {
   }
 
   // Saves data to DB.
-  async function saveToDB(title, selectedDao, editorContent, selectedTags, isPublic) {
-
+  async function saveToDB(
+    title,
+    selectedDao,
+    editorContent,
+    selectedTags,
+    isPublic
+  ) {
     // Save job.
-    const saveJobResult = await saveJob(title, selectedDao, editorContent, isPublic)
+    const saveJobResult = await saveJob(
+      title,
+      selectedDao,
+      editorContent,
+      isPublic
+    )
 
     if (saveJobResult) {
       await saveTags(saveJobResult[0].job_id, selectedTags)
@@ -120,13 +134,16 @@ export default function PostJob({ daos, tags }) {
 
   // Handles data submit.
   async function onSubmit(data) {
-    
-    console.log('SubmitData', data) 
+    console.log('SubmitData', data)
 
     const { title, selectedDao, editorContent, selectedTags, isPublic } = data
+    console.log(selectedTags)
 
     // Verify users' address.
-    const isVerified = await verifyAddressOwnership(currentAccount, ethersProvider)
+    const isVerified = await verifyAddressOwnership(
+      currentAccount,
+      ethersProvider
+    )
 
     // Exit process if the users' address can't be verified.
     if (!isVerified) {
@@ -134,7 +151,13 @@ export default function PostJob({ daos, tags }) {
     }
 
     // Save data to DB.
-    const result = await saveToDB(title, selectedDao, editorContent, selectedTags, isPublic)
+    const result = await saveToDB(
+      title,
+      selectedDao,
+      editorContent,
+      selectedTags,
+      isPublic
+    )
 
     // If result if false, exit function.
     if (!result) {
@@ -148,11 +171,13 @@ export default function PostJob({ daos, tags }) {
       if (isPublic) {
         // Extract tag names.
         const selectedTagNames = []
+        const selectedTagColors = []
 
         selectedTags.map((selectedTagId) => {
           tags.map((tag) => {
             if (tag.tag_id === selectedTagId) {
               selectedTagNames.push(tag.name)
+              selectedTagColors.push(tag.color_code)
             }
           })
         })
@@ -161,7 +186,9 @@ export default function PostJob({ daos, tags }) {
           objectID: result[0].job_id,
           title: title,
           dao: selectedDao.name,
-          tags: selectedTagNames
+          daoLogo: selectedDao.logo_url,
+          tags: selectedTagNames,
+          tagColors: selectedTagColors
         }
 
         await saveToAlgolia(algoliaObject)
@@ -199,16 +226,16 @@ export default function PostJob({ daos, tags }) {
                 {/* Title - START */}
                 <div className="mt-sm">
                   <JobTitleFormField errors={errors} register={register} />
-                {/* Title - END */}
+                  {/* Title - END */}
                 </div>
 
                 {/* DAO Selector - START */}
                 <div className="mt-sm w-2/3 sm:w-1/3">
-                  <JobDaoFormField 
-                    Controller={Controller} 
-                    control={control} 
+                  <JobDaoFormField
+                    Controller={Controller}
+                    control={control}
                     errors={errors}
-                    isReadyDaoOptions={isReadyDaoOptions} 
+                    isReadyDaoOptions={isReadyDaoOptions}
                     daoSelectorOptions={daoSelectorOptions}
                   />
                 </div>
@@ -217,7 +244,7 @@ export default function PostJob({ daos, tags }) {
                 {/* Editor - START */}
                 <div className="mt-sm">
                   <JobDescriptionFormField
-                    Controller={Controller} 
+                    Controller={Controller}
                     control={control}
                   />
                 </div>
@@ -225,10 +252,7 @@ export default function PostJob({ daos, tags }) {
 
                 {/* Tags - END */}
                 <div className="mt-sm">
-                  <JobTagsFormField 
-                    tags={tags} 
-                    register={register}
-                  />
+                  <JobTagsFormField tags={tags} register={register} />
                 </div>
                 {/* Tags - END */}
 
@@ -237,7 +261,6 @@ export default function PostJob({ daos, tags }) {
                   <JobPublicSettingsFormField register={register} />
                 </div>
                 {/* Public Settings - END */}
-
               </div>
             </div>
           </div>
