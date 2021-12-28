@@ -143,12 +143,15 @@ export default function Browse({ tags, daos }) {
                     {props.hit.title}
                   </h2>
                 </div>
-                <div className='inline-flex'>
-                  {/* <img src={props.hit.logo_url} className='w-6 h-6' /> */}
+                <div className='inline-flex items-center mt-2'>
+                  {props.hit.daoLogo &&
+                    <img src={props.hit.daoLogo} className='w-6 h-6 mr-2' />
+                  }
                   <h3 className="text-sm">{props.hit.dao}</h3>
                 </div>
-                <div className='mt-4 inline-flex w-full gap-2 flex-wrap'>
-                  {tagsForRender?.map((tag)=>(
+                {tagsForRender.length > 0 &&
+                <div className='mt-2 inline-flex w-full gap-2 flex-wrap'>
+                  {tagsForRender.map((tag)=>(
                     <span
                       key={tag.name} 
                       className='inline-block px-2 py-0.5 rounded text-sm font-medium text-slate-800' 
@@ -158,6 +161,7 @@ export default function Browse({ tags, daos }) {
                     </span>
                   ))}
                 </div>
+                }
               </div>
             </div>
           </a>
