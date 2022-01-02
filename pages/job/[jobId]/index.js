@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import sanitizeHTML from 'sanitize-html'
 // Components
 import { BaseLayout } from '@components/ui/Layout'
@@ -87,10 +89,13 @@ export default function Job({ job, dao }) {
           <div className="bg-white border border-slate-300 p-xs rounded-lg">
             <div className="inline-flex items-center">
               {dao.logo_url && (
-                <img
-                  src={dao.logo_url}
-                  className="inline-block flex-shrink-0 h-8 w-8 rounded-full mr-3"
-                />
+                <div className="relative w-8 h-8 flex-shrink-0 rounded-full mr-3">
+                  <Image
+                    src={dao.logo_url}
+                    layout={"fill"}
+                    className="absolute inline-block h-8 w-8 "
+                  />
+                </div>
               )}
               <h1 className="text-lg font-semibold">{dao.name}</h1>
             </div>
@@ -98,18 +103,19 @@ export default function Job({ job, dao }) {
             {(dao.discord_url || dao.twitter_url) && (
               <div className="inline-flex gap-4 mt-xs">
                 {dao.discord_url && (
-                  <a href={dao.discord_url} target="_blank" rel="noreferrer">
-                    <img
+                  <a className="relative inline-block w-6 h-6 flex-shrink-0" href={dao.discord_url} target="_blank" rel="noreferrer">
+                    <Image
                       src={'/images/social/DiscordIcon.png'}
-                      className="flex-shrink-0 h-6 w-6"
+                      layout={"fill"}
+                      className=""
                     />
                   </a>
                 )}
                 {dao.twitter_url && (
-                  <a href={dao.twitter_url} target="_blank" rel="noreferrer">
-                    <img
+                  <a className="relative inline-block w-6 h-6 flex-shrink-0" href={dao.twitter_url} target="_blank" rel="noreferrer">
+                    <Image
+                      layout={"fill"}
                       src={'/images/social/TwitterIcon.png'}
-                      className="flex-shrink-0 h-6 w-6"
                     />
                   </a>
                 )}

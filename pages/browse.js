@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
+import Image from 'next/image'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
@@ -146,8 +147,13 @@ export default function Browse({ tags, daos }) {
                     {props.hit.title}
                   </h2>
                 </div>
-                <div className="inline-flex">
-                  {/* <img src={props.hit.logo_url} className='w-6 h-6' /> */}
+                <div className="mt-2 inline-flex gap-2 items-center">
+                  {props.hit.daoLogo &&
+                    <div className="relative w-6 h-6">
+                      <Image src={props.hit.daoLogo} layout={"fill"} className='' />
+                    </div>
+                  }
+                  
                   <h3 className="text-sm">{props.hit.dao}</h3>
                 </div>
                 {tagsForRender.length > 0 && (
