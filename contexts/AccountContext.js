@@ -22,10 +22,9 @@ export function AccountProvider({ children }) {
 
   const setAccountListener = (provider) => {
     // subscribe to provider events compatible with EIP-1193 standard. (web3.js. not ethers)
-    provider.on("accountsChanged", _ => window.location.reload())
-    provider.on("chainChanged", _ => window.location.reload())
+    provider.on('accountsChanged', (_) => window.location.reload())
+    provider.on('chainChanged', (_) => window.location.reload())
   }
-
 
   async function connectWallet() {
     // Initialize Web3Modal.
@@ -52,12 +51,13 @@ export function AccountProvider({ children }) {
     // Set ENS in state, ignore if ensName is null.
     ensName ? setEnsName(ensName) : null
 
-    return web3Provider 
+    return web3Provider
   }
 
-  useEffect(async() => {
-    let web3Provider   = await connectWallet()
-    await setAccountListener(web3Provider)
+  useEffect(() => {
+    connectWallet().then((web3Provider) => {
+      setAccountListener(web3Provider)
+    })
   }, [])
 
   return (
