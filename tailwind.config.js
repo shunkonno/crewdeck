@@ -2,11 +2,11 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    colors:{
+    colors: {
       transparent: 'transparent',
       current: 'currentColor',
       white: colors.white,
@@ -16,13 +16,13 @@ module.exports = {
       yellow: colors.yellow,
       teal: colors.teal,
       blue: colors.blue,
-      primary:{
+      primary: {
         DEFAULT: '#18cbdb',
         dark: '#128a7a'
       },
-      secondary:{
-        DEFAULT: "#f7825c",
-        dark: "#bf5b39"
+      secondary: {
+        DEFAULT: '#f7825c',
+        dark: '#bf5b39'
       }
     },
     fontFamily: {
@@ -40,8 +40,8 @@ module.exports = {
         '"Apple Color Emoji"',
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
-        '"Noto Color Emoji"',
-      ],
+        '"Noto Color Emoji"'
+      ]
     },
     extend: {
       spacing: {
@@ -51,7 +51,7 @@ module.exports = {
         md: '1.875rem',
         sm: '1.5rem',
         xs: '1.125rem',
-        xxs: '0.75rem',
+        xxs: '0.75rem'
       },
       maxWidth: {
         '8xl': '1920px'

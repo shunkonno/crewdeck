@@ -16,17 +16,13 @@ const publicSettings = [
   }
 ]
 
-export function PublicSettingsRadioGroup({register}) {
-
+export function PublicSettingsRadioGroup({ register }) {
   const [isPublic, setIsPublic] = useState(true)
 
-  return(
+  return (
     <>
       {publicSettings.map((publicSetting) => (
-        <div
-          key={publicSetting.id}
-          className="relative flex items-start"
-        >
+        <div key={publicSetting.id} className="relative flex items-start">
           <div className="flex items-center h-5">
             <input
               id={publicSetting.id}
@@ -39,7 +35,7 @@ export function PublicSettingsRadioGroup({register}) {
               onClick={(e) => {
                 setIsPublic(publicSetting.id === 'public')
               }}
-              {...register("isPublic")}
+              {...register('isPublic')}
             />
           </div>
           <div className="ml-3 text-sm">

@@ -92,7 +92,7 @@ export default function Job({ job, dao }) {
                 <div className="relative w-8 h-8 flex-shrink-0 rounded-full mr-3">
                   <Image
                     src={dao.logo_url}
-                    layout={"fill"}
+                    layout={'fill'}
                     className="absolute inline-block h-8 w-8 "
                   />
                 </div>
@@ -103,18 +103,28 @@ export default function Job({ job, dao }) {
             {(dao.discord_url || dao.twitter_url) && (
               <div className="inline-flex gap-4 mt-xs">
                 {dao.discord_url && (
-                  <a className="relative inline-block w-6 h-6 flex-shrink-0" href={dao.discord_url} target="_blank" rel="noreferrer">
+                  <a
+                    className="relative inline-block w-6 h-6 flex-shrink-0"
+                    href={dao.discord_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Image
                       src={'/images/social/DiscordIcon.png'}
-                      layout={"fill"}
+                      layout={'fill'}
                       className=""
                     />
                   </a>
                 )}
                 {dao.twitter_url && (
-                  <a className="relative inline-block w-6 h-6 flex-shrink-0" href={dao.twitter_url} target="_blank" rel="noreferrer">
+                  <a
+                    className="relative inline-block w-6 h-6 flex-shrink-0"
+                    href={dao.twitter_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Image
-                      layout={"fill"}
+                      layout={'fill'}
                       src={'/images/social/TwitterIcon.png'}
                     />
                   </a>
