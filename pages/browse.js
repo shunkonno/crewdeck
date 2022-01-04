@@ -26,104 +26,6 @@ export default function Browse({ tags, daos }) {
     process.env.NEXT_PUBLIC_ALGOLIA_API_KEY
   )
 
-  // const [daoFilter, setDaoFilter] = useState({})
-  // const [tagFilter, setTagFilter] = useState({})
-
-  // function changeFilterState(filterType, id, state) {
-  //   if (filterType === 'dao') {
-  //     setDaoFilter({ ...daoFilter, [id]: state })
-  //   } else if (filterType === 'tag') {
-  //     setTagFilter({ ...tagFilter, [id]: state })
-  //   }
-  // }
-
-  // async function getSearchResults() {
-  //   // Base query.
-  //   let query = supabase.from('jobs').select('created_at, title, dao_id')
-
-  //   // Get ids to filter for.
-  //   const daoFilterIds = Object.keys(daoFilter).filter((key) => {
-  //     return daoFilter[key]
-  //   })
-
-  //   const tagFilterIds = Object.keys(tagFilter).filter((key) => {
-  //     return tagFilter[key]
-  //   })
-
-  //   // **************************************************
-  //   // DAO FILTER
-  //   // **************************************************
-
-  //   // Filter DAO.
-  //   if (daoFilterIds.length > 0) {
-  //     let daoFilterString = ''
-
-  //     daoFilterIds.map((daoId, index) => {
-  //       if (index !== daoFilterIds.length - 1) {
-  //         // Add a trailing comma until the last element.
-  //         daoFilterString += `dao_id.eq.${String(daoId)},`
-  //       } else {
-  //         daoFilterString += `dao_id.eq.${String(daoId)}`
-  //       }
-  //     })
-
-  //     // Chain base query.
-  //     query = query.or(daoFilterString)
-  //   }
-
-  //   // **************************************************
-  //   // TAG FILTER
-  //   // **************************************************
-
-  //   // Get jobs with filtered tags.
-  //   if (tagFilterIds.length > 0) {
-  //     let tagFilterString = ''
-
-  //     tagFilterIds.map((tagId, index) => {
-  //       if (index !== tagFilterIds.length - 1) {
-  //         // Add a trailing comma until the last element.
-  //         tagFilterString += `tag_id.eq.${String(tagId)},`
-  //       } else {
-  //         tagFilterString += `tag_id.eq.${String(tagId)}`
-  //       }
-  //     })
-
-  //     const { data: jobIdWithTag } = await supabase
-  //       .from('jobs_to_tags')
-  //       .select('job_id')
-  //       .or(tagFilterString)
-
-  //     console.log({ jobIdWithTag })
-
-  //     // Filter query with job_id associated with tags.
-  //     if (jobIdWithTag.length > 0) {
-  //       let jobIdFilterString = ''
-
-  //       jobIdWithTag.map((item, index) => {
-  //         if (index !== jobIdWithTag.length - 1) {
-  //           // Add a trailing comma until the last element.
-  //           jobIdFilterString += `id.eq.${String(item.job_id)},`
-  //         } else {
-  //           jobIdFilterString += `id.eq.${String(item.job_id)}`
-  //         }
-  //       })
-
-  //       // Append job_id filter to base query.
-  //       query = query.or(jobIdFilterString)
-  //     }
-  //   }
-
-  //   const { data: jobs, error } = await query
-
-  //   console.log({ jobs })
-
-  //   return jobs
-  // }
-
-  // useEffect(() => {
-  //   getSearchResults()
-  // }, [daoFilter, tagFilter])
-
   function Hit(props) {
     console.log(props.hit)
     const tagsForRender = []
@@ -148,12 +50,16 @@ export default function Browse({ tags, daos }) {
                   </h2>
                 </div>
                 <div className="mt-2 inline-flex gap-2 items-center">
-                  {props.hit.daoLogo &&
+                  {props.hit.daoLogo && (
                     <div className="relative w-6 h-6">
-                      <Image src={props.hit.daoLogo} layout={"fill"} className='' />
+                      <Image
+                        src={props.hit.daoLogo}
+                        layout={'fill'}
+                        className=""
+                      />
                     </div>
-                  }
-                  
+                  )}
+
                   <h3 className="text-sm">{props.hit.dao}</h3>
                 </div>
                 {tagsForRender.length > 0 && (
