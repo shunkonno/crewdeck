@@ -31,6 +31,7 @@ export function AccountProvider({ children }) {
     // https://github.com/Web3Modal/web3modal
 
     const web3Modal = new Web3Modal({
+      network: 'mainnet',
       cacheProvider: false,
       providerOptions: {}
     })
