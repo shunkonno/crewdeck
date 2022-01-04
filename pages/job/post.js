@@ -42,12 +42,12 @@ export default function PostJob({ daos, tags }) {
 
   // Dao Options UI Control State
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
-  const [isReadyDaoOptions, setIsReadyDaoOptions] = useState(false)
+  const [daoSelectorIsReady, setDaoSelectorIsReady] = useState(false)
 
   useEffect(async () => {
     if (currentAccount) {
       await detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions)
-      await setIsReadyDaoOptions(true)
+      await setDaoSelectorIsReady(true)
     }
   }, [currentAccount, daos, detectJoinedDaos])
 
@@ -133,7 +133,9 @@ export default function PostJob({ daos, tags }) {
     return saveJobResult
   }
 
-  function onTestSubmit(data) {console.log(data)}
+  function onTestSubmit(data) {
+    console.log(data)
+  }
 
   // Handles data submit.
   async function onSubmit(data) {
@@ -177,14 +179,14 @@ export default function PostJob({ daos, tags }) {
         const selectedTagColors = []
 
         selectedTags.length &&
-        selectedTags.map((selectedTagId) => {
-          tags.map((tag) => {
-            if (tag.tag_id === selectedTagId) {
-              selectedTagNames.push(tag.name)
-              selectedTagColors.push(tag.color_code)
-            }
+          selectedTags.map((selectedTagId) => {
+            tags.map((tag) => {
+              if (tag.tag_id === selectedTagId) {
+                selectedTagNames.push(tag.name)
+                selectedTagColors.push(tag.color_code)
+              }
+            })
           })
-        })
 
         const algoliaObject = {
           objectID: result[0].job_id,
@@ -219,7 +221,7 @@ export default function PostJob({ daos, tags }) {
                 <h1 className="text-2xl leading-6 font-medium text-slate-900">
                   Post a Job
                 </h1>
-                {isReadyDaoOptions && !daoSelectorOptions?.length && (
+                {daoSelectorIsReady && !daoSelectorOptions?.length && (
                   <p className="mt-1 text-sm text-red-500">
                     {`You don't have any NFT assigned by DAO. You cannot post jobs. `}
                   </p>
@@ -239,7 +241,7 @@ export default function PostJob({ daos, tags }) {
                     Controller={Controller}
                     control={control}
                     errors={errors}
-                    isReadyDaoOptions={isReadyDaoOptions}
+                    daoSelectorIsReady={daoSelectorIsReady}
                     daoSelectorOptions={daoSelectorOptions}
                   />
                 </div>

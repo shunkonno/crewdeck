@@ -13,7 +13,7 @@ export function DaoSelectBox({
   onChange,
   selectedDao,
   daoSelectorOptions,
-  isReadyDaoOptions
+  daoSelectorIsReady
 }) {
   const [selected, setSelected] = useState(selectedDao || null)
 
@@ -40,8 +40,10 @@ export function DaoSelectBox({
             Not in the list?{' '}
             <span>
               <a
+                target="_blank"
                 className="text-blue-500"
                 href="https://docs.google.com/forms/d/1J_xx0eTRmsSwzsXFUVUwilhtOYqJfBJhqQH_5Wt9NH0/"
+                rel="noreferrer"
               >
                 Apply here.
               </a>
@@ -57,7 +59,7 @@ export function DaoSelectBox({
               )}
             >
               <span className="flex items-center">
-                {isReadyDaoOptions ? (
+                {daoSelectorIsReady ? (
                   daoSelectorOptions.length ? (
                     selected === undefined ? (
                       <span className="block truncate text-black">
