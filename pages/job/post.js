@@ -44,12 +44,13 @@ export default function PostJob({ daos, tags }) {
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
   const [daoSelectorIsReady, setDaoSelectorIsReady] = useState(false)
 
-  useEffect(async () => {
+  useEffect(() => {
     if (currentAccount) {
-      await detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions)
-      await setDaoSelectorIsReady(true)
+      detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions).then(() => {
+        setDaoSelectorIsReady(true)
+      })
     }
-  }, [currentAccount, daos, detectJoinedDaos])
+  }, [currentAccount, daos])
 
   // **************************************************
   // HANDLE DATA SUBMIT
