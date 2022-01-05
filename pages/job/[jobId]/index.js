@@ -13,7 +13,7 @@ import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
 
 // Constants
-import { statusOptions } from '@utils/statusOptions'
+import { statusOptions } from '@constants/statusOptions'
 
 export default function Job({ job, dao }) {
   console.log({ job, dao })

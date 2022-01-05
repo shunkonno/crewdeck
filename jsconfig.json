@@ -5,9 +5,10 @@
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@contexts/*": ["contexts/*"],
+      "@constants/*": ["constants/*"],
       "@styles/*": ["styles/*"],
       "@libs/*": ["libs/*"],
-      "@utils/*": ["utils/*"],
+      "@utils/*": ["utils/*"]
     }
   }
 }
