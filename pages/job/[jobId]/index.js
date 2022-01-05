@@ -7,7 +7,10 @@ import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
 
 // Contexts
-import { useAccount, useAccountConnect } from '@contexts/AccountContext'
+import { useAccount } from '@contexts/AccountContext'
+
+// Constants
+import { statusOptions } from '@utils/statusOptions'
 
 // Supabase
 import { supabase } from '@libs/supabase'
@@ -16,10 +19,6 @@ export default function Job({ job, dao }) {
   console.log({ job, dao })
   const { currentAccount } = useAccount()
   const router = useRouter()
-
-  const statusOptions = {
-    1: 'In Progress'
-  }
 
   // Sanitizes HTML.
   // @param {string} rawHtml
