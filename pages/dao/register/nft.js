@@ -8,7 +8,7 @@ import { useAccount } from '@contexts/AccountContext'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
-import { SEO } from '@components/ui/SEO'
+import { MetaTags } from '@components/ui/MetaTags'
 import { DaoSelectBox } from '@components/ui/SelectBox'
 import { NetworkSelectBox } from '@components/ui/SelectBox'
 import { NftContractAddressInput } from '@components/ui/Input'
@@ -78,7 +78,10 @@ export default function RegisterNFT({ daos, networks }) {
     const { selectedDao, selectedNetwork, nftContractAddress } = data
 
     // Verify users' address.
-    const isVerified = await verifyAddressOwnership(currentAccount, ethersProvider)
+    const isVerified = await verifyAddressOwnership(
+      currentAccount,
+      ethersProvider
+    )
 
     // Exit process if the users' address can't be verified.
     if (!isVerified) {
@@ -105,7 +108,7 @@ export default function RegisterNFT({ daos, networks }) {
 
   return (
     <>
-      <SEO title="Register NFT" description="Register NFT" />
+      <MetaTags title="Register NFT" description="Register NFT" />
 
       <div className="py-md max-w-4xl mx-auto px-4 lg:px-0">
         {/* Form - START */}
@@ -179,14 +182,12 @@ export default function RegisterNFT({ daos, networks }) {
                   <Controller
                     control={control}
                     name="nftContractAddress"
-                    rules={ {
+                    rules={{
                       required: true,
                       minLength: 42,
                       maxLength: 42
-                    } }
-                    render={({ 
-                      field: { onChange, value, name } 
-                    }) => (
+                    }}
+                    render={({ field: { onChange, value, name } }) => (
                       <NftContractAddressInput
                         onChange={onChange}
                         nftContractAddress={value}

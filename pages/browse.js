@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
-import { SEO } from '@components/ui/SEO'
+import { MetaTags } from '@components/ui/MetaTags'
 import { JobFilterPopover } from '@components/ui/Popover'
 
 // Supabase
@@ -85,7 +85,7 @@ export default function Browse({ tags, daos }) {
 
   return (
     <>
-      <SEO title="Browse" description="Browse Jobs" />
+      <MetaTags title="Browse" description="Browse Jobs" />
       {/* Search - START */}
       <div className="py-md max-w-5xl mx-auto px-xs sm:px-0 block sm:flex spacing-x-4">
         <InstantSearch searchClient={searchClient} indexName="jobs">

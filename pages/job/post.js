@@ -6,7 +6,7 @@ import { useAccount } from '@contexts/AccountContext'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
-import { SEO } from '@components/ui/SEO'
+import { MetaTags } from '@components/ui/MetaTags'
 
 import {
   JobTitleFormField,
@@ -208,7 +208,7 @@ export default function PostJob({ daos, tags }) {
 
   return (
     <>
-      <SEO title="Post Job" description="Post Job" />
+      <MetaTags title="Post Job" description="Post Job" />
 
       <div className="py-md max-w-4xl mx-auto px-4 sm:px-0">
         {/* Form - START */}

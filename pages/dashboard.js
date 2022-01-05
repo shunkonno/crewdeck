@@ -1,6 +1,6 @@
 // Components
 import { BaseLayout } from '@components/ui/Layout'
-import { SEO } from '@components/ui/SEO'
+import { MetaTags } from '@components/ui/MetaTags'
 
 export default function Dashboard() {
   const people = [
@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <SEO title="Dashboard" description="Dashboard" />
+      <MetaTags title="Dashboard" description="Dashboard" />
       {/* Table --- START */}
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

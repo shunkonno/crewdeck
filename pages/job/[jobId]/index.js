@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
-import { SEO } from '@components/ui/SEO'
+import { MetaTags } from '@components/ui/MetaTags'
 
 // Contexts
 import { useAccount } from '@contexts/AccountContext'
@@ -80,7 +80,7 @@ export default function Job({ job, dao }) {
 
   return (
     <>
-      <SEO title="Job Detail" description="Job Detail" />
+      <MetaTags title="Job Detail" description="Job Detail" />
       {!job.lead_contributor && (
         <div className="px-4 lg:px-xs flex justify-end max-w-7xl mx-auto">
           <button

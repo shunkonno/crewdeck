@@ -8,7 +8,7 @@ import { useAccount } from '@contexts/AccountContext'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
-import { SEO } from '@components/ui/SEO'
+import { MetaTags } from '@components/ui/MetaTags'
 import { JoinedDaosListSection } from '@components/ui/Section'
 
 // Supabase
@@ -66,7 +66,7 @@ export default function Home({ daos, tags }) {
 
   return (
     <>
-      <SEO title="Crewdeck" description="Crewdeck's Top Page" />
+      <MetaTags title="Crewdeck" description="Crewdeck's Top Page" />
       {/* Grid - START */}
       <div className="py-xs sm:py-md block max-w-7xl mx-auto">
         {/* TopContainer - START */}

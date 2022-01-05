@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
-export function SEO({title, description}) {
-  return(
+export function MetaTags({ title, description }) {
+  return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
