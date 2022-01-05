@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
+// Supabase
+import { supabase } from '@libs/supabase'
+
 // Functions
 import classNames from 'classnames'
 import { detectJoinedDaos } from '@utils/detectJoinedDaos'
@@ -19,9 +22,6 @@ import {
 } from '@components/ui/FormField'
 
 import { useForm, Controller } from 'react-hook-form'
-
-// Supabase
-import { supabase } from '@libs/supabase'
 
 export default function PostJob({ daos, tags }) {
   // ****************************************
