@@ -1,18 +1,29 @@
 import Image from 'next/image'
-
 import sanitizeHTML from 'sanitize-html'
+import { useRouter } from 'next/router'
+
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { SEO } from '@components/ui/SEO'
+
+// Contexts
+import { useAccount, useAccountConnect } from '@contexts/AccountContext'
+
 // Supabase
 import { supabase } from '@libs/supabase'
 
 export default function Job({ job, dao }) {
   console.log({ job, dao })
+  const { currentAccount } = useAccount()
+  const router = useRouter()
+
+  const statusOptions = {
+    1: 'In Progress'
+  }
 
   // Sanitizes HTML.
   // @param {string} rawHtml
-  // @returns {striing} sanitizedHtml
+  // @returns {string} sanitizedHtml
   function composeSanitizedHTML(rawHTML) {
     const options = {
       allowedTags: [
@@ -36,6 +47,7 @@ export default function Job({ job, dao }) {
     }
 
     const sanitizedHTML = sanitizeHTML(rawHTML, options)
+
     return sanitizedHTML
   }
 
@@ -49,9 +61,41 @@ export default function Job({ job, dao }) {
     return { __html: sanitizedHTML }
   }
 
+  async function updateBountyStatus(e) {
+    e.preventDefault()
+
+    console.log(currentAccount)
+
+    const { data, error } = await supabase
+      .from('jobs')
+      .update({ status: statusOptions[1], lead_contributor: currentAccount })
+      .match({ job_id: job.job_id })
+
+    if (error) {
+      console.log(error)
+      return
+    }
+
+    router.reload()
+  }
+
   return (
     <>
       <SEO title="Job Detail" description="Job Detail" />
+      {!job.lead_contributor && (
+        <div className="px-4 lg:px-xs flex justify-end max-w-7xl mx-auto">
+          <button
+            className={
+              'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white'
+            }
+            onClick={(e) => {
+              updateBountyStatus(e)
+            }}
+          >
+            ✋ &nbsp; Work on this Bounty
+          </button>
+        </div>
+      )}
       {/* Grid - START */}
       <div className="py-md flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
         {/* Job - START */}
