@@ -12,32 +12,32 @@ const quillModules = {
   ]
 }
 
-export function JobDescriptionFormField ({Controller,control}) {
-
-  return(
+export function JobDescriptionFormField({ Controller, control }) {
+  return (
     <>
-      <label className="block font-medium text-slate-700">
-        Description
-      </label>
-      <p className="mt-1 text-sm text-slate-500">
-        Describe the job, including some background.
-      </p>
-      <div className="mt-1">
-      <Controller
-        control={control}
-        name="editorContent"
-        render={({ 
-          field: { onChange, value } 
-        }) => (
-          <ReactQuill
-            theme="snow"
-            modules={quillModules}
-            value={value || ""}
-            onChange={(editorContent) => onChange(editorContent)}
-          />
-        )}
-      />
+      <div>
+        <legend className="sr-only">Description</legend>
+        <label className="block font-medium text-slate-700">Description</label>
+        <p className="mt-1 text-sm text-slate-500">
+          Describe the job, including some background.
+        </p>
       </div>
+      {/* Input - START */}
+      <div className="mt-2">
+        <Controller
+          control={control}
+          name="editorContent"
+          render={({ field: { onChange, value } }) => (
+            <ReactQuill
+              theme="snow"
+              modules={quillModules}
+              value={value || ''}
+              onChange={(editorContent) => onChange(editorContent)}
+            />
+          )}
+        />
+      </div>
+      {/* Input - END */}
     </>
   )
 }

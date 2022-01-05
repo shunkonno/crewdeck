@@ -1,3 +1,3 @@
-import { BaseLayout } from './baseLayout'
+import { BaseLayout } from './BaseLayout'
 
 export { BaseLayout }
