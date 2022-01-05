@@ -2,23 +2,38 @@ import Image from 'next/image'
 import sanitizeHTML from 'sanitize-html'
 import { useRouter } from 'next/router'
 
+// Supabase
+import { supabase } from '@libs/supabase'
+
+// Functions
+import { AccountProvider } from '@libs/accountProvider'
+
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
 
-// Contexts
-import { useAccount } from '@contexts/AccountContext'
-
 // Constants
 import { statusOptions } from '@utils/statusOptions'
 
-// Supabase
-import { supabase } from '@libs/supabase'
-
 export default function Job({ job, dao }) {
   console.log({ job, dao })
-  const { currentAccount } = useAccount()
+
+  // ****************************************
+  // ACCOUNT
+  // ****************************************
+
+  const accountProvider = AccountProvider()
+  const { currentAccount } = accountProvider
+
+  // ****************************************
+  // ROUTER
+  // ****************************************
+
   const router = useRouter()
+
+  // ****************************************
+  // HANDLE INNER HTML
+  // ****************************************
 
   // Sanitizes HTML.
   // @param {string} rawHtml
@@ -60,6 +75,10 @@ export default function Job({ job, dao }) {
     return { __html: sanitizedHTML }
   }
 
+  // ****************************************
+  // DB
+  // ****************************************
+
   async function updateBountyStatus(e) {
     e.preventDefault()
 
@@ -77,6 +96,10 @@ export default function Job({ job, dao }) {
 
     router.reload()
   }
+
+  // ****************************************
+  // RETURN
+  // ****************************************
 
   return (
     <>

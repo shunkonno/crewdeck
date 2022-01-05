@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-// Contexts
-import { useAccount } from '@contexts/AccountContext'
+// Functions
+import classNames from 'classnames'
+import { detectJoinedDaos } from '@utils/detectJoinedDaos'
+import { verifyAddressOwnership } from '@utils/verifyAddressOwnership'
+import { AccountProvider } from '@libs/accountProvider'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
-
 import {
   JobTitleFormField,
   JobDescriptionFormField,
@@ -18,17 +20,21 @@ import {
 
 import { useForm, Controller } from 'react-hook-form'
 
-// Functions
-import classNames from 'classnames'
-import { detectJoinedDaos } from '@utils/detectJoinedDaos'
-import { verifyAddressOwnership } from '@utils/verifyAddressOwnership'
-
 // Supabase
 import { supabase } from '@libs/supabase'
 
 export default function PostJob({ daos, tags }) {
-  const { currentAccount, ethersProvider } = useAccount()
+  // ****************************************
+  // ACCOUNT
+  // ****************************************
+
+  const accountProvider = AccountProvider()
+  const { currentAccount, ethersProvider } = accountProvider
   const router = useRouter()
+
+  // ****************************************
+  // REACT-HOOK-FORM
+  // ****************************************
 
   // React Hook Form Setting
   const {
@@ -39,6 +45,10 @@ export default function PostJob({ daos, tags }) {
   } = useForm()
 
   Object.keys(errors).length && console.log('react-hook-form Errors', errors)
+
+  // ****************************************
+  // UI CONTROL STATE
+  // ****************************************
 
   // Dao Options UI Control State
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
@@ -52,9 +62,9 @@ export default function PostJob({ daos, tags }) {
     }
   }, [currentAccount, daos])
 
-  // **************************************************
-  // HANDLE DATA SUBMIT
-  // **************************************************
+  // ****************************************
+  // DB
+  // ****************************************
 
   // Saves search object to Algolia.
   async function saveToAlgolia(algoliaObject) {
@@ -138,6 +148,10 @@ export default function PostJob({ daos, tags }) {
     console.log(data)
   }
 
+  // ****************************************
+  // HANDLE DATA SUBMIT
+  // ****************************************
+
   // Handles data submit.
   async function onSubmit(data) {
     console.log('SubmitData', data)
@@ -205,6 +219,10 @@ export default function PostJob({ daos, tags }) {
       router.push(`/job/${result[0].job_id}`)
     }
   }
+
+  // ****************************************
+  // RETURN
+  // ****************************************
 
   return (
     <>

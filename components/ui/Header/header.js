@@ -1,6 +1,13 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+// Functions
+import { truncateAddress } from '@utils/truncateAddress'
+import { AccountProvider } from '@libs/accountProvider'
+
+// Components
+import { Menu, Dialog, Transition } from '@headlessui/react'
 
 // Assets
 import {
@@ -11,37 +18,51 @@ import {
   XIcon
 } from '@heroicons/react/solid'
 
-// Components
-import { Menu, Dialog, Transition } from '@headlessui/react'
-
-// Contexts
-import { useAccount, useAccountConnect } from '@contexts/AccountContext'
-import { truncateAddress } from '@utils/truncateAddress'
-
-function MyLink(props) {
-  let { href, children, ...rest } = props
-  return (
-    <Link href={href}>
-      <a {...rest}>{children}</a>
-    </Link>
-  )
-}
-
 export function Header() {
-  const { currentAccount, ensName } = useAccount()
-  const { connectWallet } = useAccountConnect()
-  console.log({ currentAccount, ensName })
+  // ****************************************
+  // ACCOUNT
+  // ****************************************
 
-  const router = useRouter()
+  const accountProvider = AccountProvider()
+  const { currentAccount, ensName } = accountProvider
+  const { connectWallet } = accountProvider
+
+  // ****************************************
+  // UI CONTROL STATE
+  // ****************************************
 
   // Dialog Toggle
   let [isOpen, setIsOpen] = useState(false)
+
+  // ****************************************
+  // ROUTER
+  // ****************************************
+
+  const router = useRouter()
 
   // handle Routing
   const handleRouting = (path) => {
     setIsOpen(false)
     router.push(path)
   }
+
+  // ****************************************
+  // COMPONENTS
+  // ****************************************
+
+  function NavLinks(props) {
+    let { href, children, ...rest } = props
+
+    return (
+      <Link href={href}>
+        <a {...rest}>{children}</a>
+      </Link>
+    )
+  }
+
+  // ****************************************
+  // RETURN
+  // ****************************************
 
   return (
     <header className="relative z-50">
@@ -183,12 +204,12 @@ export function Header() {
                               <div className="p-2">
                                 <Menu.Item>
                                   {
-                                    <MyLink href="/job/post">
+                                    <NavLinks href="/job/post">
                                       <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                                         <DocumentTextIcon className="w-5 h-5 mr-2 " />
                                         <span>Post Job</span>
                                       </div>
-                                    </MyLink>
+                                    </NavLinks>
                                   }
                                 </Menu.Item>
                               </div>
