@@ -1,8 +1,13 @@
+// Supabase
+import { supabase } from '@libs/supabase'
+
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
 
-export default function Dashboard() {
+export default function Dashboard({ daos }) {
+  console.log({ daos })
+
   const people = [
     {
       name: 'Jane Cooper',
@@ -17,6 +22,10 @@ export default function Dashboard() {
       email: 'jane.cooper@example.com'
     }
   ]
+
+  // ****************************************
+  // RETURN
+  // ****************************************
 
   return (
     <>
@@ -95,3 +104,11 @@ export default function Dashboard() {
 }
 
 Dashboard.Layout = BaseLayout
+
+export const getStaticProps = async () => {
+  const { data: daos } = await supabase
+    .from('daos')
+    .select('dao_id, name, logo_url, contract_address')
+
+  return { props: { daos } }
+}

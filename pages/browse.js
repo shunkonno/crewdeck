@@ -21,6 +21,10 @@ import {
 } from 'react-instantsearch-dom'
 
 export default function Browse({ tags, daos }) {
+  // ****************************************
+  // ALGOLIA
+  // ****************************************
+
   const searchClient = algoliasearch(
     process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
     process.env.NEXT_PUBLIC_ALGOLIA_API_KEY
@@ -28,7 +32,9 @@ export default function Browse({ tags, daos }) {
 
   function Hit(props) {
     console.log(props.hit)
+
     const tagsForRender = []
+
     props.hit.tags &&
       props.hit.tags.map((tag, index) => {
         tagsForRender.push({
@@ -38,6 +44,11 @@ export default function Browse({ tags, daos }) {
       })
 
     console.log(tagsForRender)
+
+    // ****************************************
+    // RETURN
+    // ****************************************
+
     return (
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
         <Link href={`/job/${props.hit.objectID}`}>
