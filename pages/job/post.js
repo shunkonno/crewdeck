@@ -297,7 +297,7 @@ export default function PostJob({ daos, tags }) {
                 daoSelectorOptions.length
                   ? 'bg-primary cursor-pointer'
                   : 'bg-slate-300 cursor-not-allowed',
-                'py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black'
+                'py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white'
               )}
               type="submit"
             >
