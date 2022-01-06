@@ -12,22 +12,24 @@ import classNames from 'classnames'
 export function DaoSelectBox({
   onChange,
   selectedDao,
+  setSelectedDao,
   daoSelectorOptions,
   daoSelectorIsReady
 }) {
-  const [selected, setSelected] = useState(selectedDao || null)
 
   useEffect(() => {
-    setSelected(selectedDao)
+    setSelectedDao(selectedDao || null)
   }, [selectedDao])
 
   return (
     <Listbox
-      value={selected}
-      onChange={(e) => {
-        setSelected
-        onChange && onChange(e)
-      }}
+      value={selectedDao}
+      onChange={
+        onChange ? //onChange propsが渡されていなければ、HeadlessUIの書式に従い、setSelectedDaoのみ
+          (e) => onChange(e)
+        :
+          setSelectedDao
+      }
     >
       {({ open }) => (
         <>
@@ -61,21 +63,21 @@ export function DaoSelectBox({
               <span className="flex items-center">
                 {daoSelectorIsReady ? (
                   daoSelectorOptions.length ? (
-                    selected === undefined ? (
+                    selectedDao === null ? (
                       <span className="block truncate text-black">
                         {'Select your DAO'}
                       </span>
                     ) : (
                       <>
-                        {selected?.logo_url && (
+                        {selectedDao?.logo_url && (
                           <img
-                            src={selected?.logo_url}
+                            src={selectedDao?.logo_url}
                             alt=""
                             className="flex-shrink-0 h-6 w-6 rounded-full"
                           />
                         )}
                         <span className="ml-3 block truncate text-black">
-                          {selected?.name}
+                          {selectedDao?.name}
                         </span>
                       </>
                     )

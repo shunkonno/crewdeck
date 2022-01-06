@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { DaoSelectBox } from '../SelectBox'
+
 
 export function JobDaoFormField({
   Controller,
@@ -7,6 +9,7 @@ export function JobDaoFormField({
   daoSelectorIsReady,
   daoSelectorOptions
 }) {
+  const [selectedDao, setSelectedDao] = useState(null)
   return (
     <>
       <Controller
@@ -16,7 +19,8 @@ export function JobDaoFormField({
         render={({ field: { onChange, value } }) => (
           <DaoSelectBox
             onChange={onChange}
-            selectedDao={value}
+            selectedDao={value || null}
+            setSelectedDao={setSelectedDao}
             daoSelectorIsReady={daoSelectorIsReady}
             daoSelectorOptions={daoSelectorOptions}
           />
