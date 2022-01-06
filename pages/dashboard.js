@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+
 // Supabase
 import { supabase } from '@libs/supabase'
 
@@ -13,24 +14,6 @@ import { AccountProvider } from '@libs/accountProvider'
 
 export default function Dashboard({ daos }) {
   console.log({ daos })
-  const accountProvider = AccountProvider()
-  const { currentAccount, ethersProvider } = accountProvider
-
-
-  // Dao Options UI Control State
-  const [selectedDao, setSelectedDao] = useState(null)
-  const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
-  const [daoSelectorIsReady, setDaoSelectorIsReady] = useState(false)
-
-  console.log(selectedDao)
-
-  useEffect(() => {
-    if (currentAccount) {
-      detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions).then(() => {
-        setDaoSelectorIsReady(true)
-      })
-    }
-  }, [currentAccount, daos])
 
   const people = [
     {
@@ -50,15 +33,41 @@ export default function Dashboard({ daos }) {
   ]
 
   // ****************************************
+  // ACCOUNT
+  // ****************************************
+
+  const accountProvider = AccountProvider()
+  const { currentAccount } = accountProvider
+
+  // ****************************************
+  // UI CONTROL STATE
+  // ****************************************
+
+  // Dao Options UI Control State
+  const [selectedDao, setSelectedDao] = useState(null)
+  const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
+  const [daoSelectorIsReady, setDaoSelectorIsReady] = useState(false)
+
+  console.log(selectedDao)
+
+  useEffect(() => {
+    if (currentAccount) {
+      detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions).then(() => {
+        setDaoSelectorIsReady(true)
+      })
+    }
+  }, [currentAccount, daos])
+
+  // ****************************************
   // RETURN
   // ****************************************
 
   return (
     <>
       <MetaTags title="Dashboard" description="Dashboard" />
-      <div className='max-w-7xl mx-auto'>
+      <div className="max-w-7xl mx-auto">
         <div className="mt-sm w-2/3 sm:w-1/3">
-          <DaoSelectBox 
+          <DaoSelectBox
             selectedDao={selectedDao}
             setSelectedDao={setSelectedDao}
             daoSelectorIsReady={daoSelectorIsReady}
