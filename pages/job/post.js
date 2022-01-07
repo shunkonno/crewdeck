@@ -187,6 +187,8 @@ export default function PostJob({ daos, tags }) {
     } else {
       console.log('Successfully saved to DB.')
 
+      console.log({ isPublic })
+
       // If isPublic is true, save object to Algolia to be indexed.
       if (isPublic) {
         // Extract tag names.
