@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import sanitizeHTML from 'sanitize-html'
@@ -8,6 +9,8 @@ import { supabase } from '@libs/supabase'
 
 // Functions
 import { AccountProvider } from '@libs/accountProvider'
+import { detectJoinedDaos } from '@utils/detectJoinedDaos'
+import { verifyAddressOwnership } from '@utils/verifyAddressOwnership'
 
 // Components
 import { BaseLayout } from '@components/ui/Layout'
@@ -16,7 +19,7 @@ import { MetaTags } from '@components/ui/MetaTags'
 // Constants
 import { statusOptions } from '@constants/statusOptions'
 
-export default function Job({ job, dao }) {
+export default function Job({ job, dao, daos }) {
   console.log({ job, dao })
 
   // ****************************************
@@ -31,6 +34,31 @@ export default function Job({ job, dao }) {
   // ****************************************
 
   const router = useRouter()
+
+  // ****************************************
+  // Edit Button
+  // ****************************************
+
+  // Dao Options UI Control State
+  const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
+  const [isEditAuth, setIsEditAuth] = useState(false)
+
+  console.log(daoSelectorOptions)
+  console.log(isEditAuth)
+
+  useEffect(async() => {
+    if (currentAccount) {
+      await detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions)
+    }
+    
+  }, [currentAccount, daos])
+
+  useEffect(()=>{
+    const editable = daoSelectorOptions.some((detectedDao)=>{
+      return detectedDao.dao_id == job.dao_id
+    })
+    setIsEditAuth(editable)
+  }, [daoSelectorOptions])
 
   // ****************************************
   // HANDLE INNER HTML
@@ -108,11 +136,13 @@ export default function Job({ job, dao }) {
       <div className='py-md'> 
         <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
           <div className="lg:flex-1 flex justify-end">
-            <Link href={`/job/${job.job_id}/edit`}>
-              <a className="mx-xs my-1 text-slate-600 text-lg inline-block rounded-md hover:text-slate-800">
-                Edit
-              </a>
-            </Link>
+            {isEditAuth &&
+              <Link href={`/job/${job.job_id}/edit`}>
+                <a className="mx-xs my-1 text-slate-600 text-lg inline-block rounded-md hover:text-slate-800">
+                  Edit
+                </a>
+              </Link>
+            }
           </div>
           <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
             {!job.lead_contributor && (
@@ -286,5 +316,9 @@ export const getStaticProps = async ({ params: { jobId } }) => {
     .eq('dao_id', job.dao_id)
     .single()
 
-  return { props: { job, dao } }
+  const { data: daos } = await supabase
+  .from('daos')
+  .select('dao_id, name, logo_url, contract_address')
+
+  return { props: { job, dao, daos } }
 }
