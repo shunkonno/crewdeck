@@ -18,7 +18,8 @@ module.exports = {
       blue: colors.blue,
       primary: {
         DEFAULT: '#00bdb6',
-        dark: '#128a7a'
+        dark: '#128a7a',
+        hover: '#00b0a9'
       },
       secondary: {
         DEFAULT: '#f7825c',

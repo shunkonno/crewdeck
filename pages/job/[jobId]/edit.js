@@ -105,35 +105,26 @@ export default function Job({ job, dao }) {
   return (
     <>
       <MetaTags title="Job Detail" description="Job Detail" />
-      <div className='py-md'> 
+      <div className='max-w-7xl mx-auto py-md '>
         <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
           <div className="lg:flex-1 flex justify-end">
-            <Link href={`/job/${job.job_id}/edit`}>
-              <a className="mx-xs my-1 text-slate-600 text-lg inline-block rounded-md hover:text-slate-800">
-                Edit
+            <div>
+              <Link href={`/job/${job.job_id}`}>
+              <a className="my-1 text-slate-600 mr-6 text-lg inline-block rounded-md hover:text-slate-800">
+                Cancel
               </a>
-            </Link>
+              </Link>
+              <div className="px-xs py-1 bg-primary text-white text-lg inline-block rounded-md cursor-pointer hover:bg-primary-hover hover:text-slate-100">
+                Save
+              </div>
+            </div>
           </div>
           <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
-            {!job.lead_contributor && (
-              <div className="flex justify-end max-w-7xl mx-auto">
-                <button
-                  className={
-                    'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white'
-                  }
-                  onClick={(e) => {
-                    updateJobStatus(e)
-                  }}
-                >
-                  ✋ &nbsp; Work on this Bounty
-                </button>
-              </div>
-            )}
+            
           </div>
         </div>
-        
         {/* Grid - START */}
-        <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2">
           {/* Job - START */}
           <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-lg">
             {/* Job Title - START */}
