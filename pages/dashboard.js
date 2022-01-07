@@ -88,7 +88,7 @@ export default function Dashboard({ daos }) {
         setJobs(jobs)
       })
     }
-  })
+  }, [selectedDao])
 
   // ****************************************
   // RETURN
