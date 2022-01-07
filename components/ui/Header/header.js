@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 // Functions
@@ -72,8 +73,8 @@ export function Header() {
           {/* Logo - START */}
           <div className="">
             <Link href="/">
-              <a>
-                <div>Logo</div>
+              <a className='block w-28 h-12 relative'>
+                <Image src={"/images/logos/CrewdeckLogo.svg"} layout={"fill"} alt="Crewdeck Logo" />
               </a>
             </Link>
           </div>
