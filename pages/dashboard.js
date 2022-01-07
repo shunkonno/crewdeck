@@ -40,6 +40,12 @@ export default function Dashboard({ daos }) {
   const { currentAccount } = accountProvider
 
   // ****************************************
+  // STATE
+  // ****************************************
+
+  const [jobs, setJobs] = useState([])
+
+  // ****************************************
   // UI CONTROL STATE
   // ****************************************
 
@@ -48,7 +54,7 @@ export default function Dashboard({ daos }) {
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
   const [daoSelectorIsReady, setDaoSelectorIsReady] = useState(false)
 
-  console.log(selectedDao)
+  console.log({ selectedDao, jobs })
 
   useEffect(() => {
     if (currentAccount) {
@@ -57,6 +63,32 @@ export default function Dashboard({ daos }) {
       })
     }
   }, [currentAccount, daos])
+
+  // ****************************************
+  // FETCH DATA
+  // ****************************************
+
+  async function getJobsForDao(daoId) {
+    const { data: jobs, error } = await supabase
+      .from('jobs')
+      .select('created_at, title, is_public, status, lead_contributor')
+      .eq('dao_id', daoId)
+
+    if (error) {
+      console.log(error)
+      return []
+    }
+
+    return jobs
+  }
+
+  useEffect(() => {
+    if (selectedDao) {
+      getJobsForDao(selectedDao.dao_id).then((jobs) => {
+        setJobs(jobs)
+      })
+    }
+  })
 
   // ****************************************
   // RETURN
