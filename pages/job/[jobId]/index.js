@@ -79,7 +79,7 @@ export default function Job({ job, dao }) {
   // DB
   // ****************************************
 
-  async function updateBountyStatus(e) {
+  async function updateJobStatus(e) {
     e.preventDefault()
 
     console.log(currentAccount)
@@ -111,7 +111,7 @@ export default function Job({ job, dao }) {
               'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white'
             }
             onClick={(e) => {
-              updateBountyStatus(e)
+              updateJobStatus(e)
             }}
           >
             ✋ &nbsp; Work on this Bounty

@@ -113,7 +113,7 @@ export default function PostJob({ daos, tags }) {
       .insert(insertObjectList)
 
     if (saveTagsError) {
-      console.log(error)
+      console.log(saveTagsError)
       return false
     }
 
@@ -187,8 +187,10 @@ export default function PostJob({ daos, tags }) {
     } else {
       console.log('Successfully saved to DB.')
 
+      console.log({ isPublic })
+
       // If isPublic is true, save object to Algolia to be indexed.
-      if (isPublic) {
+      if (isPublic === 'true') {
         // Extract tag names.
         const selectedTagNames = []
         const selectedTagColors = []
