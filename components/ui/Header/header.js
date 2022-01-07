@@ -104,8 +104,11 @@ export function Header() {
                     />
                   </div>
                   <div className="pl-sm py-2 mt-2 rounded-lg hover:bg-slate-100">
+                    <a onClick={() => handleRouting('/dashboard')}>
+                      <span className="outline-none">Your DAOs</span>
+                    </a>
                     <a onClick={() => handleRouting('/browse')}>
-                      <span className="outline-none">Browse</span>
+                      <span className="outline-none">Public Bounties</span>
                     </a>
                   </div>
                 </div>
@@ -164,8 +167,11 @@ export function Header() {
           <div className="hidden md:flex items-center space-x-8 ml-auto">
             {/* Navigation - START */}
             <div className="flex items-center space-x-8">
+              <Link href="/dashboard">
+                <a>Your DAOs</a>
+              </Link>
               <Link href="/browse">
-                <a>Browse</a>
+                <a>Public Bounties</a>
               </Link>
             </div>
             {/* Navigation - END */}
