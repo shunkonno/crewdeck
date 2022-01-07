@@ -77,7 +77,7 @@ export default function Home({ daos, tags }) {
             </p>
           </div>
           {/* Tags - START */}
-          <div className="inline-flex flex-wrap w-full py-md gap-4 justify-center">
+          <div className="inline-flex flex-wrap w-full pb-md sm:py-md gap-4 justify-center">
             {tags.map((tag) => (
               <div key={tag.tag_id}>
                 <span
@@ -103,7 +103,7 @@ export default function Home({ daos, tags }) {
 
         {/* LP Content - START */}
         <div>
-          <div>
+          <div className='px-sm'>
             <h1 className="text-xl  flex justify-center">
               Crewdeck is dedicated to gated DAOs that have NFTs associated with
               membership.
@@ -112,7 +112,7 @@ export default function Home({ daos, tags }) {
               Post a job, or browse how you can contribute to an existing DAO.
             </p>
           </div>
-          <div className="mt-2">
+          <div className="mt-sm">
             <Link href="/browse">
               <a className="text-lg font-medium text-blue-500 flex justify-center">
                 &#128073; &nbsp; Start Browsing
