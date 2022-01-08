@@ -1,5 +1,3 @@
-import Head from 'next/head'
-
 import { Header } from '@components/ui/Header'
 import { Footer } from '@components/ui/Footer'
 

@@ -46,13 +46,13 @@ module.exports = {
     },
     extend: {
       spacing: {
-        xxl: '3.75rem',
-        xl: '3rem',
-        lg: '2.25rem',
-        md: '1.875rem',
-        sm: '1.5rem',
-        xs: '1.125rem',
-        xxs: '0.75rem'
+        '2xl': '3.75rem',
+        'xl': '3rem',
+        'lg': '2.25rem',
+        'md': '1.875rem',
+        'sm': '1.5rem',
+        'xs': '1.125rem',
+        '2xs': '0.75rem'
       },
       maxWidth: {
         '8xl': '1920px'
