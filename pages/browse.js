@@ -21,18 +21,68 @@ import {
 } from 'react-instantsearch-dom'
 
 export default function Browse({ tags, daos }) {
+  const [selectedDaoFilters, setSelectedDaoFilters] = useState([])
+  const [selectedTagFilters, setSelectedTagFilters] = useState([])
+
+  const [modalIsOpen, setIsOpen] = useState(false)
+
+  console.log({ modalIsOpen, selectedDaoFilters })
+
   // ****************************************
   // ALGOLIA
   // ****************************************
-
   const searchClient = algoliasearch(
     process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
     process.env.NEXT_PUBLIC_ALGOLIA_API_KEY
   )
 
-  function Hit(props) {
-    console.log(props.hit)
+  function RenderSearch() {
+    return (
+      <InstantSearch
+        searchClient={searchClient}
+        indexName="jobs"
+        onSearchStateChange={(searchState) => {
+          console.log(searchState)
+          if (modalIsOpen && searchState.refinementList?.dao) {
+            setSelectedDaoFilters(searchState.refinementList.dao)
+          }
+          if (modalIsOpen && searchState.refinementList?.tags) {
+            setSelectedTagFilters(searchState.refinementList.tags)
+          }
+        }}
+      >
+        <JobFilterPopover
+          RefinementList={RefinementList}
+          selectedDaoFilters={selectedDaoFilters}
+          selectedTagFilters={selectedTagFilters}
+          modalIsOpen={modalIsOpen}
+          setIsOpen={setIsOpen}
+        />
+        <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
+          <div>
+            <h3 className="text-sm font-medium pb-2">DAO</h3>
+            <div className="mt-2">
+              <RefinementList
+                attribute="dao"
+                searchable
+                translations={{ placeholder: 'Type to filter DAO' }}
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <h3 className="text-sm font-medium pb-2">Tag</h3>
+            <RefinementList attribute="tags" />
+          </div>
+        </div>
+        <main className="flex-1 mt-xs sm:mt-0 max-w-4xl">
+          <h1 className="text-3xl font-bold hidden sm:block mb-4">Jobs</h1>
+          <Hits hitComponent={Hit} />
+        </main>
+      </InstantSearch>
+    )
+  }
 
+  function Hit(props) {
     const tagsForRender = []
 
     props.hit.tags &&
@@ -42,12 +92,6 @@ export default function Browse({ tags, daos }) {
           color_code: props.hit.tagColors[index]
         })
       })
-
-    console.log(tagsForRender)
-
-    // ****************************************
-    // RETURN
-    // ****************************************
 
     return (
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
@@ -94,34 +138,16 @@ export default function Browse({ tags, daos }) {
     )
   }
 
+  // ****************************************
+  // RETURN
+  // ****************************************
+
   return (
     <>
       <MetaTags title="Browse" description="Browse Jobs" />
       {/* Search - START */}
       <div className="py-md max-w-5xl mx-auto px-xs sm:px-0 block sm:flex spacing-x-4">
-        <InstantSearch searchClient={searchClient} indexName="jobs">
-          <JobFilterPopover RefinementList={RefinementList} />
-          <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
-            <div>
-              <h3 className="text-sm font-medium pb-2">DAO</h3>
-              <div className="mt-2">
-                <RefinementList
-                  attribute="dao"
-                  searchable
-                  translations={{ placeholder: 'Type to filter DAO' }}
-                />
-              </div>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-sm font-medium pb-2">Tag</h3>
-              <RefinementList attribute="tags" />
-            </div>
-          </div>
-          <main className="flex-1 mt-xs sm:mt-0 max-w-4xl">
-            <h1 className="text-3xl font-bold hidden sm:block mb-4">Jobs</h1>
-            <Hits hitComponent={Hit} />
-          </main>
-        </InstantSearch>
+        <RenderSearch />
       </div>
       {/* Search - END */}
     </>
