@@ -15,6 +15,7 @@ module.exports = {
       red: colors.red,
       yellow: colors.yellow,
       teal: colors.teal,
+      cyan: colors.cyan,
       blue: colors.blue,
       primary: {
         DEFAULT: '#00bdb6',
@@ -56,6 +57,9 @@ module.exports = {
       },
       maxWidth: {
         '8xl': '1920px'
+      },
+      lineHeight: {
+        'extra-tight': '1.125',
       }
     }
   },
