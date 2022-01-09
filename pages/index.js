@@ -74,7 +74,7 @@ export default function Home() {
 
         <section className="bg-white px-sm py-md sm:py-xl">
           <div className='max-w-5xl mx-auto'>
-            <h2 className='text-2xl font-semibold leading-normal mb-4'>Feature</h2>
+            <h2 className='text-2xl font-semibold leading-normal mb-4'>Purpose</h2>
             <div className='flex flex-col sm:flex-row gap-8'>
               <div className="w-full sm:w-1/2 bg-white border border-teal-400 rounded-lg px-md py-sm">
                 <div className=''>
