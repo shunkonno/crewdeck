@@ -11,6 +11,7 @@ import { DaoSelectBox } from '@components/ui/SelectBox'
 // Functions
 import { detectJoinedDaos } from '@utils/detectJoinedDaos'
 import { AccountProvider } from '@libs/accountProvider'
+import { truncateAddress } from '@utils/truncateAddress'
 
 export default function Dashboard({ daos }) {
   console.log({ daos })
@@ -71,7 +72,7 @@ export default function Dashboard({ daos }) {
   async function getJobsForDao(daoId) {
     const { data: jobs, error } = await supabase
       .from('jobs')
-      .select('created_at, title, is_public, status, lead_contributor')
+      .select('job_id, created_at, title, is_public, status, lead_contributor')
       .eq('dao_id', daoId)
 
     if (error) {
@@ -97,7 +98,7 @@ export default function Dashboard({ daos }) {
   return (
     <>
       <MetaTags title="Dashboard" description="Dashboard" />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="mt-sm w-2/3 sm:w-1/3">
           <DaoSelectBox
             selectedDao={selectedDao}
@@ -106,20 +107,15 @@ export default function Dashboard({ daos }) {
             daoSelectorOptions={daoSelectorOptions}
           />
         </div>
+
         {/* Table --- START */}
         <div className="flex flex-col mt-sm">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
               <div className="shadow overflow-hidden border-b border-slate-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-slate-200">
+                <table className="min-w-full divide-y divide-slate-200 table-auto">
                   <thead className="bg-slate-50">
                     <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
-                      >
-                        Name
-                      </th>
                       <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
@@ -130,40 +126,49 @@ export default function Dashboard({ daos }) {
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
                       >
-                        Email
+                        Lead
                       </th>
                       <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
                       >
-                        Role
+                        Status
                       </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                      >
+                        Visibility
+                      </th>
+
                       <th scope="col" className="relative px-6 py-3">
-                        <span className="sr-only">Edit</span>
+                        <span className="sr-only">Details</span>
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-slate-200">
-                    {people.map((person) => (
-                      <tr key={person.id}>
+                    {jobs.map((job) => (
+                      <tr key={job.job_id}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                          {person.name}
+                          {job.title}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                          {person.title}
+                          {job.lead_contributor
+                            ? truncateAddress(job.lead_contributor)
+                            : '-'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                          {person.email}
+                          {job.status ? job.status : '-'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                          {person.role}
+                          {job.isPublic ? 'Public' : 'Internal'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <a
-                            href="#"
+                            href={`job/${job.job_id}`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            Edit
+                            Details
                           </a>
                         </td>
                       </tr>
