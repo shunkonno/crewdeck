@@ -14,25 +14,6 @@ import { AccountProvider } from '@libs/accountProvider'
 import { truncateAddress } from '@utils/truncateAddress'
 
 export default function Dashboard({ daos }) {
-  console.log({ daos })
-
-  const people = [
-    {
-      id: '1',
-      name: 'Jane Cooper',
-      title: 'Regional Paradigm Technician',
-      role: 'Admin',
-      email: 'jane.cooper@example.com'
-    },
-    {
-      id: '2',
-      name: 'Jane Cooper',
-      title: 'Regional Paradigm Technician',
-      role: 'Admin',
-      email: 'jane.cooper@example.com'
-    }
-  ]
-
   // ****************************************
   // ACCOUNT
   // ****************************************
@@ -54,8 +35,6 @@ export default function Dashboard({ daos }) {
   const [selectedDao, setSelectedDao] = useState(null)
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
   const [daoSelectorIsReady, setDaoSelectorIsReady] = useState(false)
-
-  console.log({ selectedDao, jobs })
 
   useEffect(() => {
     if (currentAccount) {
@@ -112,76 +91,80 @@ export default function Dashboard({ daos }) {
         </div>
 
         {/* Table --- START */}
-        <div className="flex flex-col mt-sm">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-slate-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-slate-200 table-auto">
-                  <thead className="bg-slate-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
-                      >
-                        Title
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
-                      >
-                        Lead
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
-                      >
-                        Status
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
-                      >
-                        Visibility
-                      </th>
-
-                      <th scope="col" className="relative px-6 py-3">
-                        <span className="sr-only">Details</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-slate-200">
-                    {jobs.map((job) => (
-                      <tr key={job.job_id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                          {job.title}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                          {job.lead_contributor
-                            ? truncateAddress(job.lead_contributor)
-                            : '-'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                          {job.status ? job.status : '-'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                          {job.isPublic ? 'Public' : 'Internal'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <a
-                            href={`job/${job.job_id}`}
-                            className="text-indigo-600 hover:text-indigo-900"
+        {jobs.length > 0 && (
+          <>
+            <div className="flex flex-col mt-sm">
+              <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="shadow overflow-hidden border-b border-slate-200 sm:rounded-lg">
+                    <table className="min-w-full divide-y divide-slate-200 table-auto">
+                      <thead className="bg-slate-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
                           >
-                            Details
-                          </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                            Title
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                          >
+                            Lead
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                          >
+                            Visibility
+                          </th>
+
+                          <th scope="col" className="relative px-6 py-3">
+                            <span className="sr-only">Details</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-slate-200">
+                        {jobs.map((job) => (
+                          <tr key={job.job_id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                              {job.title}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                              {job.lead_contributor
+                                ? truncateAddress(job.lead_contributor)
+                                : '-'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                              {job.status ? job.status : '-'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                              {job.isPublic ? 'Public' : 'Internal'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <a
+                                href={`job/${job.job_id}`}
+                                className="text-indigo-600 hover:text-indigo-900"
+                              >
+                                Details
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
         {/* Table --- END */}
       </div>
     </>
