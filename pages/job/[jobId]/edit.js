@@ -104,24 +104,25 @@ export default function Job({ job, dao }) {
 
   return (
     <>
-      <MetaTags title="Job Detail" description="Job Detail" />
-      <div className='max-w-7xl mx-auto py-md '>
+      <MetaTags
+        title="Crewdeck - Job Detail"
+        description="Manage job and bounties for your DAO with Crewdeck. Check jobs to work for a DAO. "
+      />
+      <div className="max-w-7xl mx-auto py-md ">
         <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
           <div className="lg:flex-1 flex justify-end">
             <div>
               <Link href={`/job/${job.job_id}`}>
-              <a className="my-1 text-slate-600 mr-6 text-lg inline-block rounded-md hover:text-slate-800">
-                Cancel
-              </a>
+                <a className="my-1 text-slate-600 mr-6 text-lg inline-block rounded-md hover:text-slate-800">
+                  Cancel
+                </a>
               </Link>
               <div className="px-xs py-1 bg-primary text-white text-lg inline-block rounded-md cursor-pointer hover:bg-primary-hover hover:text-slate-100">
                 Save
               </div>
             </div>
           </div>
-          <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
-            
-          </div>
+          <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80"></div>
         </div>
         {/* Grid - START */}
         <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2">

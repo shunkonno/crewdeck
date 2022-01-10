@@ -46,15 +46,14 @@ export default function Job({ job, dao, daos }) {
   console.log(daoSelectorOptions)
   console.log(isEditAuth)
 
-  useEffect(async() => {
+  useEffect(async () => {
     if (currentAccount) {
       await detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions)
     }
-    
   }, [currentAccount, daos])
 
-  useEffect(()=>{
-    const editable = daoSelectorOptions.some((detectedDao)=>{
+  useEffect(() => {
+    const editable = daoSelectorOptions.some((detectedDao) => {
       return detectedDao.dao_id == job.dao_id
     })
     setIsEditAuth(editable)
@@ -132,17 +131,20 @@ export default function Job({ job, dao, daos }) {
 
   return (
     <>
-      <MetaTags title="Job Detail" description="Job Detail" />
-      <div className='py-md'> 
+      <MetaTags
+        title="Job Detail"
+        description={`Manage job and bounties for your DAO with Crewdeck. Check jobs from ${dao.name}.`}
+      />
+      <div className="py-md">
         <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
           <div className="lg:flex-1 flex justify-end">
-            {isEditAuth &&
+            {isEditAuth && (
               <Link href={`/job/${job.job_id}/edit`}>
                 <a className="mx-xs my-1 text-slate-600 text-lg inline-block rounded-md hover:text-slate-800">
                   Edit
                 </a>
               </Link>
-            }
+            )}
           </div>
           <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
             {!job.lead_contributor && (
@@ -161,7 +163,7 @@ export default function Job({ job, dao, daos }) {
             )}
           </div>
         </div>
-        
+
         {/* Grid - START */}
         <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
           {/* Job - START */}
@@ -317,8 +319,8 @@ export const getStaticProps = async ({ params: { jobId } }) => {
     .single()
 
   const { data: daos } = await supabase
-  .from('daos')
-  .select('dao_id, name, logo_url, contract_address')
+    .from('daos')
+    .select('dao_id, name, logo_url, contract_address')
 
   return { props: { job, dao, daos } }
 }

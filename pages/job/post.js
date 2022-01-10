@@ -228,7 +228,10 @@ export default function PostJob({ daos, tags }) {
 
   return (
     <>
-      <MetaTags title="Post Job" description="Post Job" />
+      <MetaTags
+        title="Crewdeck - Post Job"
+        description="Manage job and bounties for your DAO with Crewdeck. Post jobs for potential contributors. "
+      />
 
       <div className="py-md max-w-4xl mx-auto px-4 sm:px-0">
         {/* Form - START */}

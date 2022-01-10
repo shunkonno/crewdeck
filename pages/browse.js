@@ -144,7 +144,10 @@ export default function Browse({ tags, daos }) {
 
   return (
     <>
-      <MetaTags title="Browse" description="Browse Jobs" />
+      <MetaTags
+        title="Crewdeck - Browse"
+        description="Manage job and bounties for your DAO with Crewdeck. Browse public jobs and bounties, to lower barriers for contributing."
+      />
       {/* Search - START */}
       <div className="py-md max-w-5xl mx-auto px-xs sm:px-0 block sm:flex spacing-x-4">
         <RenderSearch />

@@ -97,7 +97,10 @@ export default function Dashboard({ daos }) {
 
   return (
     <>
-      <MetaTags title="Dashboard" description="Dashboard" />
+      <MetaTags
+        title="Crewdeck - Dashboard"
+        description="Manage job and bounties for your DAO with Crewdeck. You can check public and private jobs and bounties for your DAO on the dashboard."
+      ></MetaTags>
       <div className="max-w-5xl mx-auto">
         <div className="mt-sm w-2/3 sm:w-1/3">
           <DaoSelectBox
