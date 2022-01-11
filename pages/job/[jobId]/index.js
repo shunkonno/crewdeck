@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import sanitizeHTML from 'sanitize-html'
@@ -46,18 +46,19 @@ export default function Job({ job, dao, daos }) {
   console.log(daoSelectorOptions)
   console.log(isEditAuth)
 
-  useEffect(async () => {
+  useLayoutEffect(() => {
     if (currentAccount) {
-      await detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions)
+      detectJoinedDaos(daos, currentAccount, setDaoSelectorOptions)
     }
   }, [currentAccount, daos])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const editable = daoSelectorOptions.some((detectedDao) => {
       return detectedDao.dao_id == job.dao_id
     })
+
     setIsEditAuth(editable)
-  }, [daoSelectorOptions])
+  }, [daoSelectorOptions, job.dao_id])
 
   // ****************************************
   // HANDLE INNER HTML
