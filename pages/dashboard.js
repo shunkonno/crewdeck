@@ -82,12 +82,29 @@ export default function Dashboard({ daos }) {
       ></MetaTags>
       <div className="max-w-5xl mx-auto">
         <div className="mt-sm w-2/3 sm:w-1/3">
+          <label className="block font-medium text-slate-700">
+            Select DAO
+          </label>
+          <p className="my-1 text-sm text-slate-500">
+            Select the DAO you own a token for.
+            <br />
+            Not in the list?{' '}
+            <span>
+              <a
+                target="_blank"
+                className="text-blue-500"
+                href="https://docs.google.com/forms/d/1J_xx0eTRmsSwzsXFUVUwilhtOYqJfBJhqQH_5Wt9NH0/"
+                rel="noreferrer"
+              >
+                Apply here.
+              </a>
+            </span>
+          </p>
           <DaoSelectBox
             selectedDao={selectedDao}
             setSelectedDao={setSelectedDao}
             daoSelectorIsReady={daoSelectorIsReady}
             daoSelectorOptions={daoSelectorOptions}
-            label={'Select DAO'}
           />
         </div>
 
