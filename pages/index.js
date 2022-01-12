@@ -150,12 +150,12 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="bg-slate-50 px-sm py-md sm:py-xl">
+        <section className="bg-slate-600 px-sm py-md sm:py-xl">
           <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col md:flex-row justify-between gap-6">
               <div>
                 <h3 className="text-2xl sm:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-teal-400 to-cyan-600 sm:inline-block">
-                  Manage DAO bounties better.
+                  Get more contributors.
                 </h3>
               </div>
               <div>
