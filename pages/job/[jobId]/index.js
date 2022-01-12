@@ -7,6 +7,9 @@ import { useRouter } from 'next/router'
 // Supabase
 import { supabase } from '@libs/supabase'
 
+// Assets
+import { ChevronLeftIcon, PencilIcon } from '@heroicons/react/solid'
+
 // Functions
 import { AccountProvider } from '@libs/accountProvider'
 import { detectJoinedDaos } from '@utils/detectJoinedDaos'
@@ -136,20 +139,45 @@ export default function Job({ job, dao, daos }) {
         title="Job Detail"
         description={`Manage job and bounties for your DAO with Crewdeck. Check jobs from ${dao.name}.`}
       />
+      {!job.lead_contributor &&
+        <div className="fixed w-full bg-white bottom-0 shadow-around">
+          <div className="flex justify-center py-2">
+            <button
+              className={
+                'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white'
+              }
+              onClick={(e) => {
+                updateJobStatus(e)
+              }}
+            >
+              ✋ &nbsp; Work on this Bounty
+            </button>
+          </div>
+        </div>
+      }
       <div className="py-md">
         <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
-          <div className="lg:flex-1 flex justify-end">
+          <div className="lg:flex-1 flex justify-between items-center">
+            <Link
+              href={"/browse"}
+            >
+              <a className="group inline-flex py-1 px-2 items-center">
+                <ChevronLeftIcon className='w-6 h-6 mr-1 text-slate-600 group-hover:text-slate-500' />
+                <span className='text-slate-600 group-hover:text-slate-500'>Back</span>
+              </a>
+            </Link>
             {isEditAuth && (
               <Link href={`/job/${job.job_id}/edit`}>
-                <a className="mx-xs my-1 text-slate-600 text-lg inline-block rounded-lg hover:text-slate-800">
-                  Edit
+                <a className="group inline-flex items-center mx-xs my-1 text-slate-600 rounded-lg hover:text-slate-800">
+                  <PencilIcon className='w-5 h-5 mr-1 text-slate-600 group-hover:text-slate-500' />
+                  <span className='text-slate-600 group-hover:text-slate-500'>Edit</span>
                 </a>
               </Link>
             )}
           </div>
-          {!job.lead_contributor && (
-            <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
+            <div className="hidden sm:block lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
               <div className="flex justify-end max-w-7xl mx-auto">
+                {!job.lead_contributor &&
                 <button
                   className={
                     'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white'
@@ -160,9 +188,9 @@ export default function Job({ job, dao, daos }) {
                 >
                   ✋ &nbsp; Work on this Bounty
                 </button>
+                }
               </div>
             </div>
-          )}
         </div>
 
         {/* Grid - START */}
