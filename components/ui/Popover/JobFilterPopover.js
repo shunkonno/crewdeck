@@ -36,7 +36,7 @@ export function JobFilterPopover({
             </div>
           */}
           {/* SearchBar -- END */}
-          <div className="text-2xl font-bold flex-1">Find Job</div>
+          <div className="text-2xl font-bold flex-1">Public Bounties</div>
           <Popover className="relative flex-shrink-0">
             <Popover.Button>
               <div
@@ -46,7 +46,11 @@ export function JobFilterPopover({
                 }}
               >
                 {/* <AdjustmentsIcon className="h-6 w-6 focus:text-primary text-slate-400" /> */}
-                Filter
+                {modalIsOpen ?
+                  "Close"
+                  :
+                  "Filter"
+                }
               </div>
             </Popover.Button>
 
