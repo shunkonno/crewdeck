@@ -242,7 +242,7 @@ export default function PostJob({ daos, tags }) {
           <div className="space-y-8 divide-y divide-slate-200">
             <div>
               <div>
-                <h1 className="text-2xl leading-6 font-medium text-slate-900">
+                <h1 className="text-3xl leading-6 font-medium text-slate-900">
                   Post a Job
                 </h1>
                 {daoSelectorIsReady && !daoSelectorOptions?.length && (
@@ -302,7 +302,7 @@ export default function PostJob({ daos, tags }) {
                 daoSelectorOptions.length
                   ? 'bg-primary cursor-pointer'
                   : 'bg-slate-300 cursor-not-allowed',
-                'py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white'
+                'py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white'
               )}
               type="submit"
             >

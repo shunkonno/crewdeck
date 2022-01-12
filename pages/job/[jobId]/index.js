@@ -175,17 +175,19 @@ export default function Job({ job, dao, daos }) {
             </div>
             {/* Job Title - END */}
             {/* Job Tags - START */}
-            <div className="mt-4">
-              <div className="flex flex-wrap justify-start gap-2">
-                {job.tags.map((tag) => (
-                  <div key={tag.id}>
-                    <span className="inline-block items-center px-2 py-0.5 rounded text-sm font-medium bg-slate-200 text-slate-800">
-                      {tag.name}
-                    </span>
-                  </div>
-                ))}
+            {job.tags.length > 0 && (
+              <div className="mt-4">
+                <div className="flex flex-wrap justify-start gap-2">
+                  {job.tags.map((tag) => (
+                    <div key={tag.id}>
+                      <span className="inline-block items-center px-2 py-0.5 rounded text-sm font-medium bg-slate-200 text-slate-800">
+                        {tag.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
             {/* Job Tags - END */}
             {/* Job Description - START */}
             <div className="mt-lg">

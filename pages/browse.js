@@ -59,7 +59,7 @@ export default function Browse({ tags, daos }) {
         />
         <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
           <div>
-            <h3 className="text-sm font-medium pb-2">DAO</h3>
+            <h3 className="text-sm font-medium">DAO</h3>
             <div className="mt-2">
               <RefinementList
                 attribute="dao"
