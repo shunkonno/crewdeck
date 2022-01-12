@@ -15,7 +15,6 @@ export function DaoSelectBox({
   setSelectedDao,
   daoSelectorOptions,
   daoSelectorIsReady,
-  label
 }) {
   useEffect(() => {
     setSelectedDao(selectedDao || null)
@@ -32,25 +31,7 @@ export function DaoSelectBox({
     >
       {({ open }) => (
         <>
-          <Listbox.Label className="block font-medium text-slate-700">
-            {label ? label : 'DAO'}
-          </Listbox.Label>
-          <p className="mt-1 text-sm text-slate-500">
-            Select the DAO you own a token for.
-            <br />
-            Not in the list?{' '}
-            <span>
-              <a
-                target="_blank"
-                className="text-blue-500"
-                href="https://docs.google.com/forms/d/1J_xx0eTRmsSwzsXFUVUwilhtOYqJfBJhqQH_5Wt9NH0/"
-                rel="noreferrer"
-              >
-                Apply here.
-              </a>
-            </span>
-          </p>
-          <div className="mt-1 relative">
+          <div className="relative">
             <Listbox.Button
               className={classNames(
                 daoSelectorOptions.length
