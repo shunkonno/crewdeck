@@ -21,7 +21,7 @@ export default function Home() {
       {/* Grid - START */}
       <div>
         {/* TopContainer - START */}
-        <div className="bg-slate-100">
+        <div className="bg-white">
           <div className="max-w-5xl mx-sm lg:mx-auto">
             <div className="flex items-center py-md sm:py-3xl">
               <div className="w-full md:w-1/2">
@@ -95,11 +95,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="bg-white px-sm py-md sm:py-2xl">
+        <section className="px-sm py-sm bg-teal-50">
           <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-8">
+            <div className="flex flex-col sm:flex-row gap-4">
               {/* Left Item - START */}
-              <div>
+              <div className="px-sm py-md sm:py-2xl bg-white">
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-medium">
                     {`Manage Bounties`}
@@ -112,7 +112,7 @@ export default function Home() {
                     collaboration and compensation on bounties.`}
                   </p>
                 </div>
-                <div className="hidden md:flex justify-left mt-8">
+                <div className="hidden md:flex justify-center mt-8">
                   <div className="relative sm:w-80 sm:h-52 md:w-96 md:h-32 overflow-hidden">
                     <Image
                       src={'/images/support/workingTogether.jpg'}
@@ -124,7 +124,7 @@ export default function Home() {
               </div>
               {/* Left Item - END */}
               {/* Right Item - START */}
-              <div>
+              <div className="px-sm py-md sm:py-2xl bg-white">
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-medium">
                     {`Post Public Bounties`}
@@ -135,18 +135,27 @@ export default function Home() {
                     {`Sometimes, the skillset necessary for a certain task is outside the scope of the DAO. Public bounties can be searched and acheived by anyone interested.`}
                   </p>
                 </div>
+                <div className="hidden md:flex justify-center mt-8">
+                  <div className="relative sm:w-80 sm:h-52 md:w-96 md:h-32 overflow-hidden">
+                    <Image
+                      src={'/images/support/callingOthers.jpg'}
+                      alt="calling others"
+                      layout="fill"
+                    />
+                  </div>
+                </div>
               </div>
               {/* Right Item - END */}
             </div>
           </div>
         </section>
 
-        <section className="bg-slate-50 px-sm py-md sm:py-2xl">
+        <section className="bg-slate-50 px-sm py-md sm:py-xl">
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
               <div>
                 <h3 className="text-2xl sm:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-teal-400 to-cyan-600 sm:inline-block">
-                  Manage DAO bounties well.
+                  Manage DAO bounties better.
                 </h3>
               </div>
               <div>
@@ -155,7 +164,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <button className="mt-sm sm:mt-xs bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold">
+                  <button className=" bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold">
                     Early Entry
                   </button>
                 </a>

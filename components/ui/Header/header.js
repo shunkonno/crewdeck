@@ -54,7 +54,7 @@ export function Header() {
   // トップページではヘッダーの背景色を変更
   useEffect(() => {
     if (router.pathname == '/') {
-      setBackgroundColor('bg-slate-100')
+      setBackgroundColor('bg-white')
     } else {
       setBackgroundColor('bg-white')
     }
