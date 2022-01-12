@@ -2,13 +2,7 @@ import { useState } from 'react'
 
 import classNames from 'classnames'
 
-export function JobTagsCheckboxes ({tags, register}) {
-  // tagsの数だけtag_idをキーの持つ、value falseのオブジェクトを作る
-  const tagsStateObject = tags.reduce((accum, tag) => {
-    return { ...accum, [tag.tag_id]: false }
-  }, {})
-
-  const [selectedTags, setSelectedTags] = useState(tagsStateObject)
+export function JobTagsCheckboxes ({tags, register,selectedTags, setSelectedTags}) {
 
   return(
     <>
