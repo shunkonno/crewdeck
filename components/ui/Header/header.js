@@ -49,14 +49,14 @@ export function Header() {
   let [isOpen, setIsOpen] = useState(false)
 
   // Header BackgroundColor
-  const [backgroundColor, setbackGroundColor] = useState("")
+  const [backgroundColor, setBackgroundColor] = useState('')
 
-  // トップページ(pathname="/")のとき、背景色のstateをbg-teal-50に更新する
-  useEffect(()=>{
-    if(router.pathname == "/"){
-      setbackGroundColor('bg-teal-50')
-    }else{
-      setbackGroundColor('bg-white')
+  // トップページではヘッダーの背景色を変更
+  useEffect(() => {
+    if (router.pathname == '/') {
+      setBackgroundColor('bg-slate-100')
+    } else {
+      setBackgroundColor('bg-white')
     }
   }, [router.pathname])
 
@@ -80,169 +80,194 @@ export function Header() {
 
   return (
     <>
-    <header className={`fixed z-50 h-[64px] w-full shadow-sm ${backgroundColor}`}>
-      <div className="py-2xs px-xs h-full">
-        <div className="flex items-center h-full">
-          {/* FlexContentLeft - START */}
-          {/* Logo - START */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/">
-              <a className='block w-28 h-8 relative'>
-                <Image src={"/images/logos/CrewdeckLogo.svg"} layout={"fill"} alt="Crewdeck Logo" />
-              </a>
-            </Link>
-            <div className='text-primary ml-2'>beta</div> 
-          </div>
-          {/* Logo - END */}
-          {/* FlexContentLeft - END */}
-
-          {/* FlexContentRight - START */}
-          {/* SP Content - START */}
-          <div className="block md:hidden ml-auto">
-            <div onClick={() => setIsOpen(true)}>
-              <MenuIcon className="h-6 w-6 text-slate-800" />
+      <header
+        className={`fixed z-50 h-[64px] w-full shadow-sm ${backgroundColor}`}
+      >
+        <div className="py-2xs px-xs h-full">
+          <div className="flex items-center h-full">
+            {/* FlexContentLeft - START */}
+            {/* Logo - START */}
+            <div className="flex-shrink-0 flex items-center">
+              <Link href="/">
+                <a className="block w-28 h-8 relative">
+                  <Image
+                    src={'/images/logos/CrewdeckLogo.svg'}
+                    layout={'fill'}
+                    alt="Crewdeck Logo"
+                  />
+                </a>
+              </Link>
+              <div className="text-primary ml-2">beta</div>
             </div>
-            <Dialog
-              as="div"
-              open={isOpen}
-              className="fixed z-50 inset-0 overflow-y-auto md:hidden"
-              onClose={() => setIsOpen(false)}
-            >
-              <Dialog.Overlay className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
+            {/* Logo - END */}
+            {/* FlexContentLeft - END */}
 
-              <div className="relative min-h-screen float-right bg-white w-64 max-w-[calc(100%-3rem)] p-sm">
-                <div className="pb-xs border-b border-slate-200">
-                  <div className="flex">
-                    <h1 className="text-slate-600 font-semibold">Navigation</h1>
-                    <XIcon
-                      className="h-6 w-6 ml-auto"
-                      onClick={() => setIsOpen(false)}
-                    />
-                  </div>
-                  <div className="pl-sm py-2 mt-2 rounded-lg active:bg-slate-100">
-                    <a onClick={() => handleRouting('/dashboard')}>
-                      <span className="outline-none">Your DAOs</span>
-                    </a>
-                    
-                  </div>
-                  <div className="pl-sm py-2 rounded-lg active:bg-slate-100">
-                    <a onClick={() => handleRouting('/browse')}>
-                      <span className="outline-none">Public Bounties</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="pt-xs">
-                  <h1 className="text-slate-600 font-semibold">Account</h1>
-                  {currentAccount ? (
-                    <>
-                      <div className="mt-2 inline-flex justify-center w-full pl-4 pr-3 py-2 text-sm font-medium text-white border border-slate-300 rounded-lg bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                        <span className="inline-flex items-center text-sm font-medium text-slate-800">
-                          {ensName ? ensName : truncateAddress(currentAccount)}
-                        </span>
-                      </div>
-                      <div className="pt-2">
-                        <div className="pl-sm py-2 rounded-lg active:bg-slate-100">
-                          <a onClick={() => handleRouting('/job/post')}>
-                            <span className="outline-none text-primary">Post Job</span>
-                          </a>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex justify-center mt-xs">
-                      <button
-                        className="bg-primary text-white outline-none px-4 py-2 text-sm font-bold rounded-lg shadow-md shadow-primary-default/50"
-                        onClick={connectWallet}
-                      >
-                        Connect Wallet
-                      </button>
-                    </div>
-                  )}
-                </div>
-                <div className='pt-xs'>
-                  <h3 className="text-slate-600 text-md">Social</h3>
-                  <div className="inline-flex mt-xs">
-                    <a 
-                      href="https://twitter.com/crewdeck_" 
-                      className='outline-none'
-                      target="_blank" 
-                      rel="noreferrer"
-                    >
-                      <svg className="text-slate-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
+            {/* FlexContentRight - START */}
+            {/* SP Content - START */}
+            <div className="block md:hidden ml-auto">
+              <div onClick={() => setIsOpen(true)}>
+                <MenuIcon className="h-6 w-6 text-slate-800" />
               </div>
-            </Dialog>
-          </div>
-          {/* SP Content - END */}
-          
-          {/* PC Content - START */}
-          <div className="hidden md:flex items-center ml-auto">
-            <div className=''>
-              {/* Twitter Link - START */}
-              <a href="https://twitter.com/crewdeck_" target="_blank" rel="noreferrer">
-                <svg className="text-slate-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                </svg>
-              </a>
-              {/* Twitter Link - END */}
-            </div>
-            {/* Navigation - START */}
-            <div className="flex items-center space-x-8 ml-4 pl-4 border-l border-slate-200">
-              <Link href="/dashboard">
-                <a>Your DAOs</a>
-              </Link>
-              <Link href="/browse">
-                <a>Public Bounties</a>
-              </Link>
-              <Link href="/job/post">
-                <a className='font-medium text-primary'>Post Job</a>
-              </Link>
-            </div>
-            {/* Navigation - END */}
-            {/* Connect Wallet - START */}
-            <div className="ml-4 pl-4">
-              {/* If wallet is connected, display users' public address or ENS address. */}
-              {currentAccount && (
-                <div>
-                  <div className='px-4 py-1 rounded-full bg-white border border-slate-300'>
-                    <span className="text-sm font-medium text-slate-800">
-                      {ensName
-                        ? ensName
-                        : truncateAddress(currentAccount)}
-                    </span>
+              <Dialog
+                as="div"
+                open={isOpen}
+                className="fixed z-50 inset-0 overflow-y-auto md:hidden"
+                onClose={() => setIsOpen(false)}
+              >
+                <Dialog.Overlay className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
+
+                <div className="relative min-h-screen float-right bg-white w-64 max-w-[calc(100%-3rem)] p-sm">
+                  <div className="pb-xs border-b border-slate-200">
+                    <div className="flex">
+                      <h1 className="text-slate-600 font-semibold">
+                        Navigation
+                      </h1>
+                      <XIcon
+                        className="h-6 w-6 ml-auto"
+                        onClick={() => setIsOpen(false)}
+                      />
+                    </div>
+                    <div className="pl-sm py-2 mt-2 rounded-lg active:bg-slate-100">
+                      <a onClick={() => handleRouting('/dashboard')}>
+                        <span className="outline-none">Your DAOs</span>
+                      </a>
+                    </div>
+                    <div className="pl-sm py-2 rounded-lg active:bg-slate-100">
+                      <a onClick={() => handleRouting('/browse')}>
+                        <span className="outline-none">Public Bounties</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="pt-xs">
+                    <h1 className="text-slate-600 font-semibold">Account</h1>
+                    {currentAccount ? (
+                      <>
+                        <div className="mt-2 inline-flex justify-center w-full pl-4 pr-3 py-2 text-sm font-medium text-white border border-slate-300 rounded-lg bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                          <span className="inline-flex items-center text-sm font-medium text-slate-800">
+                            {ensName
+                              ? ensName
+                              : truncateAddress(currentAccount)}
+                          </span>
+                        </div>
+                        <div className="pt-2">
+                          <div className="pl-sm py-2 rounded-lg active:bg-slate-100">
+                            <a onClick={() => handleRouting('/job/post')}>
+                              <span className="outline-none text-primary">
+                                Post Job
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-center mt-xs">
+                        <button
+                          className="bg-primary text-white outline-none px-4 py-2 text-sm font-bold rounded-lg shadow-md shadow-primary-default/50"
+                          onClick={connectWallet}
+                        >
+                          Connect Wallet
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="pt-xs">
+                    <h3 className="text-slate-600 text-md">Social</h3>
+                    <div className="inline-flex mt-xs">
+                      <a
+                        href="https://twitter.com/crewdeck_"
+                        className="outline-none"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <svg
+                          className="text-slate-400"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                        </svg>
+                      </a>
+                    </div>
                   </div>
                 </div>
-              )}
-              {/* If wallet isn't connected, display button to connect wallet. */}
-              {!currentAccount && (
-                <button
-                  className="bg-primary text-white px-4 py-2 text-sm font-bold rounded-lg shadow-md shadow-primary-default/50"
-                  onClick={connectWallet}
-                >
-                  Connect Wallet
-                </button>
-              )}
+              </Dialog>
             </div>
-            {/* Connect Wallet - END */}
+            {/* SP Content - END */}
+
+            {/* PC Content - START */}
+            <div className="hidden md:flex items-center ml-auto">
+              <div className="">
+                {/* Twitter Link - START */}
+                <a
+                  href="https://twitter.com/crewdeck_"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <svg
+                    className="text-slate-400"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                  </svg>
+                </a>
+                {/* Twitter Link - END */}
+              </div>
+              {/* Navigation - START */}
+              <div className="flex items-center space-x-8 ml-4 pl-4 border-l border-slate-200">
+                <Link href="/dashboard">
+                  <a>Your DAOs</a>
+                </Link>
+                <Link href="/browse">
+                  <a>Public Bounties</a>
+                </Link>
+                <Link href="/job/post">
+                  <a className="font-medium text-primary">Post Job</a>
+                </Link>
+              </div>
+              {/* Navigation - END */}
+              {/* Connect Wallet - START */}
+              <div className="ml-4 pl-4">
+                {/* If wallet is connected, display users' public address or ENS address. */}
+                {currentAccount && (
+                  <div>
+                    <div className="px-4 py-1 rounded-full bg-white border border-slate-300">
+                      <span className="text-sm font-medium text-slate-800">
+                        {ensName ? ensName : truncateAddress(currentAccount)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {/* If wallet isn't connected, display button to connect wallet. */}
+                {!currentAccount && (
+                  <button
+                    className="bg-primary text-white px-4 py-2 text-sm font-bold rounded-lg shadow-md shadow-primary-default/50"
+                    onClick={connectWallet}
+                  >
+                    Connect Wallet
+                  </button>
+                )}
+              </div>
+              {/* Connect Wallet - END */}
+            </div>
+            {/* PC Content - END*/}
+            {/* FlexContentRight - END */}
           </div>
-          {/* PC Content - END*/}
-          {/* FlexContentRight - END */}
         </div>
-      </div>
-    </header>
-    {/* fixedでずれるヘッダーの高さ分、高さを補う。トップページの場合、bg-teal-50にする */}
-    <div className={classNames(
-      `${backgroundColor}`,
-      "h-[64px] w-full")}>
-    </div>
+      </header>
+      {/* fixed でずれるヘッダーの高さ分、高さを補う。トップページの場合、背景色を変更する。 */}
+      <div
+        className={classNames(`${backgroundColor}`, 'h-[64px] w-full')}
+      ></div>
     </>
   )
 }
-
 
 /* <Menu
   as="div"
