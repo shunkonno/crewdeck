@@ -90,21 +90,24 @@ export default function Home() {
         </section>
 
         <section className="bg-white px-sm py-md sm:py-2xl">
-          <div className="flex items-center py-md sm:py-3xl">
-            <div className="max-w-5xl mx-auto">
-              <div className="flex flex-col sm:flex-row gap-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex flex-col sm:flex-row gap-8">
+              {/* Left Item - START */}
+              <div>
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-medium">
                     {`Manage Bounties within the DAO`}
                   </h2>
-                  <p className="mt-4 w-full sm:w-2/3">
+                </div>
+                <div className="mt-4 w-full">
+                  <p>
                     {`Crewdeck is an easy way to allow NFT owners to post/manage
                     bounties. We're also working to bring more methods of
                     collaboration and compensation on bounties.`}
                   </p>
                 </div>
-                <div className="hidden md:w-1/2 md:flex justify-end">
-                  <div className="relative sm:w-80 sm:h-52 md:w-96 md:h-32 rounded-2xl overflow-hidden">
+                <div className="hidden md:flex justify-left mt-8">
+                  <div className="relative sm:w-80 sm:h-52 md:w-96 md:h-32 overflow-hidden">
                     <Image
                       src={'/images/support/workingTogether.jpg'}
                       alt="working together"
@@ -113,23 +116,21 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white px-sm py-md sm:py-2xl">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-8">
-              <div className="w-full sm:w-2/3 bg-white">
+              {/* Left Item - END */}
+              {/* Right Item - START */}
+              <div>
                 <div>
-                  <h2 className="text-3xl font-medium text-center md:text-left">
-                    {`Post Public Bounties when Necessary`}
+                  <h2 className="text-3xl font-medium">
+                    {`Post Public Bounties`}
                   </h2>
-                  <p className="mt-4 w-full sm:w-2/3">
+                </div>
+                <div className="mt-4 w-full">
+                  <p>
                     {`Sometimes, the skillset necessary for a certain task is outside the scope of the DAO. Public bounties can be searched and acheived by anyone interested.`}
                   </p>
                 </div>
               </div>
+              {/* Right Item - END */}
             </div>
           </div>
         </section>
