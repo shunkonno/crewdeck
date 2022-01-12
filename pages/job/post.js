@@ -229,7 +229,7 @@ export default function PostJob({ daos, tags }) {
   return (
     <>
       <MetaTags
-        title="Crewdeck - Post Job"
+        title="Crewdeck - Post Bounty"
         description="Manage job and bounties for your DAO with Crewdeck. Post jobs for potential contributors. "
       />
 

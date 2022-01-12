@@ -140,7 +140,7 @@ export function Header() {
                     <div className="py-2 active:bg-slate-100">
                       <a onClick={() => handleRouting('/job/post')}>
                         <span className="outline-none text-primary">
-                          Post Job
+                          Post Bounty
                         </span>
                       </a>
                     </div>
@@ -226,7 +226,7 @@ export function Header() {
                   <a>Public Bounties</a>
                 </Link>
                 <Link href="/job/post">
-                  <a className="font-medium text-primary">Post Job</a>
+                  <a className="font-medium text-primary">Post Bounty</a>
                 </Link>
               </div>
               {/* Navigation - END */}
@@ -297,7 +297,7 @@ export function Header() {
             <NavLinks href="/job/post">
               <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                 <DocumentTextIcon className="w-5 h-5 mr-2 " />
-                <span>Post Job</span>
+                <span>Post Bounty</span>
               </div>
             </NavLinks>
           }
