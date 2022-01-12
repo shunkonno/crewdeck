@@ -68,7 +68,7 @@ export default function Home() {
         {/* TopContainer - END */}
 
         {/* LP Content - START */}
-        <section className="bg-white px-sm py-md sm:py-2xl border-b border-slate-100">
+        <section className="bg-slate-100 px-sm py-md sm:py-2xl">
           <div className="max-w-5xl mx-auto">
             <div className="mb-4">
               <h2 className="inline text-2xl sm:text-3xl font-medium leading-normal">
