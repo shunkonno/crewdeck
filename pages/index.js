@@ -42,9 +42,15 @@ export default function Home() {
                   the bounty public.
                 </p>
                 <div>
-                  <button className="mt-sm sm:mt-xs bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold">
-                    Early Entry
-                  </button>
+                  <a
+                    href="https://docs.google.com/forms/d/1J_xx0eTRmsSwzsXFUVUwilhtOYqJfBJhqQH_5Wt9NH0/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <button className="mt-sm sm:mt-xs bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold">
+                      Early Entry
+                    </button>
+                  </a>
                 </div>
               </div>
               <div className="hidden md:w-1/2 md:flex justify-end">
@@ -96,7 +102,7 @@ export default function Home() {
               <div>
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-medium">
-                    {`Manage Bounties within the DAO`}
+                    {`Manage Bounties`}
                   </h2>
                 </div>
                 <div className="mt-4 w-full">
@@ -120,7 +126,7 @@ export default function Home() {
               {/* Right Item - START */}
               <div>
                 <div>
-                  <h2 className="text-3xl font-medium">
+                  <h2 className="text-2xl sm:text-3xl font-medium">
                     {`Post Public Bounties`}
                   </h2>
                 </div>
@@ -135,17 +141,25 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="bg-slate-50 px-sm py-md">
-          <div className="max-w-5xl mx-auto py-0 sm:py-8 flex flex-col md:flex-row justify-between gap-6">
-            <h1 className="text-2xl sm:text-3xl font-semibold">
-              <p className="text-transparent bg-clip-text bg-gradient-to-br from-teal-400 to-cyan-600 sm:inline-block">
-                Manage DAO bounties well.
-              </p>
-            </h1>
-            <div>
-              <span className="bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold cursor-pointer">
-                Early Entry
-              </span>
+        <section className="bg-slate-50 px-sm py-md sm:py-2xl">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-teal-400 to-cyan-600 sm:inline-block">
+                  Manage DAO bounties well.
+                </h3>
+              </div>
+              <div>
+                <a
+                  href="https://docs.google.com/forms/d/1J_xx0eTRmsSwzsXFUVUwilhtOYqJfBJhqQH_5Wt9NH0/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <button className="mt-sm sm:mt-xs bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold">
+                    Early Entry
+                  </button>
+                </a>
+              </div>
             </div>
           </div>
         </section>
