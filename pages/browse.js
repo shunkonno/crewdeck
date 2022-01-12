@@ -1,6 +1,5 @@
 import { Fragment, useState, useEffect } from 'react'
 import Link from 'next/link'
-import useSWR from 'swr'
 import Image from 'next/image'
 
 // Components
@@ -75,7 +74,9 @@ export default function Browse({ tags, daos }) {
           </div>
         </div>
         <main className="flex-1 mt-xs sm:mt-0 max-w-4xl">
-          <h1 className="text-3xl font-bold hidden sm:block mb-4">Jobs</h1>
+          <h1 className="text-3xl font-medium hidden sm:block mb-4">
+            Public Bounties
+          </h1>
           <Hits hitComponent={Hit} />
         </main>
       </InstantSearch>
