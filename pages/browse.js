@@ -110,6 +110,7 @@ export default function Browse({ tags, daos }) {
                       <Image
                         src={props.hit.daoLogo}
                         layout={'fill'}
+                        alt={props.hit.dao}
                         className=""
                       />
                     </div>
