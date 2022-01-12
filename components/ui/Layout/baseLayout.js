@@ -4,7 +4,7 @@ import { Footer } from '@components/ui/Footer'
 export function BaseLayout({ children }) {
   return (
     <>
-      <div className="min-view-height bg-slate-50">
+      <div className="min-view-height bg-slate-100">
         <Header />
         {/* Header - END */}
         <div className="relative z-0">{children}</div>

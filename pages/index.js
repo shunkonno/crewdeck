@@ -47,7 +47,7 @@ export default function Home() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <button className="mt-sm sm:mt-xs bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold">
+                    <button className="mt-sm sm:mt-xs bg-primary px-8 py-3 rounded-lg text-white text-sm tracking-wide font-semibold">
                       Early Entry
                     </button>
                   </a>
@@ -164,7 +164,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <button className=" bg-primary px-8 py-3 rounded-md text-white text-sm tracking-wide font-semibold">
+                  <button className=" bg-primary px-8 py-3 rounded-lg text-white text-sm tracking-wide font-semibold">
                     Early Entry
                   </button>
                 </a>

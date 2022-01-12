@@ -127,14 +127,21 @@ export function Header() {
                         onClick={() => setIsOpen(false)}
                       />
                     </div>
-                    <div className="pl-sm py-2 mt-2 rounded-lg active:bg-slate-100">
+                    <div className="py-2 mt-2 active:bg-slate-100">
                       <a onClick={() => handleRouting('/dashboard')}>
                         <span className="outline-none">Your DAOs</span>
                       </a>
                     </div>
-                    <div className="pl-sm py-2 rounded-lg active:bg-slate-100">
+                    <div className="py-2 active:bg-slate-100">
                       <a onClick={() => handleRouting('/browse')}>
                         <span className="outline-none">Public Bounties</span>
+                      </a>
+                    </div>
+                    <div className="py-2 active:bg-slate-100">
+                      <a onClick={() => handleRouting('/job/post')}>
+                        <span className="outline-none text-primary">
+                          Post Job
+                        </span>
                       </a>
                     </div>
                   </div>
@@ -148,15 +155,6 @@ export function Header() {
                               ? ensName
                               : truncateAddress(currentAccount)}
                           </span>
-                        </div>
-                        <div className="pt-2">
-                          <div className="pl-sm py-2 rounded-lg active:bg-slate-100">
-                            <a onClick={() => handleRouting('/job/post')}>
-                              <span className="outline-none text-primary">
-                                Post Job
-                              </span>
-                            </a>
-                          </div>
                         </div>
                       </>
                     ) : (

@@ -113,11 +113,11 @@ export default function Job({ job, dao }) {
           <div className="lg:flex-1 flex justify-end">
             <div>
               <Link href={`/job/${job.job_id}`}>
-                <a className="my-1 text-slate-600 mr-6 text-lg inline-block rounded-md hover:text-slate-800">
+                <a className="my-1 text-slate-600 mr-6 text-lg inline-block rounded-lg hover:text-slate-800">
                   Cancel
                 </a>
               </Link>
-              <div className="px-xs py-1 bg-primary text-white text-lg inline-block rounded-md cursor-pointer hover:bg-primary-hover hover:text-slate-100">
+              <div className="px-xs py-1 bg-primary text-white text-lg inline-block rounded-lg cursor-pointer hover:bg-primary-hover hover:text-slate-100">
                 Save
               </div>
             </div>

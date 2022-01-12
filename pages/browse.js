@@ -98,7 +98,7 @@ export default function Browse({ tags, daos }) {
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
         <Link href={`/job/${props.hit.objectID}`}>
           <a>
-            <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">
+            <div className="w-full border shadow-sm border-slate-300 rounded-lg bg-white">
               <div className="px-4 py-2">
                 <div>
                   <h2 className="text-lg font-medium truncate">

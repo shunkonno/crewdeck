@@ -87,7 +87,7 @@ export default function Dashboard({ daos }) {
             setSelectedDao={setSelectedDao}
             daoSelectorIsReady={daoSelectorIsReady}
             daoSelectorOptions={daoSelectorOptions}
-            label={"DAO Label"}
+            label={'Select DAO'}
           />
         </div>
 
@@ -99,29 +99,29 @@ export default function Dashboard({ daos }) {
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                   <div className="shadow overflow-hidden border-b border-slate-200 sm:rounded-lg">
                     <table className="min-w-full divide-y divide-slate-200 table-auto">
-                      <thead className="bg-slate-50">
+                      <thead className="bg-slate-200">
                         <tr>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider"
                           >
                             Title
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider"
                           >
                             Lead
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider"
                           >
                             Status
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider"
                           >
                             Visibility
                           </th>
@@ -137,21 +137,21 @@ export default function Dashboard({ daos }) {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                               {job.title}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
                               {job.lead_contributor
                                 ? truncateAddress(job.lead_contributor)
                                 : '-'}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
                               {job.status ? job.status : '-'}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
                               {job.isPublic ? 'Public' : 'Internal'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <a
                                 href={`job/${job.job_id}`}
-                                className="text-indigo-600 hover:text-indigo-900"
+                                className="text-slate-600 hover:text-slate-900"
                               >
                                 Details
                               </a>

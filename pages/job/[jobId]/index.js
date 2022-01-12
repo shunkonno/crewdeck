@@ -141,18 +141,18 @@ export default function Job({ job, dao, daos }) {
           <div className="lg:flex-1 flex justify-end">
             {isEditAuth && (
               <Link href={`/job/${job.job_id}/edit`}>
-                <a className="mx-xs my-1 text-slate-600 text-lg inline-block rounded-md hover:text-slate-800">
+                <a className="mx-xs my-1 text-slate-600 text-lg inline-block rounded-lg hover:text-slate-800">
                   Edit
                 </a>
               </Link>
             )}
           </div>
-          <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
-            {!job.lead_contributor && (
+          {!job.lead_contributor && (
+            <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
               <div className="flex justify-end max-w-7xl mx-auto">
                 <button
                   className={
-                    'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white'
+                    'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white'
                   }
                   onClick={(e) => {
                     updateJobStatus(e)
@@ -161,8 +161,8 @@ export default function Job({ job, dao, daos }) {
                   ✋ &nbsp; Work on this Bounty
                 </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Grid - START */}
@@ -171,7 +171,7 @@ export default function Job({ job, dao, daos }) {
           <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-lg">
             {/* Job Title - START */}
             <div>
-              <h1 className="text-2xl font-semibold">{job.title}</h1>
+              <h1 className="text-lg sm:text-2xl font-medium">{job.title}</h1>
             </div>
             {/* Job Title - END */}
             {/* Job Tags - START */}
@@ -212,7 +212,7 @@ export default function Job({ job, dao, daos }) {
                     />
                   </div>
                 )}
-                <h1 className="text-lg font-semibold">{dao.name}</h1>
+                <h1 className="text-lg font-medium">{dao.name}</h1>
               </div>
               <p className="mt-1 text-slate-600">{dao.description}</p>
               {(dao.discord_url || dao.twitter_url) && (

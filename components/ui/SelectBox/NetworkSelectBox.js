@@ -36,7 +36,7 @@ export function NetworkSelectBox({
           <div className="mt-1 relative">
             <Listbox.Button
               className={
-                'cursor-default focus:border-primary relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
+                'cursor-default focus:border-primary relative w-full bg-white border border-slate-300 rounded-lg shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
               }
             >
               <span className="flex items-center">
@@ -73,7 +73,7 @@ export function NetworkSelectBox({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                 {networkSelectorOptions.map((network) => (
                   <Listbox.Option
                     key={network.network_id}

@@ -17,7 +17,6 @@ export function DaoSelectBox({
   daoSelectorIsReady,
   label
 }) {
-
   useEffect(() => {
     setSelectedDao(selectedDao || null)
   }, [selectedDao])
@@ -26,16 +25,15 @@ export function DaoSelectBox({
     <Listbox
       value={selectedDao}
       onChange={
-        onChange ? //onChange propsが渡されていなければ、HeadlessUIの書式に従い、setSelectedDaoのみ
-          (e) => onChange(e)
-        :
-          setSelectedDao
+        onChange //onChange propsが渡されていなければ、HeadlessUIの書式に従い、setSelectedDaoのみ
+          ? (e) => onChange(e)
+          : setSelectedDao
       }
     >
       {({ open }) => (
         <>
           <Listbox.Label className="block font-medium text-slate-700">
-            {label ? label : "DAO"}
+            {label ? label : 'DAO'}
           </Listbox.Label>
           <p className="mt-1 text-sm text-slate-500">
             Select the DAO you own a token for.
@@ -58,7 +56,7 @@ export function DaoSelectBox({
                 daoSelectorOptions.length
                   ? 'cursor-default focus:border-primary'
                   : 'cursor-not-allowed bg-slate-200',
-                'relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
+                'relative w-full bg-white border border-slate-300 rounded-lg shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
               )}
             >
               <span className="flex items-center">
@@ -66,7 +64,7 @@ export function DaoSelectBox({
                   daoSelectorOptions.length ? (
                     selectedDao === null ? (
                       <span className="block truncate text-black">
-                        {'Select your DAO'}
+                        {'Select Your DAO'}
                       </span>
                     ) : (
                       <>
@@ -108,7 +106,7 @@ export function DaoSelectBox({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                   {daoSelectorOptions.map((dao) => (
                     <Listbox.Option
                       key={dao.dao_id}

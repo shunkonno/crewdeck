@@ -221,7 +221,7 @@ export default function RegisterNFT({ daos, networks }) {
                 daoSelectorOptions.length
                   ? 'bg-primary cursor-pointer'
                   : 'bg-slate-300 cursor-not-allowed',
-                'py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  '
+                'py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white  '
               )}
               type="submit"
             >
