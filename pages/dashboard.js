@@ -87,6 +87,7 @@ export default function Dashboard({ daos }) {
             setSelectedDao={setSelectedDao}
             daoSelectorIsReady={daoSelectorIsReady}
             daoSelectorOptions={daoSelectorOptions}
+            label={"DAO Label"}
           />
         </div>
 

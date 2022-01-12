@@ -14,7 +14,8 @@ export function DaoSelectBox({
   selectedDao,
   setSelectedDao,
   daoSelectorOptions,
-  daoSelectorIsReady
+  daoSelectorIsReady,
+  label
 }) {
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export function DaoSelectBox({
       {({ open }) => (
         <>
           <Listbox.Label className="block font-medium text-slate-700">
-            DAO
+            {label ? label : "DAO"}
           </Listbox.Label>
           <p className="mt-1 text-sm text-slate-500">
             Select the DAO you own a token for.
