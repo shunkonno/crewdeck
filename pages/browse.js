@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -7,25 +7,23 @@ import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
 import { JobFilterPopover } from '@components/ui/Popover'
 
-// Supabase
-import { supabase } from '@libs/supabase'
-
 // Algolia
 import algoliasearch from 'algoliasearch'
-import {
-  InstantSearch,
-  SearchBox,
-  Hits,
-  RefinementList
-} from 'react-instantsearch-dom'
+import { InstantSearch, Hits, RefinementList } from 'react-instantsearch-dom'
 
-export default function Browse({ tags, daos }) {
+export default function Browse() {
+  // ****************************************
+  // FILTER STATE
+  // ****************************************
   const [selectedDaoFilters, setSelectedDaoFilters] = useState([])
   const [selectedTagFilters, setSelectedTagFilters] = useState([])
 
+  // ****************************************
+  // UI CONTROL STATE
+  // ****************************************
   const [modalIsOpen, setIsOpen] = useState(false)
 
-  console.log({ modalIsOpen, selectedDaoFilters })
+  // console.log({ modalIsOpen, selectedDaoFilters })
 
   // ****************************************
   // ALGOLIA
@@ -41,12 +39,16 @@ export default function Browse({ tags, daos }) {
         searchClient={searchClient}
         indexName="jobs"
         onSearchStateChange={(searchState) => {
-          console.log(searchState)
-          if (modalIsOpen && searchState.refinementList?.dao) {
-            setSelectedDaoFilters(searchState.refinementList.dao)
+          if (modalIsOpen && searchState.refinementList?.dao !== undefined) {
+            searchState.refinementList.dao.length > 0
+              ? setSelectedDaoFilters(searchState.refinementList.dao)
+              : setSelectedDaoFilters([])
           }
-          if (modalIsOpen && searchState.refinementList?.tags) {
-            setSelectedTagFilters(searchState.refinementList.tags)
+
+          if (modalIsOpen && searchState.refinementList?.tags !== undefined) {
+            searchState.refinementList.tags.length > 0
+              ? setSelectedTagFilters(searchState.refinementList.tags)
+              : setSelectedTagFilters([])
           }
         }}
       >
@@ -160,16 +162,3 @@ export default function Browse({ tags, daos }) {
 }
 
 Browse.Layout = BaseLayout
-
-export const getStaticProps = async () => {
-  // Get all tags.
-  const { data: tags } = await supabase
-    .from('tags')
-    .select('tag_id, name, color_code')
-
-  console.log(tags)
-  // Get all DAOs.
-  const { data: daos } = await supabase.from('daos').select('dao_id, name')
-
-  return { props: { tags, daos } }
-}

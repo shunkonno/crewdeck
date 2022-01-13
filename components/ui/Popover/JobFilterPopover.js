@@ -1,13 +1,7 @@
-import { Fragment, useState, useEffect } from 'react'
-
-// Assets
-import { SearchIcon, AdjustmentsIcon } from '@heroicons/react/solid'
+import { Fragment } from 'react'
 
 // Components
 import { Popover, Transition } from '@headlessui/react'
-
-// Functions
-import classNames from 'classnames'
 
 export function JobFilterPopover({
   RefinementList,
@@ -16,8 +10,6 @@ export function JobFilterPopover({
   modalIsOpen,
   setIsOpen
 }) {
-  console.log(selectedDaoFilters)
-
   return (
     <>
       {/* Filter SP - START */}
@@ -65,7 +57,7 @@ export function JobFilterPopover({
                 className="absolute z-10 w-screen right-0 -mr-xs mt-3 sm:px-0 lg:max-w-3xl"
                 focus={true}
               >
-                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
+                <div className="overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
                   <div className="p-sm">
                     <div>
                       <label className="block text-sm font-medium text-slate-700">
