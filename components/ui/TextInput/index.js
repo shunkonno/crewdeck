@@ -1,3 +1,4 @@
 import { JobTitleTextInput } from './JobTitleTextInput'
+import { JobTitleTextArea } from './JobTitleTextArea'
 
-export { JobTitleTextInput }
+export { JobTitleTextInput, JobTitleTextArea }
