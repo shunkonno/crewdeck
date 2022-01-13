@@ -23,6 +23,7 @@
     "react-instantsearch-dom": "^6.18.0",
     "react-loading-skeleton": "^3.0.1",
     "react-quill": "^1.1.0",
+    "react-textarea-autosize": "^8.3.3",
     "sanitize-html": "^2.6.0",
     "swr": "^1.1.0",
     "web3modal": "^1.9.4"
