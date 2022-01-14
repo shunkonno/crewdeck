@@ -142,7 +142,7 @@ export default function Job({ job, dao, tags, daos }) {
         /*  Loading Spinner -- END */
       :
         !isEditAuth ? 
-          <p>You don't have the authentication to edit this job information</p>
+          <p>{`You don't have the authentication to edit this job information`}</p>
         :
           /*  Form -- START */
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -155,14 +155,14 @@ export default function Job({ job, dao, tags, daos }) {
                     </a>
                   </Link>
                   <button 
-                    className="px-xs py-1 bg-primary text-white text-lg inline-block rounded-lg cursor-pointer hover:bg-primary-hover hover:text-slate-100"
+                    className="px-xs py-1 bg-primary text-white text-lg inline-block rounded-md cursor-pointer hover:bg-primary-hover hover:text-slate-100"
                     type="submit"
                   >
                     Save
                   </button>
                 </div>
               </div>
-              <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80"></div>
+              <div className="hidden sm:block lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80"></div>
             </div>
             
             {/* Grid - START */}
@@ -188,22 +188,6 @@ export default function Job({ job, dao, tags, daos }) {
                         />
                       )}
                     />
-                    {/* <textarea 
-                      className="text-lg sm:text-2xl font-medium border-b border-slate-200 w-full outline-none focus:border-teal-400" 
-                      onChange={((e) => setTextareaTitle(e.target.value))}
-                      onInput={()=> setTitle(textareaTitle.replace(/\n/g, ''))}
-                      value={textareaTitle}
-                    />
-                    <input 
-                      type='text'
-                      className='hidden' 
-                      name='title'
-                      value={title} 
-                      {...register('title', {
-                        required: true,
-                        maxLength: 200
-                      })}
-                    /> */}
                   </fieldset>
                 </div>
                 {/* Job Title - END */}
@@ -232,7 +216,7 @@ export default function Job({ job, dao, tags, daos }) {
               </div>
               {/* Job - END */}
               {/* Sidebar - START */}
-              <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
+              <div className="lg:flex-shrink-1 mt-sm lg:mt-0 w-full lg:w-80">
                 <div className="bg-white border border-slate-300 p-xs rounded-lg">
                   <DaoSelectBox 
                     selectedDao={selectedDao}
