@@ -22,31 +22,14 @@ export default function Home() {
                 <div>
                   <h1 className="text-4xl sm:text-5xl font-bold leading-extra-tight lg:leading-tight">
                     Manage Bounties <br /> for NFT-gated DAOs
-                    {/* <p className="text-5xl mb-2">
-                    <span className="leading-extra-tight lg:leading-tight">
-                      for&nbsp;
-                    </span>
-                    <span className="pb-2 text-transparent bg-clip-text bg-gradient-to-br from-teal-400 to-blue-500 sm:inline-block leading-extra-tight lg:leading-tight">
-                      NFT-gated DAOs
-                    </span>
-                  </p> */}
                   </h1>
                 </div>
                 <div className="mt-sm sm:mt-xs">
                   <p>
-                    <span className="inline text-lg font-medium leading-normal">
-                      Managing bounties on &nbsp;
-                    </span>
-                    <div className="relative inline-block w-5 h-5 align-text-bottom">
-                      <Image
-                        src={'/images/social/DiscordIcon.png'}
-                        layout="fill"
-                        alt="discord"
-                      />
-                    </div>
-                    <span className="inline text-lg font-medium leading-normal">
-                      &nbsp;Discord channels is <i>hard</i>. Bad management of
-                      tasks leaves people unsure how to contribute.&nbsp;
+                    <span className="inline text-lg font-bold leading-normal">
+                      Managing bounties on Discord channels is <i>hard</i>. Bad
+                      management of tasks leaves people unsure how to
+                      contribute.&nbsp;
                     </span>
                     <div className="relative inline-block w-5 h-5 align-text-bottom">
                       <Image
@@ -99,7 +82,7 @@ export default function Home() {
               {/* Left Item - START */}
               <div className="px-sm py-md sm:py-2xl bg-white rounded-md">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-medium">
+                  <h2 className="text-2xl sm:text-3xl font-bold">
                     {`Manage Bounties`}
                   </h2>
                 </div>
@@ -124,7 +107,7 @@ export default function Home() {
               {/* Right Item - START */}
               <div className="px-sm py-md sm:py-2xl bg-white rounded-md">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-medium">
+                  <h2 className="text-2xl sm:text-3xl font-bold">
                     {`Post Public Bounties`}
                   </h2>
                 </div>
