@@ -1,3 +1,4 @@
 import { BaseLayout } from './BaseLayout'
+import { LandingPageLayout } from './landingPageLayout'
 
-export { BaseLayout }
+export { BaseLayout, LandingPageLayout }

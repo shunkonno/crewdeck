@@ -2,15 +2,13 @@
 import { Header } from '@components/ui/Header'
 import { Footer } from '@components/ui/Footer'
 
-export function BaseLayout({ children }) {
+export function LandingPageLayout({ children }) {
   return (
     <>
-      <div className="min-view-height bg-slate-100">
+      <div className="min-view-height bg-white">
         <Header />
         {/* Header - END */}
-        <div className="relative z-0 max-w-7xl mx-4 sm:mx-auto py-4 sm:py-8">
-          {children}
-        </div>
+        <div className="relative z-0 w-full">{children}</div>
       </div>
       {/* Footer - START */}
       <Footer />

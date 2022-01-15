@@ -2,7 +2,7 @@
 import Image from 'next/image'
 
 // Components
-import { BaseLayout } from '@components/ui/Layout'
+import { LandingPageLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
 
 export default function Home() {
@@ -164,4 +164,4 @@ export default function Home() {
   )
 }
 
-Home.Layout = BaseLayout
+Home.Layout = LandingPageLayout
