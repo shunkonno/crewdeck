@@ -87,7 +87,7 @@ export default function Home() {
                   </h2>
                 </div>
                 <div className="mt-4 w-full">
-                  <p>
+                  <p className="text-lg">
                     {`Allow NFT owners to post and manage
                     bounties. (We're also working to bring more methods of
                     collaboration and compensation on bounties.)`}
@@ -112,7 +112,7 @@ export default function Home() {
                   </h2>
                 </div>
                 <div className="mt-4 w-full">
-                  <p>
+                  <p className="text-lg">
                     {`Sometimes, the skillset necessary for a certain task is outside the scope of the DAO. Public bounties can be searched and acheived by anyone interested.`}
                   </p>
                 </div>
