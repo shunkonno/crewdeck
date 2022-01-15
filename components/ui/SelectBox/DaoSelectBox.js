@@ -14,7 +14,7 @@ export function DaoSelectBox({
   selectedDao,
   setSelectedDao,
   daoSelectorOptions,
-  daoSelectorIsReady,
+  daoSelectorIsReady
 }) {
   useEffect(() => {
     setSelectedDao(selectedDao || null)
@@ -37,7 +37,7 @@ export function DaoSelectBox({
                 daoSelectorOptions.length
                   ? 'cursor-default focus:border-primary'
                   : 'cursor-not-allowed bg-slate-200',
-                'relative w-full bg-white border border-slate-300 rounded-lg shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
+                'relative w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm'
               )}
             >
               <span className="flex items-center">
