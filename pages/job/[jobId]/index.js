@@ -46,8 +46,7 @@ export default function Job({ job, dao, daos }) {
   const [daoSelectorOptions, setDaoSelectorOptions] = useState([])
   const [isEditAuth, setIsEditAuth] = useState(false)
 
-  console.log(daoSelectorOptions)
-  console.log(isEditAuth)
+  // console.log({ daoSelectorOptions, isEditAuth })
 
   useEffect(() => {
     if (currentAccount) {
@@ -127,7 +126,10 @@ export default function Job({ job, dao, daos }) {
     }
 
     router.reload()
+    return
   }
+
+  console.log({ job })
 
   // ****************************************
   // RETURN
@@ -135,16 +137,20 @@ export default function Job({ job, dao, daos }) {
 
   return (
     <>
+      {/* Metatags - START */}
       <MetaTags
         title="Job Detail"
         description={`Manage job and bounties for your DAO with Crewdeck. Check jobs from ${dao.name}.`}
       />
+      {/* Metatags - END */}
+
+      {/* Contribute Button (SP) - START */}
       {!job.contributor && (
-        <div className="fixed w-full bg-white bottom-0 shadow-around">
-          <div className="flex justify-center py-2">
+        <div className="fixed w-full bg-slate-200 bottom-0 shadow-around sm:hidden">
+          <div className="flex justify-center py-4">
             <button
               className={
-                'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white'
+                'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white'
               }
               onClick={(e) => {
                 updateJobStatus(e)
@@ -155,133 +161,143 @@ export default function Job({ job, dao, daos }) {
           </div>
         </div>
       )}
-      <div className="py-md">
-        <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
-          <div className="lg:flex-1 flex justify-between items-center">
-            <Link href={'/bounties/browse'}>
-              <a className="group inline-flex py-1 px-2 items-center">
-                <ChevronLeftIcon className="w-6 h-6 mr-1 text-slate-600 group-hover:text-slate-500" />
-                <span className="text-slate-600 group-hover:text-slate-500">
-                  Back
+      {/* Contribute Button (SP) - END */}
+
+      {/* Top Menu - START */}
+      <div className="mb-4 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
+        <div className="lg:flex-1 flex justify-between items-center">
+          {/* Back Link - START */}
+          <Link href={'/bounties/browse'}>
+            <a className="group inline-flex py-1 px-2 items-center">
+              <ChevronLeftIcon className="w-6 h-6 mr-1 text-slate-600 group-hover:text-slate-500" />
+              <span className="text-slate-600 group-hover:text-slate-500">
+                Back
+              </span>
+            </a>
+          </Link>
+          {/* Back Link - END */}
+          {/* Edit Link - START */}
+          {isEditAuth && (
+            <Link href={`/job/${job.job_id}/edit`}>
+              <a className="group inline-flex items-center mx-xs text-slate-600 hover:text-slate-800">
+                <PencilIcon className="w-4 h-4 mr-1 text-slate-600 group-hover:text-slate-500" />
+                <span className="text-slate-600 group-hover:text-slate-500 font-bold text-sm">
+                  Edit
                 </span>
               </a>
             </Link>
-            {isEditAuth && (
-              <Link href={`/job/${job.job_id}/edit`}>
-                <a className="group inline-flex items-center mx-xs my-1 text-slate-600 rounded-lg hover:text-slate-800">
-                  <PencilIcon className="w-5 h-5 mr-1 text-slate-600 group-hover:text-slate-500" />
-                  <span className="text-slate-600 group-hover:text-slate-500">
-                    Edit
-                  </span>
-                </a>
-              </Link>
+          )}
+          {/* Edit Link - END */}
+        </div>
+        {/* Contribution Button - START */}
+        <div className="hidden sm:block lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
+          <div className="flex justify-end max-w-7xl mx-auto">
+            {!job.contributor && (
+              <button
+                className={
+                  'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white'
+                }
+                onClick={(e) => {
+                  updateJobStatus(e)
+                }}
+              >
+                ✋ &nbsp; Work on this Bounty
+              </button>
             )}
           </div>
-          <div className="hidden sm:block lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
-            <div className="flex justify-end max-w-7xl mx-auto">
-              {!job.contributor && (
-                <button
-                  className={
-                    'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white'
-                  }
-                  onClick={(e) => {
-                    updateJobStatus(e)
-                  }}
-                >
-                  ✋ &nbsp; Work on this Bounty
-                </button>
-              )}
-            </div>
-          </div>
         </div>
-
-        {/* Grid - START */}
-        <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
-          {/* Job - START */}
-          <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-lg">
-            {/* Job Title - START */}
-            <div>
-              <h1 className="text-lg sm:text-2xl font-medium">{job.title}</h1>
-            </div>
-            {/* Job Title - END */}
-            {/* Job Tags - START */}
-            {job.tags.length > 0 && (
-              <div className="mt-4">
-                <div className="flex flex-wrap justify-start gap-2">
-                  {job.tags.map((tag) => (
-                    <div key={tag.id}>
-                      <span className="inline-block items-center px-2 py-0.5 rounded text-sm font-medium bg-slate-200 text-slate-800">
-                        {tag.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            {/* Job Tags - END */}
-            {/* Job Description - START */}
-            <div className="mt-lg">
-              <article
-                className="prose"
-                dangerouslySetInnerHTML={composeInnerHTML(job.description)}
-              />
-            </div>
-            {/* Job Description - END */}
-          </div>
-          {/* Job - END */}
-          {/* Sidebar - START */}
-          <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
-            <div className="bg-white border border-slate-300 p-xs rounded-lg">
-              <div className="inline-flex items-center">
-                {dao.logo_url && (
-                  <div className="relative w-8 h-8 flex-shrink-0 rounded-full mr-3">
-                    <Image
-                      src={dao.logo_url}
-                      layout={'fill'}
-                      className="absolute inline-block h-8 w-8 "
-                    />
-                  </div>
-                )}
-                <h1 className="text-lg font-medium">{dao.name}</h1>
-              </div>
-              <p className="mt-1 text-slate-600">{dao.description}</p>
-              {(dao.discord_url || dao.twitter_url) && (
-                <div className="inline-flex gap-4 mt-xs">
-                  {dao.discord_url && (
-                    <a
-                      className="relative inline-block w-6 h-6 flex-shrink-0"
-                      href={dao.discord_url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        src={'/images/social/DiscordIcon.png'}
-                        layout={'fill'}
-                        className=""
-                      />
-                    </a>
-                  )}
-                  {dao.twitter_url && (
-                    <a
-                      className="relative inline-block w-6 h-6 flex-shrink-0"
-                      href={dao.twitter_url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        layout={'fill'}
-                        src={'/images/social/TwitterIcon.png'}
-                      />
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-          {/* Sidebar - END */}
-        </div>
-        {/* Grid - END */}
+        {/* Contribution Button - END */}
       </div>
+      {/* Top Menu - END */}
+
+      {/* Grid - START */}
+      <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
+        {/* Job - START */}
+        <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-md">
+          {/* Job Title - START */}
+          <div>
+            <h1 className="text-lg sm:text-2xl">{job.title}</h1>
+          </div>
+          {/* Job Title - END */}
+          {/* Job Tags - START */}
+          {job.tags.length > 0 && (
+            <div className="mt-2">
+              <div className="flex flex-wrap justify-start gap-2">
+                {job.tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="inline-block px-2 py-0.5 rounded text-xs text-slate-800"
+                    style={{ backgroundColor: tag.color_code }}
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {/* Job Tags - END */}
+          {/* Job Description - START */}
+          <div className="mt-lg">
+            <article
+              className="prose"
+              dangerouslySetInnerHTML={composeInnerHTML(job.description)}
+            />
+          </div>
+          {/* Job Description - END */}
+        </div>
+        {/* Job - END */}
+
+        {/* Sidebar - START */}
+        <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
+          <div className="bg-slate-50 border border-slate-300 p-xs rounded-md">
+            <div className="inline-flex items-center">
+              {dao.logo_url && (
+                <div className="relative w-8 h-8 flex-shrink-0 rounded-full mr-3">
+                  <Image
+                    src={dao.logo_url}
+                    layout={'fill'}
+                    className="absolute inline-block h-8 w-8 "
+                  />
+                </div>
+              )}
+              <h1 className="text-lg font-bold">{dao.name}</h1>
+            </div>
+            <p className="mt-1 text-slate-600">{dao.description}</p>
+            {(dao.discord_url || dao.twitter_url) && (
+              <div className="inline-flex gap-4 mt-xs">
+                {dao.discord_url && (
+                  <a
+                    className="relative inline-block w-6 h-6 flex-shrink-0"
+                    href={dao.discord_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Image
+                      src={'/images/social/DiscordIcon.png'}
+                      layout={'fill'}
+                    />
+                  </a>
+                )}
+                {dao.twitter_url && (
+                  <a
+                    className="relative inline-block w-6 h-6 flex-shrink-0"
+                    href={dao.twitter_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Image
+                      layout={'fill'}
+                      src={'/images/social/TwitterIcon.png'}
+                    />
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        {/* Sidebar - END */}
+      </div>
+      {/* Grid - END */}
     </>
   )
 }

@@ -18,17 +18,18 @@ import { MetaTags } from '@components/ui/MetaTags'
 import { JobTagsCheckboxes } from '@components/ui/Checkboxes'
 import { JobTitleTextArea } from '@components/ui/TextInput'
 
-import { useForm, Controller } from 'react-hook-form'
-
 // Constants
 import { statusOptions } from '@constants/statusOptions'
 import { DaoSelectBox } from '@components/ui/SelectBox'
+
+// React-Hook-Form
+import { useForm, Controller } from 'react-hook-form'
 
 // Quill Editor - Dynamic import to prevent SSR --- https://github.com/zenoamaro/react-quill
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
 
-export default function Job({ job, dao, tags, daos }) {
+export default function EditJob({ job, dao, tags, daos }) {
   // console.log({ job, dao, tags })
 
   // ****************************************
@@ -116,7 +117,6 @@ export default function Job({ job, dao, tags, daos }) {
     }
 
     console.log('submitData:', submitData)
-
   }
 
   // ****************************************
@@ -130,32 +130,47 @@ export default function Job({ job, dao, tags, daos }) {
         description="Manage job and bounties for your DAO with Crewdeck. Check jobs to work for a DAO. "
       />
       {/* Wrapper Component -- START */}
-      <div className="max-w-7xl mx-auto py-md">
-      {!daoSelectorIsReady ?
-        /*  Loading Spinner -- START */
-        <div className='inline-flex justify-center w-full'>
-          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        </div>
-        /*  Loading Spinner -- END */
-      :
-        !isEditAuth ? 
-          <p>{`You don't have the authentication to edit this job information`}</p>
-        :
+      <div>
+        {!daoSelectorIsReady ? (
+          /*  Loading Spinner -- START */
+          <div className="inline-flex justify-center w-full">
+            <svg
+              className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          </div>
+        ) : /*  Loading Spinner -- END */
+        !isEditAuth ? (
+          <p>{`You don't have permission to edit this.`}</p>
+        ) : (
           /*  Form -- START */
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
+            <div className="mb-4 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
               <div className="lg:flex-1 flex justify-end">
                 <div>
                   <Link href={`/job/${job.job_id}`}>
-                    <a className="my-1 text-slate-600 mr-6 text-lg inline-block rounded-lg hover:text-slate-800">
+                    <a className="my-1 text-slate-600 mr-6 text-sm font-bold inline-block hover:text-slate-800">
                       Cancel
                     </a>
                   </Link>
-                  <button 
-                    className="px-xs py-1 bg-primary text-white text-lg inline-block rounded-md cursor-pointer hover:bg-primary-hover hover:text-slate-100"
+                  <button
+                    className="px-4 py-1 bg-primary text-white text-sm font-bold inline-block rounded-md cursor-pointer hover:bg-primary-hover hover:text-slate-100"
                     type="submit"
                   >
                     Save
@@ -164,15 +179,15 @@ export default function Job({ job, dao, tags, daos }) {
               </div>
               <div className="hidden sm:block lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80"></div>
             </div>
-            
+
             {/* Grid - START */}
             <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2">
               {/* Job - START */}
-              <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-lg">
+              <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-md">
                 {/* Job Title - START */}
                 <div>
                   <fieldset>
-                    <legend className='sr-only'>Title</legend>
+                    <legend className="sr-only">Title</legend>
                     <Controller
                       control={control}
                       name="title"
@@ -193,10 +208,10 @@ export default function Job({ job, dao, tags, daos }) {
                 {/* Job Title - END */}
                 {/* Job Tags - START */}
                 <div className="mt-4">
-                  <JobTagsCheckboxes 
-                    tags={tags} 
+                  <JobTagsCheckboxes
+                    tags={tags}
                     register={register}
-                    selectedTags={selectedTags} 
+                    selectedTags={selectedTags}
                     setSelectedTags={setSelectedTags}
                   />
                 </div>
@@ -212,40 +227,44 @@ export default function Job({ job, dao, tags, daos }) {
                   />
                 </div>
                 {/* Job Description - END */}
-
               </div>
               {/* Job - END */}
+
               {/* Sidebar - START */}
-              <div className="lg:flex-shrink-1 mt-sm lg:mt-0 w-full lg:w-80">
-                <div className="bg-white border border-slate-300 p-xs rounded-lg">
-                  <DaoSelectBox 
-                    selectedDao={selectedDao}
-                    setSelectedDao={setSelectedDao}
-                    daoSelectorIsReady={daoSelectorIsReady}
-                    daoSelectorOptions={daoSelectorOptions}
-                    label={'Select DAO'}
-                  />
-                  <p className="mt-2 text-slate-600">{selectedDao.description}</p>
-                  {(selectedDao.discord_url || selectedDao.twitter_url) && (
+              <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
+                <div className="bg-slate-50 border border-slate-300 p-xs rounded-md">
+                  <div className="inline-flex items-center">
+                    {dao.logo_url && (
+                      <div className="relative w-8 h-8 flex-shrink-0 rounded-full mr-3">
+                        <Image
+                          src={dao.logo_url}
+                          layout={'fill'}
+                          className="absolute inline-block h-8 w-8 "
+                        />
+                      </div>
+                    )}
+                    <h1 className="text-lg font-bold">{dao.name}</h1>
+                  </div>
+                  <p className="mt-1 text-slate-600">{dao.description}</p>
+                  {(dao.discord_url || dao.twitter_url) && (
                     <div className="inline-flex gap-4 mt-xs">
-                      {selectedDao.discord_url && (
+                      {dao.discord_url && (
                         <a
                           className="relative inline-block w-6 h-6 flex-shrink-0"
-                          href={selectedDao.discord_url}
+                          href={dao.discord_url}
                           target="_blank"
                           rel="noreferrer"
                         >
                           <Image
                             src={'/images/social/DiscordIcon.png'}
                             layout={'fill'}
-                            className=""
                           />
                         </a>
                       )}
-                      {selectedDao.twitter_url && (
+                      {dao.twitter_url && (
                         <a
                           className="relative inline-block w-6 h-6 flex-shrink-0"
-                          href={selectedDao.twitter_url}
+                          href={dao.twitter_url}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -263,15 +282,14 @@ export default function Job({ job, dao, tags, daos }) {
             </div>
             {/* Grid - END */}
           </form>
-          
-      }
+        )}
       </div>
       {/* Wrapper Component -- END */}
     </>
   )
 }
 
-Job.Layout = BaseLayout
+EditJob.Layout = BaseLayout
 
 export const getStaticPaths = async () => {
   // Get all ids in jobs table.
@@ -336,13 +354,9 @@ export const getStaticProps = async ({ params: { jobId } }) => {
     .eq('dao_id', job.dao_id)
     .single()
 
-  const { data: daos } = await supabase
-  .from('daos')
-  .select('*')
+  const { data: daos } = await supabase.from('daos').select('*')
 
-  const { data: tags } = await supabase
-    .from('tags')
-    .select('*')
+  const { data: tags } = await supabase.from('tags').select('*')
 
   return { props: { job, dao, tags, daos } }
 }
