@@ -17,22 +17,21 @@ export function JobFilterPopover({
         <div className="mt-1 flex gap-2 w-full">
           {/* SearchBar -- START */}
           {/*
-            <div className="relative rounded-lg shadow-sm flex-1">
+            <div className="relative rounded-md shadow-sm flex-1">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <SearchIcon className="focus:text-primary text-slate-400 w-6 h-6" />
             </div>
               <input
-              className="focus:outline-none focus:ring-primary focus:border-primary block w-full pl-10 py-2 sm:text-sm border border-slate-300 rounded-lg"
+              className="focus:outline-none focus:ring-primary focus:border-primary block w-full pl-10 py-2 sm:text-sm border border-slate-300 rounded-md"
               placeholder="Search"
               />
             </div>
           */}
           {/* SearchBar -- END */}
-          <div className="text-2xl font-bold flex-1">Public Bounties</div>
           <Popover className="relative flex-shrink-0">
             <Popover.Button>
               <div
-                className="bg-white rounded-lg shadow-sm px-3 py-1 flex justify-center items-center text-slate-600 border border-slate-300"
+                className="bg-white rounded-md shadow-sm px-3 py-1 flex justify-center items-center text-slate-600 border border-slate-300"
                 onClick={() => {
                   setIsOpen(!modalIsOpen)
                 }}
