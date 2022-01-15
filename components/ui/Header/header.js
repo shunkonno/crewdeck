@@ -131,9 +131,7 @@ export function Header() {
                       </a>
                     </div>
                     <div className="py-2 active:bg-slate-100">
-                      <a
-                        onClick={() => handleRouting('/browse/bounties/public')}
-                      >
+                      <a onClick={() => handleRouting('/bounties/browse')}>
                         <span className="outline-none">Public Bounties</span>
                       </a>
                     </div>
@@ -228,7 +226,7 @@ export function Header() {
                       </Link>
                     </div>
                     <div>
-                      <Link href="/browse/bounties/public">
+                      <Link href="/bounties/browse">
                         <a>Public Bounties</a>
                       </Link>
                     </div>

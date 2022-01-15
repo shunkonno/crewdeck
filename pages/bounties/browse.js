@@ -98,7 +98,10 @@ export default function Browse() {
       })
 
     return (
-      <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
+      <div
+        key={props.hit.objectID}
+        className="mb-4 sm:mb-sm w-full sm:max-w-2xl"
+      >
         <Link href={`/job/${props.hit.objectID}`}>
           <a>
             <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">

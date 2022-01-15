@@ -158,7 +158,7 @@ export default function Job({ job, dao, daos }) {
       <div className="py-md">
         <div className="mb-2 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
           <div className="lg:flex-1 flex justify-between items-center">
-            <Link href={'/browse/bounties/public'}>
+            <Link href={'/bounties/browse'}>
               <a className="group inline-flex py-1 px-2 items-center">
                 <ChevronLeftIcon className="w-6 h-6 mr-1 text-slate-600 group-hover:text-slate-500" />
                 <span className="text-slate-600 group-hover:text-slate-500">
