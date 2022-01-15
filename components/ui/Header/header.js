@@ -127,11 +127,13 @@ export function Header() {
                     </div>
                     <div className="py-2 mt-2 active:bg-slate-100">
                       <a onClick={() => handleRouting('/dashboard')}>
-                        <span className="outline-none">Your DAOs</span>
+                        <span className="outline-none">Dashboard</span>
                       </a>
                     </div>
                     <div className="py-2 active:bg-slate-100">
-                      <a onClick={() => handleRouting('/browse')}>
+                      <a
+                        onClick={() => handleRouting('/browse/bounties/public')}
+                      >
                         <span className="outline-none">Public Bounties</span>
                       </a>
                     </div>
@@ -222,11 +224,11 @@ export function Header() {
                   <div className="flex items-center space-x-8">
                     <div>
                       <Link href="/dashboard">
-                        <a>Your DAOs</a>
+                        <a>Dashboard</a>
                       </Link>
                     </div>
                     <div>
-                      <Link href="/browse">
+                      <Link href="/browse/bounties/public">
                         <a>Public Bounties</a>
                       </Link>
                     </div>

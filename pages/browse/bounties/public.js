@@ -59,9 +59,9 @@ export default function Browse() {
           modalIsOpen={modalIsOpen}
           setIsOpen={setIsOpen}
         />
-        <div className="hidden sm:block sm:flex-shrink-1 px-sm w-72">
+        <div className="hidden sm:block sm:flex-shrink-1 w-72">
           <div>
-            <h3 className="text-sm font-medium">DAO</h3>
+            <h3 className="text-sm font-bold uppercase text-slate-600">DAO</h3>
             <div className="mt-2">
               <RefinementList
                 attribute="dao"
@@ -71,14 +71,15 @@ export default function Browse() {
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-sm font-medium pb-2">Tag</h3>
+            <div className="pb-2">
+              <h3 className="text-sm font-bold uppercase text-slate-600">
+                Tag
+              </h3>
+            </div>
             <RefinementList attribute="tags" />
           </div>
         </div>
         <main className="flex-1 mt-xs sm:mt-0 max-w-4xl">
-          <h1 className="text-3xl font-medium hidden sm:block mb-4">
-            Public Bounties
-          </h1>
           <Hits hitComponent={Hit} />
         </main>
       </InstantSearch>
@@ -100,12 +101,10 @@ export default function Browse() {
       <div key={props.hit.objectID} className="mb-4 sm:mb-sm">
         <Link href={`/job/${props.hit.objectID}`}>
           <a>
-            <div className="w-full border shadow-sm border-slate-300 rounded-lg bg-white">
+            <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">
               <div className="px-4 py-2">
                 <div>
-                  <h2 className="text-lg font-medium truncate">
-                    {props.hit.title}
-                  </h2>
+                  <h2 className="text-xl truncate">{props.hit.title}</h2>
                 </div>
                 <div className="mt-2 inline-flex gap-2 items-center">
                   {props.hit.daoLogo && (
@@ -114,7 +113,6 @@ export default function Browse() {
                         src={props.hit.daoLogo}
                         layout={'fill'}
                         alt={props.hit.dao}
-                        className=""
                       />
                     </div>
                   )}
@@ -126,7 +124,7 @@ export default function Browse() {
                     {tagsForRender.map((tag) => (
                       <span
                         key={tag.name}
-                        className="inline-block px-2 py-0.5 rounded text-sm font-medium text-slate-800"
+                        className="inline-block px-2 py-0.5 rounded text-xs text-slate-800"
                         style={{ backgroundColor: tag.color_code }}
                       >
                         {tag.name}
@@ -148,12 +146,21 @@ export default function Browse() {
 
   return (
     <>
+      {/* Metatags - START */}
       <MetaTags
         title="Crewdeck - Browse"
         description="Manage job and bounties for your DAO with Crewdeck. Browse public jobs and bounties, to lower barriers for contributing."
       />
+      {/* Metatags - END */}
+
+      {/* Page Title --- START */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold">Public Bounties</h1>
+      </div>
+      {/* Page Title --- END */}
+
       {/* Search - START */}
-      <div className="py-md max-w-5xl mx-auto px-xs sm:px-0 block sm:flex spacing-x-4">
+      <div className="sm:flex spacing-x-4">
         <RenderSearch />
       </div>
       {/* Search - END */}
