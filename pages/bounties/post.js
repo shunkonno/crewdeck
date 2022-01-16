@@ -14,11 +14,11 @@ import { AccountProvider } from '@libs/accountProvider'
 import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
 import {
-  JobTitleFormField,
-  JobDescriptionFormField,
-  JobDaoFormField,
-  JobTagsFormField,
-  JobPublicSettingsFormField
+  BountyTitleFormField,
+  BountyDescriptionFormField,
+  BountyDaoFormField,
+  BountyTagsFormField,
+  BountyPublicSettingsFormField
 } from '@components/ui/FormField'
 
 import { useForm, Controller } from 'react-hook-form'
@@ -68,7 +68,7 @@ export default function PostJob({ daos, tags }) {
 
   // Saves search object to Algolia.
   async function saveToAlgolia(algoliaObject) {
-    const response = await fetch('/api/algolia/saveJobs', {
+    const response = await fetch('/api/algolia/saveBounties', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -79,16 +79,18 @@ export default function PostJob({ daos, tags }) {
     return response
   }
 
-  // Saves job.
+  // Saves bounty.
   async function saveJob(title, selectedDao, editorContent, isPublic) {
-    const { data: result, saveJobError } = await supabase.from('jobs').insert([
-      {
-        title: title,
-        description: editorContent,
-        dao_id: selectedDao.dao_id,
-        is_public: isPublic
-      }
-    ])
+    const { data: result, saveJobError } = await supabase
+      .from('bounties')
+      .insert([
+        {
+          title: title,
+          description: editorContent,
+          dao_id: selectedDao.dao_id,
+          is_public: isPublic
+        }
+      ])
 
     if (saveJobError) {
       console.log(error)
@@ -100,16 +102,16 @@ export default function PostJob({ daos, tags }) {
   }
 
   // Saves tags.
-  async function saveTags(jobId, tagIds) {
+  async function saveTags(bountyId, tagIds) {
     const insertObjectList = []
 
     tagIds.length &&
       tagIds.map((tagId) => {
-        insertObjectList.push({ job_id: jobId, tag_id: tagId })
+        insertObjectList.push({ bounty_id: bountyId, tag_id: tagId })
       })
 
     const { data: result, saveTagsError } = await supabase
-      .from('jobs_to_tags')
+      .from('bounties_to_tags')
       .insert(insertObjectList)
 
     if (saveTagsError) {
@@ -129,7 +131,7 @@ export default function PostJob({ daos, tags }) {
     selectedTags,
     isPublic
   ) {
-    // Save job.
+    // Save bounty.
     const saveJobResult = await saveJob(
       title,
       selectedDao,
@@ -138,7 +140,7 @@ export default function PostJob({ daos, tags }) {
     )
 
     if (saveJobResult) {
-      await saveTags(saveJobResult[0].job_id, selectedTags)
+      await saveTags(saveJobResult[0].bounty_id, selectedTags)
     }
 
     return saveJobResult
@@ -206,7 +208,7 @@ export default function PostJob({ daos, tags }) {
           })
 
         const algoliaObject = {
-          objectID: result[0].job_id,
+          objectID: result[0].bounty_id,
           title: title,
           dao: selectedDao.name,
           daoLogo: selectedDao.logo_url,
@@ -217,8 +219,8 @@ export default function PostJob({ daos, tags }) {
         await saveToAlgolia(algoliaObject)
       }
 
-      // Redirect user to the newly created job post.
-      router.push(`/job/${result[0].job_id}`)
+      // Redirect user to the newly created bounty post.
+      router.push(`/bounty/${result[0].bounty_id}`)
     }
   }
 
@@ -230,7 +232,7 @@ export default function PostJob({ daos, tags }) {
     <>
       <MetaTags
         title="Crewdeck - Post Bounty"
-        description="Manage job and bounties for your DAO with Crewdeck. Post jobs for potential contributors. "
+        description="Manage bounty and bounties for your DAO with Crewdeck. Post bounties for potential contributors. "
       />
 
       <div className="py-md max-w-4xl mx-auto px-4 sm:px-0">
@@ -243,11 +245,11 @@ export default function PostJob({ daos, tags }) {
             <div>
               <div>
                 <h1 className="text-3xl leading-6 font-medium text-slate-900">
-                  Post a Job
+                  Post a Bounty
                 </h1>
                 {daoSelectorIsReady && !daoSelectorOptions?.length && (
                   <p className="mt-1 text-sm text-red-500">
-                    {`You don't have any NFT assigned by DAO. You cannot post jobs. `}
+                    {`You don't have any NFT assigned by DAO. You cannot post bounties. `}
                   </p>
                 )}
               </div>
@@ -255,13 +257,13 @@ export default function PostJob({ daos, tags }) {
               <div>
                 {/* Title - START */}
                 <div className="mt-sm">
-                  <JobTitleFormField errors={errors} register={register} />
+                  <BountyTitleFormField errors={errors} register={register} />
                   {/* Title - END */}
                 </div>
 
                 {/* DAO Selector - START */}
                 <div className="mt-sm w-2/3 sm:w-1/3">
-                  <JobDaoFormField
+                  <BountyDaoFormField
                     Controller={Controller}
                     control={control}
                     errors={errors}
@@ -273,7 +275,7 @@ export default function PostJob({ daos, tags }) {
 
                 {/* Editor - START */}
                 <div className="mt-sm">
-                  <JobDescriptionFormField
+                  <BountyDescriptionFormField
                     Controller={Controller}
                     control={control}
                   />
@@ -282,13 +284,13 @@ export default function PostJob({ daos, tags }) {
 
                 {/* Tags - END */}
                 <div className="mt-sm">
-                  <JobTagsFormField tags={tags} register={register} />
+                  <BountyTagsFormField tags={tags} register={register} />
                 </div>
                 {/* Tags - END */}
 
                 {/* Public Settings - START */}
                 <div className="mt-sm">
-                  <JobPublicSettingsFormField register={register} />
+                  <BountyPublicSettingsFormField register={register} />
                 </div>
                 {/* Public Settings - END */}
               </div>

@@ -12,14 +12,14 @@ const quillModules = {
   ]
 }
 
-export function JobDescriptionFormField({ Controller, control }) {
+export function BountyDescriptionFormField({ Controller, control }) {
   return (
     <>
       <div>
         <legend className="sr-only">Description</legend>
         <label className="block font-medium text-slate-700">Description</label>
         <p className="mt-1 text-sm text-slate-500">
-          Describe the job, including some background.
+          Describe the bounty, including some background.
         </p>
       </div>
       {/* Input - START */}

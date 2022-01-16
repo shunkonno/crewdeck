@@ -28,7 +28,7 @@ export default function Dashboard({ daos }) {
   // STATE
   // ****************************************
 
-  const [jobs, setJobs] = useState([])
+  const [bounties, setJobs] = useState([])
 
   // ****************************************
   // UI CONTROL STATE
@@ -52,9 +52,9 @@ export default function Dashboard({ daos }) {
   // ****************************************
 
   async function getJobsForDao(daoId) {
-    const { data: jobs, error } = await supabase
-      .from('jobs')
-      .select('job_id, created_at, title, is_public, status, contributor')
+    const { data: bounties, error } = await supabase
+      .from('bounties')
+      .select('bounty_id, created_at, title, is_public, status, contributor')
       .eq('dao_id', daoId)
 
     if (error) {
@@ -62,13 +62,13 @@ export default function Dashboard({ daos }) {
       return []
     }
 
-    return jobs
+    return bounties
   }
 
   useEffect(() => {
     if (selectedDao) {
-      getJobsForDao(selectedDao.dao_id).then((jobs) => {
-        setJobs(jobs)
+      getJobsForDao(selectedDao.dao_id).then((bounties) => {
+        setJobs(bounties)
       })
     }
   }, [selectedDao])
@@ -82,7 +82,7 @@ export default function Dashboard({ daos }) {
       {/* MetaTags --- START */}
       <MetaTags
         title="Crewdeck - Dashboard"
-        description="Manage job and bounties for your DAO with Crewdeck. You can check public and private jobs and bounties for your DAO on the dashboard."
+        description="Manage bounty and bounties for your DAO with Crewdeck. You can check public and private bounties and bounties for your DAO on the dashboard."
       />
       {/* MetaTags --- END */}
 
@@ -126,7 +126,7 @@ export default function Dashboard({ daos }) {
       {/* DAO Selector --- END */}
 
       {/* Table --- START */}
-      {jobs.length > 0 && (
+      {bounties.length > 0 && (
         <>
           <div className="flex flex-col mt-sm">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -166,25 +166,25 @@ export default function Dashboard({ daos }) {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-slate-200">
-                      {jobs.map((job) => (
-                        <tr key={job.job_id}>
+                      {bounties.map((bounty) => (
+                        <tr key={bounty.bounty_id}>
                           <td className="px-6 py-4 whitespace-nowrap text-slate-900">
-                            {job.title}
+                            {bounty.title}
                           </td>
                           <td className="px-6 py-4 whitespace-nowraptext-slate-600">
-                            {job.contributor
-                              ? truncateAddress(job.contributor)
+                            {bounty.contributor
+                              ? truncateAddress(bounty.contributor)
                               : '-'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-slate-600">
-                            {job.status ? job.status : '-'}
+                            {bounty.status ? bounty.status : '-'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-slate-600">
-                            {job.isPublic ? 'Public' : 'Internal'}
+                            {bounty.isPublic ? 'Public' : 'Internal'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <a
-                              href={`job/${job.job_id}`}
+                              href={`bounties/${bounty.bounty_id}`}
                               className="text-slate-600 hover:text-slate-900"
                             >
                               <div className="flex items-center justify-end">

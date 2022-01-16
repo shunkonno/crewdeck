@@ -1,6 +1,6 @@
 import { PublicSettingsRadioGroup } from '@components/ui/RadioGroup'
 
-export function JobPublicSettingsFormField({ register }) {
+export function BountyPublicSettingsFormField({ register }) {
   return (
     <fieldset>
       <div>

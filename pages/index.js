@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <MetaTags
         title="Crewdeck"
-        description="Manage job and bounties for your DAO with Crewdeck."
+        description="Manage bounty and bounties for your DAO with Crewdeck."
       />
       {/* Grid - START */}
       <div>

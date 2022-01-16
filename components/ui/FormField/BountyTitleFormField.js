@@ -1,6 +1,6 @@
 import { JobTitleTextInput } from '@components/ui/TextInput'
 
-export function JobTitleFormField({ errors, register }) {
+export function BountyTitleFormField({ errors, register }) {
   return (
     <>
       <label className="block font-medium text-slate-700">Title</label>

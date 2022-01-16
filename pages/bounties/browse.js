@@ -37,7 +37,7 @@ export default function Browse() {
     return (
       <InstantSearch
         searchClient={searchClient}
-        indexName="jobs"
+        indexName="bounties"
         onSearchStateChange={(searchState) => {
           if (modalIsOpen && searchState.refinementList?.dao !== undefined) {
             searchState.refinementList.dao.length > 0
@@ -102,7 +102,7 @@ export default function Browse() {
         key={props.hit.objectID}
         className="mb-4 sm:mb-sm w-full sm:max-w-2xl"
       >
-        <Link href={`/job/${props.hit.objectID}`}>
+        <Link href={`/bounties/${props.hit.objectID}`}>
           <a>
             <div className="w-full border shadow-sm border-slate-300 rounded-md bg-white">
               <div className="px-4 py-2">
@@ -152,7 +152,7 @@ export default function Browse() {
       {/* Metatags - START */}
       <MetaTags
         title="Crewdeck - Browse"
-        description="Manage job and bounties for your DAO with Crewdeck. Browse public jobs and bounties, to lower barriers for contributing."
+        description="Manage bounty and bounties for your DAO with Crewdeck. Browse public bounties and bounties, to lower barriers for contributing."
       />
       {/* Metatags - END */}
 

@@ -1,13 +1,13 @@
-import { JobTitleFormField } from './JobTitleFormField'
-import { JobDescriptionFormField } from './JobDescriptionFormField'
-import { JobDaoFormField } from './JobDaoFormField'
-import { JobTagsFormField } from './JobTagsFormField'
-import { JobPublicSettingsFormField } from './JobPublicSettingsFormField'
+import { BountyTitleFormField } from './BountyTitleFormField'
+import { BountyDescriptionFormField } from './BountyDescriptionFormField'
+import { BountyDaoFormField } from './BountyDaoFormField'
+import { BountyTagsFormField } from './BountyTagsFormField'
+import { BountyPublicSettingsFormField } from './BountyPublicSettingsFormField'
 
-export { 
-  JobTitleFormField, 
-  JobDescriptionFormField, 
-  JobDaoFormField, 
-  JobTagsFormField, 
-  JobPublicSettingsFormField 
+export {
+  BountyTitleFormField,
+  BountyDescriptionFormField,
+  BountyDaoFormField,
+  BountyTagsFormField,
+  BountyPublicSettingsFormField
 }

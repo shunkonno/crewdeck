@@ -136,7 +136,7 @@ export function Header() {
                       </a>
                     </div>
                     <div className="py-2 active:bg-slate-100">
-                      <a onClick={() => handleRouting('/job/post')}>
+                      <a onClick={() => handleRouting('/bounty/post')}>
                         <span className="outline-none text-primary">
                           Post Bounty
                         </span>
@@ -242,7 +242,7 @@ export function Header() {
                   {currentAccount && (
                     <div className="flex items-center space-x-8 ml-4">
                       <div>
-                        <Link href="/job/post">
+                        <Link href="/bounty/post">
                           <a className="font-medium text-primary">
                             Post Bounty
                           </a>
@@ -317,7 +317,7 @@ export function Header() {
       <div className="p-2">
         <Menu.Item>
           {
-            <NavLinks href="/job/post">
+            <NavLinks href="/bounty/post">
               <div className="inline-flex hover:bg-slate-100 text-slate-800 w-full text-center p-2 text-sm rounded-lg">
                 <DocumentTextIcon className="w-5 h-5 mr-2 " />
                 <span>Post Bounty</span>

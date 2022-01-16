@@ -29,8 +29,8 @@ import { useForm, Controller } from 'react-hook-form'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
 
-export default function EditJob({ job, dao, tags, daos }) {
-  // console.log({ job, dao, tags })
+export default function EditJob({ bounty, dao, tags, daos }) {
+  // console.log({ bounty, dao, tags })
 
   // ****************************************
   // ACCOUNT
@@ -64,11 +64,11 @@ export default function EditJob({ job, dao, tags, daos }) {
 
   useEffect(() => {
     const editable = daoSelectorOptions.some((detectedDao) => {
-      return detectedDao.dao_id == job.dao_id
+      return detectedDao.dao_id == bounty.dao_id
     })
 
     setIsEditAuth(editable)
-  }, [daoSelectorOptions, job.dao_id])
+  }, [daoSelectorOptions, bounty.dao_id])
 
   // ****************************************
   // FORM SETTINGS
@@ -78,8 +78,8 @@ export default function EditJob({ job, dao, tags, daos }) {
     return { ...accum, [tag.tag_id]: false }
   }, {})
 
-  const [title, setTitle] = useState(job.title || '')
-  const [editorContent, setEditorContent] = useState(job.description)
+  const [title, setTitle] = useState(bounty.title || '')
+  const [editorContent, setEditorContent] = useState(bounty.description)
   const [selectedDao, setSelectedDao] = useState(dao)
   const [selectedTags, setSelectedTags] = useState(tagsStateObject)
 
@@ -126,8 +126,8 @@ export default function EditJob({ job, dao, tags, daos }) {
   return (
     <>
       <MetaTags
-        title="Crewdeck - Edit Job"
-        description="Manage job and bounties for your DAO with Crewdeck. Check jobs to work for a DAO. "
+        title="Crewdeck - Edit Bounty"
+        description="Manage bounty and bounties for your DAO with Crewdeck. Check bounties to work for a DAO. "
       />
       {/* Wrapper Component -- START */}
       <div>
@@ -164,7 +164,7 @@ export default function EditJob({ job, dao, tags, daos }) {
             <div className="mb-4 flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
               <div className="lg:flex-1 flex justify-end">
                 <div>
-                  <Link href={`/job/${job.job_id}`}>
+                  <Link href={`/bounties/${bounty.bounty_id}`}>
                     <a className="my-1 text-slate-600 mr-6 text-sm font-bold inline-block hover:text-slate-800">
                       Cancel
                     </a>
@@ -182,16 +182,16 @@ export default function EditJob({ job, dao, tags, daos }) {
 
             {/* Grid - START */}
             <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2">
-              {/* Job - START */}
+              {/* Bounty - START */}
               <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-md">
-                {/* Job Title - START */}
+                {/* Bounty Title - START */}
                 <div>
                   <fieldset>
                     <legend className="sr-only">Title</legend>
                     <Controller
                       control={control}
                       name="title"
-                      defaultValue={job.title}
+                      defaultValue={bounty.title}
                       rules={{ required: true, maxLength: 200 }}
                       render={({ field: { onChange, value, name } }) => (
                         <JobTitleTextArea
@@ -205,8 +205,8 @@ export default function EditJob({ job, dao, tags, daos }) {
                     />
                   </fieldset>
                 </div>
-                {/* Job Title - END */}
-                {/* Job Tags - START */}
+                {/* Bounty Title - END */}
+                {/* Bounty Tags - START */}
                 <div className="mt-4">
                   <JobTagsCheckboxes
                     tags={tags}
@@ -215,9 +215,9 @@ export default function EditJob({ job, dao, tags, daos }) {
                     setSelectedTags={setSelectedTags}
                   />
                 </div>
-                {/* Job Tags - END */}
+                {/* Bounty Tags - END */}
 
-                {/* Job Description - START */}
+                {/* Bounty Description - START */}
                 <div className="mt-lg">
                   <ReactQuill
                     theme="snow"
@@ -226,9 +226,9 @@ export default function EditJob({ job, dao, tags, daos }) {
                     onChange={setEditorContent}
                   />
                 </div>
-                {/* Job Description - END */}
+                {/* Bounty Description - END */}
               </div>
-              {/* Job - END */}
+              {/* Bounty - END */}
 
               {/* Sidebar - START */}
               <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
@@ -292,31 +292,31 @@ export default function EditJob({ job, dao, tags, daos }) {
 EditJob.Layout = BaseLayout
 
 export const getStaticPaths = async () => {
-  // Get all ids in jobs table.
-  const { data: jobs } = await supabase.from('jobs').select('job_id')
+  // Get all ids in bounties table.
+  const { data: bounties } = await supabase.from('bounties').select('bounty_id')
 
-  const paths = jobs.map(({ job_id }) => ({
+  const paths = bounties.map(({ bounty_id }) => ({
     params: {
-      jobId: job_id.toString()
+      bountyId: bounty_id.toString()
     }
   }))
 
   return { paths, fallback: false }
 }
 
-export const getStaticProps = async ({ params: { jobId } }) => {
-  // Get job info.
-  const { data: job } = await supabase
-    .from('jobs')
+export const getStaticProps = async ({ params: { bountyId } }) => {
+  // Get bounty info.
+  const { data: bounty } = await supabase
+    .from('bounties')
     .select('*')
-    .eq('job_id', jobId)
+    .eq('bounty_id', bountyId)
     .single()
 
   // Get tag_ids.
   const { data: tagIdList } = await supabase
-    .from('jobs_to_tags')
+    .from('bounties_to_tags')
     .select('tag_id')
-    .eq('job_id', jobId)
+    .eq('bounty_id', bountyId)
 
   // If tags exist:
   if (tagIdList.length > 0) {
@@ -340,23 +340,23 @@ export const getStaticProps = async ({ params: { jobId } }) => {
       .select('*')
       .or(tagIdListString)
 
-    // Insert tags data into job object.
-    job.tags = tags
+    // Insert tags data into bounty object.
+    bounty.tags = tags
   } else {
-    // If tags don't exist, set an empty array for job.tags element.
-    job.tags = []
+    // If tags don't exist, set an empty array for bounty.tags element.
+    bounty.tags = []
   }
 
-  // Get info on the DAO that posted the job.
+  // Get info on the DAO that posted the bounty.
   const { data: dao } = await supabase
     .from('daos')
     .select('*')
-    .eq('dao_id', job.dao_id)
+    .eq('dao_id', bounty.dao_id)
     .single()
 
   const { data: daos } = await supabase.from('daos').select('*')
 
   const { data: tags } = await supabase.from('tags').select('*')
 
-  return { props: { job, dao, tags, daos } }
+  return { props: { bounty, dao, tags, daos } }
 }

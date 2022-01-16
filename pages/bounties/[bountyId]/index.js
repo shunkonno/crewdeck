@@ -22,8 +22,8 @@ import { MetaTags } from '@components/ui/MetaTags'
 // Constants
 import { statusOptions } from '@constants/statusOptions'
 
-export default function Job({ job, dao, daos }) {
-  console.log({ job, dao })
+export default function Bounty({ bounty, dao, daos }) {
+  console.log({ bounty, dao })
 
   // ****************************************
   // ACCOUNT
@@ -56,11 +56,11 @@ export default function Job({ job, dao, daos }) {
 
   useEffect(() => {
     const editable = daoSelectorOptions.some((detectedDao) => {
-      return detectedDao.dao_id == job.dao_id
+      return detectedDao.dao_id == bounty.dao_id
     })
 
     setIsEditAuth(editable)
-  }, [daoSelectorOptions, job.dao_id])
+  }, [daoSelectorOptions, bounty.dao_id])
 
   // ****************************************
   // HANDLE INNER HTML
@@ -116,9 +116,9 @@ export default function Job({ job, dao, daos }) {
     console.log(currentAccount)
 
     const { data, error } = await supabase
-      .from('jobs')
+      .from('bounties')
       .update({ status: statusOptions[1], contributor: currentAccount })
-      .match({ job_id: job.job_id })
+      .match({ bounty_id: bounty.bounty_id })
 
     if (error) {
       console.log(error)
@@ -129,7 +129,7 @@ export default function Job({ job, dao, daos }) {
     return
   }
 
-  console.log({ job })
+  console.log({ bounty })
 
   // ****************************************
   // RETURN
@@ -139,13 +139,13 @@ export default function Job({ job, dao, daos }) {
     <>
       {/* Metatags - START */}
       <MetaTags
-        title="Job Detail"
-        description={`Manage job and bounties for your DAO with Crewdeck. Check jobs from ${dao.name}.`}
+        title="Bounty Detail"
+        description={`Manage bounty and bounties for your DAO with Crewdeck. Check bounties from ${dao.name}.`}
       />
       {/* Metatags - END */}
 
       {/* Contribute Button (SP) - START */}
-      {!job.contributor && (
+      {!bounty.contributor && (
         <div className="fixed w-full bg-slate-200 bottom-0 shadow-around sm:hidden">
           <div className="flex justify-center py-4">
             <button
@@ -178,7 +178,7 @@ export default function Job({ job, dao, daos }) {
           {/* Back Link - END */}
           {/* Edit Link - START */}
           {isEditAuth && (
-            <Link href={`/job/${job.job_id}/edit`}>
+            <Link href={`/bounties/${bounty.bounty_id}/edit`}>
               <a className="group inline-flex items-center mx-xs text-slate-600 hover:text-slate-800">
                 <PencilIcon className="w-4 h-4 mr-1 text-slate-600 group-hover:text-slate-500" />
                 <span className="text-slate-600 group-hover:text-slate-500 font-bold text-sm">
@@ -192,7 +192,7 @@ export default function Job({ job, dao, daos }) {
         {/* Contribution Button - START */}
         <div className="hidden sm:block lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
           <div className="flex justify-end max-w-7xl mx-auto">
-            {!job.contributor && (
+            {!bounty.contributor && (
               <button
                 className={
                   'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white'
@@ -212,18 +212,18 @@ export default function Job({ job, dao, daos }) {
 
       {/* Grid - START */}
       <div className="flex flex-col lg:flex-row px-4 lg:px-xs lg:gap-2 max-w-7xl mx-auto">
-        {/* Job - START */}
+        {/* Bounty - START */}
         <div className="lg:flex-1 bg-white p-xs border border-slate-300 rounded-md">
-          {/* Job Title - START */}
+          {/* Bounty Title - START */}
           <div>
-            <h1 className="text-lg sm:text-2xl">{job.title}</h1>
+            <h1 className="text-lg sm:text-2xl">{bounty.title}</h1>
           </div>
-          {/* Job Title - END */}
-          {/* Job Tags - START */}
-          {job.tags.length > 0 && (
+          {/* Bounty Title - END */}
+          {/* Bounty Tags - START */}
+          {bounty.tags.length > 0 && (
             <div className="mt-2">
               <div className="flex flex-wrap justify-start gap-2">
-                {job.tags.map((tag) => (
+                {bounty.tags.map((tag) => (
                   <span
                     key={tag.id}
                     className="inline-block px-2 py-0.5 rounded text-xs text-slate-800"
@@ -235,17 +235,17 @@ export default function Job({ job, dao, daos }) {
               </div>
             </div>
           )}
-          {/* Job Tags - END */}
-          {/* Job Description - START */}
+          {/* Bounty Tags - END */}
+          {/* Bounty Description - START */}
           <div className="mt-lg">
             <article
               className="prose"
-              dangerouslySetInnerHTML={composeInnerHTML(job.description)}
+              dangerouslySetInnerHTML={composeInnerHTML(bounty.description)}
             />
           </div>
-          {/* Job Description - END */}
+          {/* Bounty Description - END */}
         </div>
-        {/* Job - END */}
+        {/* Bounty - END */}
 
         {/* Sidebar - START */}
         <div className="lg:flex-shrink-1 mt-md sm:mt-0 w-full lg:w-80">
@@ -302,34 +302,34 @@ export default function Job({ job, dao, daos }) {
   )
 }
 
-Job.Layout = BaseLayout
+Bounty.Layout = BaseLayout
 
 export const getStaticPaths = async () => {
-  // Get all ids in jobs table.
-  const { data: jobs } = await supabase.from('jobs').select('job_id')
+  // Get all ids in bounties table.
+  const { data: bounties } = await supabase.from('bounties').select('bounty_id')
 
-  const paths = jobs.map(({ job_id }) => ({
+  const paths = bounties.map(({ bounty_id }) => ({
     params: {
-      jobId: job_id.toString()
+      bountyId: bounty_id.toString()
     }
   }))
 
   return { paths, fallback: false }
 }
 
-export const getStaticProps = async ({ params: { jobId } }) => {
-  // Get job info.
-  const { data: job } = await supabase
-    .from('jobs')
+export const getStaticProps = async ({ params: { bountyId } }) => {
+  // Get bounty info.
+  const { data: bounty } = await supabase
+    .from('bounties')
     .select('*')
-    .eq('job_id', jobId)
+    .eq('bounty_id', bountyId)
     .single()
 
   // Get tag_ids.
   const { data: tagIdList } = await supabase
-    .from('jobs_to_tags')
+    .from('bounties_to_tags')
     .select('tag_id')
-    .eq('job_id', jobId)
+    .eq('bounty_id', bountyId)
 
   // If tags exist:
   if (tagIdList.length > 0) {
@@ -353,23 +353,23 @@ export const getStaticProps = async ({ params: { jobId } }) => {
       .select('*')
       .or(tagIdListString)
 
-    // Insert tags data into job object.
-    job.tags = tags
+    // Insert tags data into bounty object.
+    bounty.tags = tags
   } else {
-    // If tags don't exist, set an empty array for job.tags element.
-    job.tags = []
+    // If tags don't exist, set an empty array for bounty.tags element.
+    bounty.tags = []
   }
 
-  // Get info on the DAO that posted the job.
+  // Get info on the DAO that posted the bounty.
   const { data: dao } = await supabase
     .from('daos')
     .select('*')
-    .eq('dao_id', job.dao_id)
+    .eq('dao_id', bounty.dao_id)
     .single()
 
   const { data: daos } = await supabase
     .from('daos')
     .select('dao_id, name, logo_url, contract_address')
 
-  return { props: { job, dao, daos } }
+  return { props: { bounty, dao, daos } }
 }
