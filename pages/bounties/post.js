@@ -230,12 +230,28 @@ export default function PostBounty({ daos, tags }) {
 
   return (
     <>
+      {/* Metatags - START */}
       <MetaTags
         title="Crewdeck - Post Bounty"
         description="Manage bounty and bounties for your DAO with Crewdeck. Post bounties for potential contributors. "
       />
+      {/* Metatags - END */}
 
-      <div className="py-md max-w-4xl mx-auto px-4 sm:px-0">
+      <div className="max-w-4xl">
+        {/* Page Title --- START */}
+        <div>
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold">Post a Bounty</h1>
+          </div>
+
+          {daoSelectorIsReady && !daoSelectorOptions?.length && (
+            <p className="mt-1 text-sm text-red-500">
+              {`You don't have any NFT assigned by a DAO. Join a NFT-gated DAO to post bounties.`}
+            </p>
+          )}
+        </div>
+        {/* Page Title --- END */}
+
         {/* Form - START */}
         <form
           className="space-y-8 divide-y divide-slate-200"
@@ -243,17 +259,6 @@ export default function PostBounty({ daos, tags }) {
         >
           <div className="space-y-8 divide-y divide-slate-200">
             <div>
-              <div>
-                <h1 className="text-3xl leading-6 font-medium text-slate-900">
-                  Post a Bounty
-                </h1>
-                {daoSelectorIsReady && !daoSelectorOptions?.length && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {`You don't have any NFT assigned by DAO. You cannot post bounties. `}
-                  </p>
-                )}
-              </div>
-
               <div>
                 {/* Title - START */}
                 <div className="mt-sm">

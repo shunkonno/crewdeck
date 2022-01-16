@@ -10,7 +10,7 @@ export function BountyPublicSettingsFormField({ register }) {
         </label>
       </div>
       {/* Input - START */}
-      <div className="mt-xs space-y-5">
+      <div className="mt-2 space-y-5">
         <PublicSettingsRadioGroup register={register} />
       </div>
       {/* Input - END */}
