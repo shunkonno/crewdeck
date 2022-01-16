@@ -3,7 +3,9 @@ import { BountyTitleTextInput } from '@components/ui/TextInput'
 export function BountyTitleFormField({ errors, register }) {
   return (
     <>
-      <label className="block font-medium text-slate-700">Title</label>
+      <label className="block font-bold text-sm uppercase tracking-wider text-slate-700">
+        Title
+      </label>
       <p className="mt-1 text-sm text-slate-500">
         This is the first thing shown. Try to make it concise.
       </p>

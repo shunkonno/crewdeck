@@ -12,7 +12,9 @@ export function BountyTagsFormField({ tags, register }) {
   return (
     <fieldset>
       <legend className="sr-only">Tags</legend>
-      <label className="block font-medium text-slate-700">Tags</label>
+      <label className="block font-bold text-sm uppercase tracking-wider text-slate-700">
+        Tags
+      </label>
       {/* Input - START */}
       <div className="mt-2">
         <BountyTagsCheckboxes

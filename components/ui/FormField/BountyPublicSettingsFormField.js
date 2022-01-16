@@ -5,7 +5,7 @@ export function BountyPublicSettingsFormField({ register }) {
     <fieldset>
       <div>
         <legend className="sr-only">Public Settings</legend>
-        <label className="block font-medium text-slate-700">
+        <label className="block font-bold text-sm uppercase tracking-wider text-slate-700">
           Public Settings
         </label>
       </div>

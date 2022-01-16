@@ -17,7 +17,9 @@ export function BountyDescriptionFormField({ Controller, control }) {
     <>
       <div>
         <legend className="sr-only">Description</legend>
-        <label className="block font-medium text-slate-700">Description</label>
+        <label className="block font-bold text-sm uppercase tracking-wider text-slate-700">
+          Description
+        </label>
         <p className="mt-1 text-sm text-slate-500">
           Describe the bounty, including some background.
         </p>

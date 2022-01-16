@@ -95,7 +95,7 @@ export default function Dashboard({ daos }) {
       {/* DAO Selector --- START */}
       <div className="w-full sm:w-1/3">
         <div>
-          <label className="font-bold uppercase text-sm text-slate-700">
+          <label className="font-bold uppercase text-sm text-slate-700 tracking-wider">
             Select DAO
           </label>
         </div>

@@ -11,7 +11,9 @@ export function BountyDaoFormField({
   const [selectedDao, setSelectedDao] = useState(null)
   return (
     <>
-      <label className="block font-medium text-slate-700">DAO</label>
+      <label className="block font-bold text-sm uppercase tracking-wider text-slate-700">
+        DAO
+      </label>
       <p className="mt-1 text-sm text-slate-500">
         Select the DAO you own a token for.
         <br />
