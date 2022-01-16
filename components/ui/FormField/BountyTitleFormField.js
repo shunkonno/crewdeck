@@ -1,4 +1,4 @@
-import { JobTitleTextInput } from '@components/ui/TextInput'
+import { BountyTitleTextInput } from '@components/ui/TextInput'
 
 export function BountyTitleFormField({ errors, register }) {
   return (
@@ -7,7 +7,7 @@ export function BountyTitleFormField({ errors, register }) {
       <p className="mt-1 text-sm text-slate-500">
         This is the first thing shown. Try to make it concise.
       </p>
-      <JobTitleTextInput register={register} />
+      <BountyTitleTextInput register={register} />
       <div className="mt-2">
         {errors?.title?.type === 'required' && (
           <p className="text-red-400 text-sm">This input is required.</p>

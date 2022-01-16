@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { JobTagsCheckboxes } from '@components/ui/Checkboxes'
+import { BountyTagsCheckboxes } from '@components/ui/Checkboxes'
 
 export function BountyTagsFormField({ tags, register }) {
   // tagsの数だけtag_idをキーの持つ、value falseのオブジェクトを作る
@@ -15,7 +15,7 @@ export function BountyTagsFormField({ tags, register }) {
       <label className="block font-medium text-slate-700">Tags</label>
       {/* Input - START */}
       <div className="mt-2">
-        <JobTagsCheckboxes
+        <BountyTagsCheckboxes
           tags={tags}
           register={register}
           selectedTags={selectedTags}

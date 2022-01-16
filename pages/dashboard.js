@@ -28,7 +28,7 @@ export default function Dashboard({ daos }) {
   // STATE
   // ****************************************
 
-  const [bounties, setJobs] = useState([])
+  const [bounties, saveBounties] = useState([])
 
   // ****************************************
   // UI CONTROL STATE
@@ -51,7 +51,7 @@ export default function Dashboard({ daos }) {
   // FETCH DATA
   // ****************************************
 
-  async function getJobsForDao(daoId) {
+  async function getBountiesForDao(daoId) {
     const { data: bounties, error } = await supabase
       .from('bounties')
       .select('bounty_id, created_at, title, is_public, status, contributor')
@@ -67,8 +67,8 @@ export default function Dashboard({ daos }) {
 
   useEffect(() => {
     if (selectedDao) {
-      getJobsForDao(selectedDao.dao_id).then((bounties) => {
-        setJobs(bounties)
+      getBountiesForDao(selectedDao.dao_id).then((bounties) => {
+        saveBounties(bounties)
       })
     }
   }, [selectedDao])

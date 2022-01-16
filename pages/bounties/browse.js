@@ -5,7 +5,7 @@ import Image from 'next/image'
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
-import { JobFilterPopover } from '@components/ui/Popover'
+import { BountyFilterPopover } from '@components/ui/Popover'
 
 // Algolia
 import algoliasearch from 'algoliasearch'
@@ -52,7 +52,7 @@ export default function Browse() {
           }
         }}
       >
-        <JobFilterPopover
+        <BountyFilterPopover
           RefinementList={RefinementList}
           selectedDaoFilters={selectedDaoFilters}
           selectedTagFilters={selectedTagFilters}

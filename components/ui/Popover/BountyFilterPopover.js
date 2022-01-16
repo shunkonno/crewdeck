@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 // Components
 import { Popover, Transition } from '@headlessui/react'
 
-export function JobFilterPopover({
+export function BountyFilterPopover({
   RefinementList,
   selectedDaoFilters,
   selectedTagFilters,

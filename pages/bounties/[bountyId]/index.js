@@ -110,7 +110,7 @@ export default function Bounty({ bounty, dao, daos }) {
   // DB
   // ****************************************
 
-  async function updateJobStatus(e) {
+  async function updateBountyStatus(e) {
     e.preventDefault()
 
     console.log(currentAccount)
@@ -153,7 +153,7 @@ export default function Bounty({ bounty, dao, daos }) {
                 'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white'
               }
               onClick={(e) => {
-                updateJobStatus(e)
+                updateBountyStatus(e)
               }}
             >
               ✋ &nbsp; Work on this Bounty
@@ -198,7 +198,7 @@ export default function Bounty({ bounty, dao, daos }) {
                   'bg-primary cursor-pointer py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white'
                 }
                 onClick={(e) => {
-                  updateJobStatus(e)
+                  updateBountyStatus(e)
                 }}
               >
                 ✋ &nbsp; Work on this Bounty

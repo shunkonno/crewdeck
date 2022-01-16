@@ -242,7 +242,7 @@ export function Header() {
                   {currentAccount && (
                     <div className="flex items-center space-x-8 ml-4">
                       <div>
-                        <Link href="/bounty/post">
+                        <Link href="/bounties/post">
                           <a className="font-medium text-primary">
                             Post Bounty
                           </a>

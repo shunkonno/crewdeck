@@ -23,7 +23,7 @@ import {
 
 import { useForm, Controller } from 'react-hook-form'
 
-export default function PostJob({ daos, tags }) {
+export default function PostBounty({ daos, tags }) {
   // ****************************************
   // ACCOUNT
   // ****************************************
@@ -80,8 +80,8 @@ export default function PostJob({ daos, tags }) {
   }
 
   // Saves bounty.
-  async function saveJob(title, selectedDao, editorContent, isPublic) {
-    const { data: result, saveJobError } = await supabase
+  async function saveBounty(title, selectedDao, editorContent, isPublic) {
+    const { data: result, saveBountyError } = await supabase
       .from('bounties')
       .insert([
         {
@@ -92,8 +92,8 @@ export default function PostJob({ daos, tags }) {
         }
       ])
 
-    if (saveJobError) {
-      console.log(error)
+    if (saveBountyError) {
+      console.log(saveBountyError)
       return false
     }
 
@@ -132,18 +132,18 @@ export default function PostJob({ daos, tags }) {
     isPublic
   ) {
     // Save bounty.
-    const saveJobResult = await saveJob(
+    const saveBountyResult = await saveBounty(
       title,
       selectedDao,
       editorContent,
       isPublic
     )
 
-    if (saveJobResult) {
-      await saveTags(saveJobResult[0].bounty_id, selectedTags)
+    if (saveBountyResult) {
+      await saveTags(saveBountyResult[0].bounty_id, selectedTags)
     }
 
-    return saveJobResult
+    return saveBountyResult
   }
 
   function onTestSubmit(data) {
@@ -319,7 +319,7 @@ export default function PostJob({ daos, tags }) {
   )
 }
 
-PostJob.Layout = BaseLayout
+PostBounty.Layout = BaseLayout
 
 export const getStaticProps = async () => {
   const { data: daos } = await supabase

@@ -1,3 +1,3 @@
-import { JobFilterPopover } from './JobFilterPopover'
+import { BountyFilterPopover } from './BountyFilterPopover'
 
-export { JobFilterPopover }
+export { BountyFilterPopover }

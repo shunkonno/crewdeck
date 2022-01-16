@@ -1,3 +1,3 @@
-import { JobTagsCheckboxes } from './JobTagsCheckboxes'
+import { BountyTagsCheckboxes } from './BountyTagsCheckboxes'
 
-export { JobTagsCheckboxes }
+export { BountyTagsCheckboxes }

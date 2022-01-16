@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function JobTitleTextInput({ register }) {
+export function BountyTitleTextInput({ register }) {
   const [title, setTitle] = useState('')
 
   return (

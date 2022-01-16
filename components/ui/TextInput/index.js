@@ -1,4 +1,4 @@
-import { JobTitleTextInput } from './JobTitleTextInput'
-import { JobTitleTextArea } from './JobTitleTextArea'
+import { BountyTitleTextInput } from './BountyTitleTextInput'
+import { BountyTitleTextArea } from './BountyTitleTextArea'
 
-export { JobTitleTextInput, JobTitleTextArea }
+export { BountyTitleTextInput, BountyTitleTextArea }

@@ -15,8 +15,8 @@ import { AccountProvider } from '@libs/accountProvider'
 // Components
 import { BaseLayout } from '@components/ui/Layout'
 import { MetaTags } from '@components/ui/MetaTags'
-import { JobTagsCheckboxes } from '@components/ui/Checkboxes'
-import { JobTitleTextArea } from '@components/ui/TextInput'
+import { BountyTagsCheckboxes } from '@components/ui/Checkboxes'
+import { BountyTitleTextArea } from '@components/ui/TextInput'
 
 // Constants
 import { statusOptions } from '@constants/statusOptions'
@@ -29,7 +29,7 @@ import { useForm, Controller } from 'react-hook-form'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
 
-export default function EditJob({ bounty, dao, tags, daos }) {
+export default function EditBounty({ bounty, dao, tags, daos }) {
   // console.log({ bounty, dao, tags })
 
   // ****************************************
@@ -194,7 +194,7 @@ export default function EditJob({ bounty, dao, tags, daos }) {
                       defaultValue={bounty.title}
                       rules={{ required: true, maxLength: 200 }}
                       render={({ field: { onChange, value, name } }) => (
-                        <JobTitleTextArea
+                        <BountyTitleTextArea
                           onChange={onChange}
                           title={value}
                           control={control}
@@ -208,7 +208,7 @@ export default function EditJob({ bounty, dao, tags, daos }) {
                 {/* Bounty Title - END */}
                 {/* Bounty Tags - START */}
                 <div className="mt-4">
-                  <JobTagsCheckboxes
+                  <BountyTagsCheckboxes
                     tags={tags}
                     register={register}
                     selectedTags={selectedTags}
@@ -289,7 +289,7 @@ export default function EditJob({ bounty, dao, tags, daos }) {
   )
 }
 
-EditJob.Layout = BaseLayout
+EditBounty.Layout = BaseLayout
 
 export const getStaticPaths = async () => {
   // Get all ids in bounties table.
